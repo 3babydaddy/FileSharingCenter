@@ -48,6 +48,17 @@ public class OrganizationController extends BaseController {
     public Object tree() {
         return organizationService.selectTree();
     }
+    
+    /**
+     * 部门资源树
+     *
+     * @return
+     */
+    @PostMapping(value = "/zTree")
+    @ResponseBody
+    public Object zTree() {
+    	return organizationService.selectzTree();
+    }
 
     /**
      * 部门列表

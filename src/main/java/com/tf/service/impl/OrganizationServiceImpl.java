@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.result.Tree;
+import com.tf.commons.result.Ztree;
 import com.tf.mapper.OrganizationMapper;
 import com.tf.model.Organization;
 import com.tf.service.IOrganizationService;
@@ -34,6 +35,25 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 Tree tree = new Tree();
                 tree.setId(organization.getId());
                 tree.setText(organization.getName());
+                tree.setIconCls(organization.getIcon());
+                tree.setPid(organization.getPid());
+                trees.add(tree);
+            }
+        }
+        return trees;
+    }
+    
+    @Override
+    public List<Ztree> selectzTree() {
+        List<Organization> organizationList = selectTreeGrid();
+
+        List<Ztree> trees = new ArrayList<Ztree>();
+        if (organizationList != null) {
+            for (Organization organization : organizationList) {
+            	Ztree tree = new Ztree();
+                tree.setId(organization.getId());
+                tree.setText(organization.getName());
+                tree.setName(organization.getName());
                 tree.setIconCls(organization.getIcon());
                 tree.setPid(organization.getPid());
                 trees.add(tree);

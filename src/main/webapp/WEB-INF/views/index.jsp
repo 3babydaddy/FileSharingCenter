@@ -160,6 +160,7 @@
                 progressLoad();
                 $.post('${path }/logout', function(result) {
                     if(result.success){
+                    	debugger;
                         progressClose();
                         window.location.href='${path }';
                     }

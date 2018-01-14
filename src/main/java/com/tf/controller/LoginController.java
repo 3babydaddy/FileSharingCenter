@@ -51,6 +51,17 @@ public class LoginController extends BaseController {
     public String index(Model model) {
         return "index";
     }
+    
+    /**
+     * 文件共享主页面
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/disk")
+    public String disk(Model model) {
+        return "/general/disk";
+    }
 
     /**
      * GET 登录
