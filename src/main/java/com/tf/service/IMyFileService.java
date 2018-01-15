@@ -9,4 +9,6 @@ public interface IMyFileService extends IService<MyFile> {
 
 	List<MyFile> listFiles(Long id);
 
+	MyFile queryFile(Long id);
+
 }

@@ -27,8 +27,7 @@ public class MyFileController {
 	@ResponseBody
 	public Object listFiles(long orgid, String pwd) {
 		List<MyFile> myFiles = fileService.listFiles(orgid);
-		
-		System.out.println("================" + myFiles.size());
+		System.out.println("55555");
 		return myFiles;
 	}
 

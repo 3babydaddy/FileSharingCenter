@@ -1,0 +1,184 @@
+h3{
+	font-size: 1.6em;
+}
+.form {
+	width: 500px;
+	margin: 0;
+}
+
+.form dt {
+	width: 90px;
+	float: left;
+	text-align: right;
+}
+
+.form dt,.form dd {
+	padding: 3px 3px;
+}
+
+input {
+	vertical-align: bottom;
+	width: 260px;
+}
+
+textarea {
+	resize: none;
+	width: 260px;
+	height: 120px;
+}
+
+#upload {
+	position: relative;
+}
+
+#upload_button {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	text-align: left;
+	opacity: 0;
+}
+
+input {
+	vertical-align: text-top;
+}
+
+.pretty_file_input {
+	position: relative;
+}
+
+.pretty_file_input .fake {
+	width: 170px;
+	disabled: disabled;
+	position: absolute;
+}
+
+.pretty_file_input .browse {
+	top: 0px;
+	left: 180px;
+	position: absolute;
+}
+
+.pretty_file_input .file {
+	opacity: 0;
+	width: 170px;
+	position: absolute;
+}
+
+#space_bar {
+	margin: 20px 0 0 8px;
+	padding: 0 3px;
+	display: block;
+}
+
+.progress_bar {
+	margin: 9px 0;
+}
+
+.total_progress,.current_progress,.bar_data {
+	display: block;
+}
+
+.total_progress,.bar_data {
+	padding: 2px;
+	text-align: center;
+}
+
+.total_progress {
+	background: #FFF;
+	font-size: 12px;
+}
+
+.current_progress {
+	background: #A9D5F4;
+	float: left;
+	color: black;
+	font-weight: 800;
+}
+
+.active {
+	background-color: #ADD5FF !important;
+	border-color: #4D90FE !important;
+	box-shadow: 0 0 20px rgba(77, 144, 254, 0.7);
+	transition: all 0.5s ease 0s;
+}
+
+.on {
+	transform: scale(0.5);
+	-webkit-transform: scale(0.5);
+	opacity: 0.8 !important;
+	transition: transform 0.3s ease 0s;
+	-webkit-transition: transform 0.3s ease 0s;
+}
+
+#folder .draggable_ghost {
+	border: 1px solid #4D90FE !important;
+}
+
+form dl {
+	width: 360px;
+	margin: 0;
+}
+
+form dt {
+	width: 90px;
+	float: left;
+	text-align: right;
+	font-size: 18px;
+}
+
+form dt,form dd {
+	padding: 3px 3px;
+}
+
+#dialog textarea {
+	height: 60px;
+	resize: none;
+}
+
+#dialog textarea,#dialog input {
+	width: 250px;
+	font-size: 16px;
+	padding: 3px 4px;
+	padding-right: 27px;
+	background-position: right 100px;
+	background-repeat: no-repeat;
+	transition: all 0.3s ease 0s;
+	-webkit-transition: all 0.7s ease-in-out 0s;
+	background-image: url("../checkInput.v2/tip.png");
+}
+
+#chg_base_info {
+	background: url("../img/update_u.png") 15px 10px
+		no-repeat;
+}
+
+#chg_portrait {
+	background: url("../img/update_u.png") 15px -59px
+		no-repeat;
+}
+
+#chg_email {
+	background: url("../img/update_u.png") 15px -120px
+		no-repeat;
+}
+
+#chg_pwd {
+	background: url("../img/update_u.png") 15px -253px
+		no-repeat;
+}
+
+#chg_base_info,#chg_portrait,#chg_email,#chg_pwd,#back_to_disk {
+	margin-bottom: 4px;
+	background-color: #38A3DB !important;
+	float: left;
+	width: 212px;
+	padding-left: 80px;
+	cursor: pointer;
+	color: white;
+	text-decoration: none;
+	height: 63px;
+}

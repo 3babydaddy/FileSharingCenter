@@ -201,7 +201,6 @@
                     </shiro:hasPermission>&nbsp;&nbsp;
                     <a href="javascript:void(0)" onclick="logout()" class="easyui-linkbutton" plain="true" icon="fi-x">安全退出</a>
                 </span>
-                <span class="header"></span>
             </div>
         </div>
         <div data-options="region:'west',split:true" title="菜单" style="width: 160px; overflow: hidden;overflow-y:auto; padding:0px">
@@ -212,7 +211,7 @@
         <div data-options="region:'center'" style="overflow: hidden;">
             <div id="index_tabs" style="overflow: hidden;">
                 <div title="首页" data-options="iconCls:'fi-home',border:false" style="overflow: hidden;">
-                    <script src='https://git.oschina.net/tf/spring-shiro-training/widget_preview'></script>
+                    <script src=''></script>
                     <style>
                         .pro_name a{color: #4183c4;}
                         .osc_git_title{background-color: #d8e5f1;}
@@ -224,7 +223,7 @@
                 </div>
             </div>
         </div>
-        <div data-options="region:'south',border:false" style="height: 30px;line-height:30px; overflow: hidden;text-align: center;background-color: #eee" >Copyright © 2015 power by <a href="http://www.dreamlu.net/" target="_blank">如梦技术</a></div>
+        <div data-options="region:'south',border:false" style="height: 30px;line-height:30px; overflow: hidden;text-align: center;background-color: #eee" >Copyright © 2018 power by <a href="http://www.tftech.cn" target="_blank">天房科技</a></div>
     </div>
     <div id="tabsMenu">
         <div data-options="iconCls:'fi-loop'" type="refresh" style="font-size: 12px;">刷新</div>
