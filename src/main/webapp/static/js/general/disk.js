@@ -1,9 +1,11 @@
 var organizationTree;
-
-var file_template = "<li class='file'>" + "<span class='file_icon'>"
-		+ "<span class='lock'></span>" + "<span class='share'></span>"
-		+ "</span>" + "<span class='file_name' title='双击重命名'></span>" + "</li>";
-
+var file_template = "<li class='file'>" 
+	+ "<span class='file_icon'>"
+	+ "<span class='lock'></span>" 
+	+ "<span class='share'></span>"
+	+ "</span>" 
+	+ "<span class='file_name' title='双击重命名'></span>" 
+	+ "</li>";
 var zTree;
 /* zTree处理异步加载返回得的数据 */
 dataFilter = function(tId, pNode, myFiles) {
@@ -79,6 +81,7 @@ var zNodes = [ {
 } ];
 
 $(function(){  
+	debugger;
 	/* 初始化zTree并加载根目录 */
 	zTree = $.fn.zTree.init($("#organizationTree"), setting, zNodes);
 	var root = zTree.getNodeByTId("my_file_tree_1");
@@ -96,6 +99,17 @@ $(function(){
 			+ "</dl></form>";
 		dialog.show(fMkdir, '新建文件夹');
 	});
+	
+	/* 进度条 */
+	$("#space_bar").progressBar({
+		width : 265,
+		height : 15,
+		unit : "KB",
+		totalProgress : Number("1024000000" / (1024)).toFixed(0),
+		currentProgress : 50
+	});
+	var pBar = $("#space_bar").getProgressBar();
+	pBar.setProgress(Number(255000000/(1024)).toFixed(0));
 	
 	/* 上传按钮点击事件 */
 	$("#upload_button").uploadify({
@@ -166,8 +180,45 @@ $(function(){
 	$("#root").click(function() {
 		listFiles(zTree.getNodeByTId("my_file_tree_1"));
 	});
+	
+	$(".file").dragble({
+		handler : ".file_icon:not(.lock_1):not(.lock_2)"
+	});
+
+	$(".folder,#file_path span").droppable({
+		accept : ".file",
+		activeClass : "active",
+		onClass : "on",
+		onDrop : function(drag, drop) {
+			var tarF = drop.hasClass("file") ? drop.find(".file_icon") : drop;
+			var souF = drag.find(".file_icon");
+			if ($("#folder").data("folder_id") != tarF.data("file_id")) {
+				var url = "movefile/";
+				var data = "targetId=" + tarF.data("file_id")+ "&sourceId=" + souF.data("file_id");
+				$.post(url,data,function(dat) {
+					if (dat == "success") {
+						var tarN = zTree.getNodeByTId(tarF.data("node_id")), souN = zTree.getNodeByTId(souF.data("node_id"));
+						drag.remove();
+						if (tarF.hasClass("lock_1")|| !tarN.zAsync) {
+							zTree.removeNode(souN);
+						} else if (tarN.zAsync) {
+							zTree.moveNode(tarN,souN, "inner",true);
+						}
+					}
+				});
+			}
+		}
+	});
+	
+	/* 文件上传插件 */
+	var pop = popbox({
+		width : 400,
+		height : 240,
+		title : "文件上传",
+		auto : false,
+		content : $("#upload_queue")
+	});
 });  
-		
 
 var dialog = dialog({
 	height : 'auto',
@@ -175,6 +226,7 @@ var dialog = dialog({
 	speed : 200,
 	appendTo : "#dialog"
 });
+
 /* 获得字符串实际长度，中文2，英文1，要获得长度的字符串 */
 getRealStrLen = function(str) {
 	var realLen = 0, len = str.length, charCode = -1;
@@ -188,6 +240,7 @@ getRealStrLen = function(str) {
 	}
 	return realLen;
 };
+
 /* 限制字符串的长度，超过长度后面用省略号覆盖 */
 strLimit = function(str, len) {
 	if (str.length > 20) {
@@ -195,27 +248,25 @@ strLimit = function(str, len) {
 	} else {
 		return str;
 	}
-}
+};
+
+
 /* 取得某个树节点的路径 */
 createPath = function(tNode) {
 	var tempNode = tNode;
 	var cPath = $("#children_path");
 	cPath.html("");
-
 	while (tempNode.getParentNode() != null) {
-		cPath.prepend($("<span/>").data("file_id", tempNode.id).data("node_id",
-				tempNode.tId).addClass("lock_" + tempNode.isLock).html(
-				tempNode.name));
+		cPath.prepend($("<span/>").data("file_id", tempNode.id).data("node_id",tempNode.tId).addClass("lock_" + tempNode.isLock).html(tempNode.name));
 		cPath.prepend("》");
 		tempNode = tempNode.getParentNode();
 	}
-}
+};
 
 /* 把文件夹的内容展示在右边窗口里 */
 listFiles = function(tNode) {
 	$("#folder").data("folder_id", tNode.id).data("node_id", tNode.tId);
 	createPath(tNode);
-
 	$.ajax({
 		url : ctxPath + '/myFile/list?orgid=' + tNode.id,
 		type : 'GET', // GET
@@ -230,18 +281,14 @@ listFiles = function(tNode) {
 				if (files[i].type == "adir") {
 					file.addClass("folder");
 				}
-				file.find(".file_icon").addClass(
-						files[i].type + " lock_" + files[i].isLock + " share_"
-								+ files[i].isShare)
-						.data("file_id", files[i].id).data("node_id",
-								files[i].tId).attr("title", files[i].name);
-
+				file.find(".file_icon").addClass(files[i].type + " lock_" + files[i].isLock + " share_"+ files[i].isShare).data("file_id", files[i].id).data("node_id",files[i].tId).attr("title", files[i].name);
 				file.find(".file_name").html(strLimit(files[i].name, 20));
 				folder.append(file);
 			}
 		}
 	})
 };
+
 /* 上传或新建文件夹时更新界面 */
 addFile = function(data) {
 	if (data.type == "adir") {
@@ -249,20 +296,15 @@ addFile = function(data) {
 	} else {
 		data.icon = basePath + "/static/filetype/" + data.type + ".gif";
 	}
-
-	var tarNode = zTree.getNodeByTId($("#folder").data("node_id")), file = $(file_template), newNode = zTree
-			.addNodes(tarNode, data, true);
+	var tarNode = zTree.getNodeByTId($("#folder").data("node_id")), file = $(file_template), newNode = zTree.addNodes(tarNode, data, true);
 	if (data.type == "adir") {
 		file.addClass("folder");
 	}
-	file.find(".file_icon").data("file_id", data.id).data("node_id",
-			newNode[0].tId).addClass(
-			data.type + " lock_" + data.isLock + " share_0").attr("title",
-			data.name);
-
+	file.find(".file_icon").data("file_id", data.id).data("node_id",newNode[0].tId).addClass(data.type + " lock_" + data.isLock + " share_0").attr("title",data.name);
 	file.find(".file_name").html(strLimit(data.name, 20));
 	$("#folder ul").append(file);
-}
+};
+
 /* 打开文件 */
 openFile = function(f) {
 	var tNode = zTree.getNodeByTId(f.data("node_id"));
@@ -274,11 +316,12 @@ openFile = function(f) {
 	} else {
 		listFiles(tNode);
 	}
-}
+};
+
+
 /* 文件分享 */
 share = function(f) {
 	var url = "/home/share", data = "fileId=" + f.data("file_id");
-
 	$.post(url, data, function(data) {
 		if (data != "fail") {
 			var tNode = zTree.getNodeByTId(f.data("node_id"));
@@ -293,7 +336,9 @@ share = function(f) {
 		}
 		;
 	});
-}
+};
+
+
 /* 取消分享 */
 cancelShare = function(f) {
 	var url = "/home/cancelshare", data = "fileId=" + f.data("file_id");
@@ -306,7 +351,8 @@ cancelShare = function(f) {
 			f.removeClass("share_1").addClass("share_0");
 		}
 	});
-}
+};
+
 /* 重命名文件 */
 rename = function(f) {
 	var text = $("<textarea type='text' style='text-align:center;resize:none;width:91px;height:34px;font-size:11px;'></textarea>");
@@ -348,7 +394,8 @@ rename = function(f) {
 	} else {
 		gotoEdit();
 	}
-}
+};
+
 /* 删除文件 */
 deleteFile = function(f) {
 	url = "delete/" + $(f).data("file_id"), data = "";
@@ -375,7 +422,8 @@ deleteFile = function(f) {
 	} else {
 		post(url, "pwd=");
 	}
-}
+};
+
 /* 文件解密、删除文件、重命名、删除文件密码时弹出输入框 */
 inputPwd = function(f) {
 	$("#input_pwd").slideUp(300, function() {
@@ -395,7 +443,7 @@ inputPwd = function(f) {
 	input.find(".input_pwd").focus();
 	input.slideDown(300);
 	return input;
-}
+};
 
 /* 文件夹解密 */
 unlockFile = function(f) {
@@ -421,7 +469,7 @@ unlockFile = function(f) {
 			}
 		});
 	});
-}
+};
 
 /* 文件夹加密 */
 addLock = function(f) {
@@ -436,7 +484,7 @@ addLock = function(f) {
 			+ "<button type='submit'>加密</button>" + "</dd>" + "</dl></form>");
 	dialog.show(input, "请输入密码并牢记");
 	input.data("file", f);
-}
+};
 /* 更换文件密码 */
 changeFilePwd = function(f) {
 	var input = $("<form class='change_pwd'><dl>"
@@ -450,7 +498,7 @@ changeFilePwd = function(f) {
 
 	dialog.show(input, "请务必牢记更换后的密码");
 	input.data("file", f);
-}
+};
 
 /* 删除密码 */
 deleteLock = function(f) {
@@ -474,7 +522,7 @@ deleteLock = function(f) {
 			}
 		});
 	});
-}
+};
 
 
 // 文件右键
@@ -507,33 +555,33 @@ var fileItems = [ {
 } ];
 
 var folderItems = [ {
-	text : "打开",
-	icon : basePath + "/static/img/open.png",
-	action : function(tar) {
-		openFile($(tar));
-	}
-}, {
-	text : "重命名",
-	icon : basePath + "/static/img/edit.png",
-	action : function(tar) {
-		rename($(tar));
-	}
-}, {
-	text : "加密",
-	icon : basePath + "/static/img/lock.png",
-	action : function(tar) {
-		addLock($(tar));
-	}
-}, {}, {
-	type : "aplit"
-}, {
-	text : "删除",
-	icon : basePath + "/static/img/delete.png",
-	action : function(tar) {
-		if (confirm("文件夹可能涉及多个文件，请谨慎操作。")) {
-			deleteFile($(tar));
+		text : "打开",
+		icon : basePath + "/static/img/open.png",
+		action : function(tar) {
+			openFile($(tar));
 		}
-	}
+	}, {
+		text : "重命名",
+		icon : basePath + "/static/img/edit.png",
+		action : function(tar) {
+			rename($(tar));
+		}
+	}, {
+		text : "加密",
+		icon : basePath + "/static/img/lock.png",
+		action : function(tar) {
+			addLock($(tar));
+		}
+	}, {}, {
+		type : "aplit"
+	}, {
+		text : "删除",
+		icon : basePath + "/static/img/delete.png",
+		action : function(tar) {
+			if (confirm("文件夹可能涉及多个文件，请谨慎操作。")) {
+				deleteFile($(tar));
+			}
+		}
 } ];
 /* 文件的右键菜单 */
 $(".share_0:not(.adir)").contextmenu({
@@ -581,84 +629,13 @@ $(".adir:not(.lock_0)").contextmenu({
 	}()
 });
 
-
-
-/* 进度条 */
-$("#space_bar").progressBar({
-	width : 265,
-	height : 15,
-	unit : "KB",
-	totalProgress : Number("111" / (1024)).toFixed(0),
-	currentProgress : 1
-});
-var pBar = $("#space_bar").getProgressBar();
-// pBar.setProgress(Number(${"12313"}/(1024)).toFixed(0));
-
-var pop = popbox({
-	width : 400,
-	height : 240,
-	title : "文件上传",
-	auto : false,
-	content : $("#upload_queue")
-});
-
-
-
-$(".file").dragble({
-	handler : ".file_icon:not(.lock_1):not(.lock_2)"
-});
-
-$(".folder,#file_path span")
-		.droppable(
-				{
-					accept : ".file",
-					activeClass : "active",
-					onClass : "on",
-					onDrop : function(drag, drop) {
-						var tarF = drop.hasClass("file") ? drop
-								.find(".file_icon") : drop;
-						var souF = drag.find(".file_icon");
-
-						if ($("#folder").data("folder_id") != tarF
-								.data("file_id")) {
-							var url = "movefile/";
-							var data = "targetId=" + tarF.data("file_id")
-									+ "&sourceId=" + souF.data("file_id");
-
-							$
-									.post(
-											url,
-											data,
-											function(dat) {
-												if (dat == "success") {
-													var tarN = zTree
-															.getNodeByTId(tarF
-																	.data("node_id")), souN = zTree
-															.getNodeByTId(souF
-																	.data("node_id"));
-													drag.remove();
-													if (tarF.hasClass("lock_1")
-															|| !tarN.zAsync) {
-														zTree.removeNode(souN);
-													} else if (tarN.zAsync) {
-														zTree.moveNode(tarN,
-																souN, "inner",
-																true);
-													}
-												}
-											});
-						}
-					}
-				});
-
 message = function() {
 	var form = "<form class='leave_message'><dl>"
-			+ "<dt>标题：</dt><dd><input name='title' type='text' value=''/></dd>"
-			+ "<dt>内容：</dt><dd><textarea name='content'/></dd>"
-			+ "<dt></dt><dd>"
-			+ "<button type='button' onclick='dialog.close();'>取消</button>"
-			+ "<button type='submit'>提交</button>" + "</dd>" + "</dl></form>";
-
+		+ "<dt>标题：</dt><dd><input name='title' type='text' value=''/></dd>"
+		+ "<dt>内容：</dt><dd><textarea name='content'/></dd>"
+		+ "<dt></dt><dd>"
+		+ "<button type='button' onclick='dialog.close();'>取消</button>"
+		+ "<button type='submit'>提交</button>" + "</dd>" + "</dl></form>";
 	dialog.show(form, "提交留言和意见");
 }
 
@@ -702,126 +679,56 @@ var items = [ {
 	errorMsg : "两次密码不匹配"
 } ];
 
-$("#dialog")
-		.checkInput(
-				{
-					items : items,
-					rules : rules,
-					beforeSubmit : function(e, result, form) {
-						e.preventDefault();
-						if (result) {
-							var url = null, data = null;
-							if (form.hasClass("mkdir")) {
-								url = "mkdir/" + $("#folder").data("folder_id");
-								data = form.serialize();
-								$
-										.post(
-												url,
-												data,
-												function(d) {
-													addFile(d);
-													dialog
-															.updateTitle(
-																	"新建文件成功")
-															.updateContent(
-																	"<center><h1>新建文件成功</h1></center>");
-													setTimeout(
-															"dialog.close()",
-															1000);
-												}, "json");
-							} else if (form.hasClass("add_pwd")
-									&& form.data("file")) {
-								var f = form.data("file");
-
-								url = "addlock/" + f.data("file_id");
-								data = form.serialize();
-
-								$
-										.post(
-												url,
-												data,
-												function(d) {
-													if (d == "success") {
-														var tNode = zTree
-																.getNodeByTId(f
-																		.data("node_id"));
-														zTree
-																.removeChildNodes(tNode);
-														tNode.isLock = 1;
-														tNode.zAsync = false;
-														f
-																.addClass(
-																		"lock_1")
-																.removeClass(
-																		"lock_0");
-														dialog
-																.updateTitle(
-																		"文件加密成功")
-																.updateContent(
-																		"<center><h1>请牢记密码</h1></center>");
-														setTimeout(
-																"dialog.close()",
-																2500);
-													}
-												});
-							} else if (form.hasClass("change_pwd")
-									&& form.data("file")) {
-								var f = form.data("file");
-								url = "changefilepwd/" + f.data("file_id");
-								data = form.serialize();
-
-								$
-										.post(
-												url,
-												data,
-												function(d) {
-													if (d == "success") {
-														var tNode = zTree
-																.getNodeByTId(f
-																		.data("node_id"));
-														zTree
-																.removeChildNodes(tNode);
-														tNode.isLock = 1;
-														tNode.zAsync = false;
-														f
-																.addClass(
-																		"lock_1")
-																.removeClass(
-																		"lock_2");
-														dialog
-																.updateTitle(
-																		"密码修改成功")
-																.updateContent(
-																		"<center><h1>请牢记新密码</h1></center>");
-														setTimeout(
-																"dialog.close()",
-																2500);
-													} else {
-														alert("旧密码不对");
-													}
-
-												});
-							} else if (form.hasClass("leave_message")) {
-								url = "/home/leavemessage";
-								data = form.serialize();
-
-								$
-										.post(
-												url,
-												data,
-												function(d) {
-													if (d == "1") {
-														dialog
-																.updateTitle(
-																		":)留言成功")
-																.updateContent(
-																		"<center><img src=" + basePath + "/static/img/rose.gif'/><h1 style='color:green;'>have beautiful mind!</h1></center>");
-														setTimeout(
-																"dialog.close()",
-																2500);
-													}
-												});
-							}
-						}
+/* 对话框点击 */
+$("#dialog").checkInput({
+	items : items,
+	rules : rules,
+	beforeSubmit : function(e, result, form) {
+		e.preventDefault();
+		if (result) {
+			var url = null, data = null;
+			if (form.hasClass("mkdir")) {
+				url = "mkdir/" + $("#folder").data("folder_id");
+				data = form.serialize();
+				$.post(url,data,function(d) {
+						addFile(d);
+						dialog.updateTitle("新建文件成功").updateContent("<center><h1>新建文件成功</h1></center>");
+						setTimeout("dialog.close()",1000);
+					},"json"
+				);
+			} else if (form.hasClass("add_pwd")&& form.data("file")) {
+				var f = form.data("file");
+				url = "addlock/" + f.data("file_id");
+				data = form.serialize();
+				$.post(url,data,function(d) {
+					if (d == "success") {
+						var tNode = zTree.getNodeByTId(f.data("node_id"));
+						zTree.removeChildNodes(tNode);
+						tNode.isLock = 1;
+						tNode.zAsync = false;
+						f.addClass("lock_1").removeClass("lock_0");
+						dialog.updateTitle("文件加密成功").updateContent("<center><h1>请牢记密码</h1></center>");
+						setTimeout("dialog.close()",2500);
 					}
 				});
+			} else if (form.hasClass("change_pwd")&& form.data("file")) {
+				var f = form.data("file");
+				url = "changefilepwd/" + f.data("file_id");
+				data = form.serialize();
+				$.post(url,data,function(d) {
+					if (d == "success") {
+						var tNode = zTree.getNodeByTId(f.data("node_id"));
+						zTree.removeChildNodes(tNode);
+						tNode.isLock = 1;
+						tNode.zAsync = false;
+						f.addClass("lock_1").removeClass("lock_2");
+						dialog.updateTitle("密码修改成功").updateContent("<center><h1>请牢记新密码</h1></center>");
+						setTimeout("dialog.close()",2500);
+					} else {
+						alert("旧密码不对");
+					}
+				});
+			} 
+		}
+	}
+});

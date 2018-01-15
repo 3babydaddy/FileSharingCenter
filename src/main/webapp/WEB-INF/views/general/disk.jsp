@@ -49,7 +49,7 @@
 						<span id="gender gender_${user.gender}"></span> <span>共11个资源</span>
 					</div>
 				</div>
-
+				<div id="netdisk"><span id="space_bar">空间概览</span></div>
 				<div id="chg_base_info">
 					<h3>处室共享</h3>
 				</div>
@@ -59,6 +59,7 @@
 				<div id="chg_email">
 					<h3>共享空间</h3>
 				</div>
+				
 				<div id="dir_tree">
 					<ul id="organizationTree" class="ztree"></ul>
 				</div>
