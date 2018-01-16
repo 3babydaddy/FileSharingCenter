@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tf.commons.base.BaseController;
 import com.tf.commons.csrf.CsrfToken;
+import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.shiro.captcha.DreamCaptcha;
 import com.tf.commons.utils.StringUtils;
 
@@ -60,6 +61,8 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/disk")
     public String disk(Model model) {
+    	ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
+    	model.addAttribute("user", user);
         return "/general/disk";
     }
 

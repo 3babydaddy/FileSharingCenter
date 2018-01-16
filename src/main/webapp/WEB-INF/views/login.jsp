@@ -11,7 +11,7 @@
 </head>
 <body onkeydown="enterlogin();">
 <div class="top_div"></div>
-<div style="background: rgb(255, 255, 255); margin: -100px auto auto; border: 1px solid rgb(231, 231, 231);border-image:none;width:400px;text-align: center;">
+<div style="background: rgb(255, 255, 255); margin: -100px auto auto; border: 1px solid rgb(231, 231, 231);border-image:none;width:350px;text-align: center;">
     <form method="post" id="loginform">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div style="width: 165px; height: 96px; position: absolute;">

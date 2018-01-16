@@ -20,7 +20,7 @@
 <script type="text/javascript" src="<c:url value='/static/js/general/disk.js?version=${jsversion}'/>"></script>
 <link rel="stylesheet" href="${staticPath }/static/css/base.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/disk.css" />
-<link rel="stylesheet" href="${staticPath }/static/css/mydisk.css" />
+<link rel="stylesheet" href="${staticPath }/static/css/mydisk.css"/>
 <link rel="stylesheet" href="${staticPath }/static/css/file.css" />
 <link rel="stylesheet" href="${staticPath }/static/contextmenu/theme/contextmenu.css" />
 <link rel="stylesheet" href="${staticPath }/static/checkInput.v2/skin.css" />
@@ -28,28 +28,31 @@
 <link rel="stylesheet" href="${staticPath }/static/uploadify/uploadify.css" />
 <link rel="stylesheet" href="${staticPath }/static/dialog/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/skin.css" />
+
 </head>
 <body>
 	<div id="wrap">
 		<div id="sky">
 			<a id="logo" href="/home/disk" title=""><img src="${staticPath }/static/img/share.png" /></a>
 			<div id="cloud">
-				<span>${user.username}</span>| <span><a href="/login/logout" style="color: white;">[退出]</a></span>
+				<span>${user.name}</span>| <span><a href="javascript:void(0)" onclick="logout()" style="color: white;">[退出]</a></span>
 			</div>
 		</div>
 		<div id="main">
 			<div id="left">
 				<div id="user_info">
 					<div id="portrait">
-						<img src="${staticPath }/static/img/portrait.jpg" title="${user.username}" />
+						<img src="${staticPath }/static/img/portrait.jpg" title="${user.name}" />
 					</div>
 					<div id="user_detail">
 						<h4 id="name">天津市委组织部</h4>
 						<h4 id="name">信息管理处 刘军</h4>
-						<span id="gender gender_${user.gender}"></span> <span>共11个资源</span>
+						<span id="gender gender_"></span> <span>共11个资源</span>
 					</div>
 				</div>
-				<div id="netdisk"><span id="space_bar">空间概览</span></div>
+				<div id="netdisk">
+					<span id="space_bar">空间概览</span>
+				</div>
 				<div id="chg_base_info">
 					<h3>处室共享</h3>
 				</div>
@@ -59,9 +62,13 @@
 				<div id="chg_email">
 					<h3>共享空间</h3>
 				</div>
-				
+				<!-- 组织机构树形 -->
+				<div id="org_tree">
+					<ul id="orgTree" class="ztree"></ul>
+				</div>
+				<!-- 文件夹树形 -->
 				<div id="dir_tree">
-					<ul id="organizationTree" class="ztree"></ul>
+					<ul id="dirTree" class="ztree"></ul>
 				</div>
 			</div>
 			<div id="right">

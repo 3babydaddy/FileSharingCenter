@@ -13,7 +13,9 @@
 <%--静态文件目录 --%>
 <c:set var="staticPath" value="${ctxPath}" />
 <c:set var="jsversion" value="<%=new Date().getTime() %>" />
+<c:set var="jsessionId" value="${pageContext.session.id}"/>
 
 <script type="text/javascript">
     var ctxPath = "${ctxPath}";
+    var jsessionid = "${jsessionId}";
 </script>

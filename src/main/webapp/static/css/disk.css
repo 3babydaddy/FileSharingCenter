@@ -16,7 +16,7 @@ body{
 #cloud span{padding-right:10px;}
 #cloud{float:right;color:white;padding-right:30px;}
 #ground{text-align:center;}
-#main{width:100%;position:relative;padding-top:30px;}
+#main{width:100%;position:relative;padding-top:15px;}
 #left {
 	position:absolute;
 	height: 800px;
@@ -59,8 +59,16 @@ body{
 }
 
 #dir_tree {
-	height: 428px;
+	height: 244px;
 	overflow:auto;
+}
+#org_tree {
+	float: left;
+	margin-bottom: 4px;
+	height: 140px;
+	overflow:auto;
+	width: 292px;
+	background:#FFF
 }
 #user_info,#netdisk,#dir_tree {
 	width: 292px;

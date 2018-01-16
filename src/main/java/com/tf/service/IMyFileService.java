@@ -11,4 +11,6 @@ public interface IMyFileService extends IService<MyFile> {
 
 	MyFile queryFile(Long id);
 
+	String mkdir(long folderId, String folderName);
+
 }
