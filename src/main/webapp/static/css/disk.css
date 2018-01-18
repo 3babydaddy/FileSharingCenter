@@ -19,13 +19,13 @@ body{
 #main{width:100%;position:relative;padding-top:15px;}
 #left {
 	position:absolute;
-	height: 800px;
+	height: 713px;
 	width: 296px;
 	color:white;
 	font-size:16px;
 }
 #right {
-	height: 800px;
+	height: 713px;
 	margin-left: 296px;
 	overflow:hidden;
 }
@@ -59,7 +59,7 @@ body{
 }
 
 #dir_tree {
-	height: 244px;
+	height: 160px;
 	overflow:auto;
 }
 #org_tree {

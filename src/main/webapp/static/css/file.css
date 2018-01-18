@@ -44,7 +44,7 @@
 	border-top:2px solid #3975CD;
 	padding:20px 0;
 	overflow:auto;
-	height:680px;
+	height:100%;
 }
 #folder ul{
 	list-style: none;
