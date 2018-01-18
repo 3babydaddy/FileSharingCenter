@@ -84,6 +84,10 @@
 				</div>
 				<div id="tools_bar">
 					<span id="mkdir">新建文件夹</span> <span id="upload">上传<span id="upload_button"></span></span> <a href="/share/u/${user.id }" id="share">共享</a>
+					<div style="float:right;">
+						<img id="gridViewImg" src="${staticPath }/static/img/grid.png" style="height: 30px;height: 30px;"/>
+						<img id="listVidwImg" src="${staticPath }/static/img/list.png" style="height: 30px;height: 30px;"/>
+					</div>
 				</div>
 				<div id="folder">
 					<ul>

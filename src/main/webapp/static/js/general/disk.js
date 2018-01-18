@@ -281,6 +281,16 @@ $(function(){
 			}
 		}
 	});
+	
+	//切换视图
+	$("#gridViewImg").click(function(){
+	});
+
+	//切换视图
+	$("#listVidwImg").click(function(){
+		var folder = $("#folder ul");
+		debugger;
+	});
 });  
 	
 //========================== 页面加载事件 ========================== //
@@ -329,7 +339,7 @@ createPath = function(tNode) {
 };
 
 /* 把文件夹的内容展示在右边窗口里 */
-listFiles = function(tNode) {
+listFiles = function(tNode,type) {
 	$("#folder").data("folder_id", tNode.id).data("node_id", tNode.tId);
 	createPath(tNode);
 
@@ -351,6 +361,8 @@ listFiles = function(tNode) {
 		folder.append(file);
 	}
 };
+
+
 
 /* 上传或新建文件夹时更新界面 */
 addFile = function(data) {

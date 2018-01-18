@@ -45,6 +45,7 @@
 	padding:20px 0;
 	overflow:auto;
 	height:100%;
+	width: 100%
 }
 #folder ul{
 	list-style: none;
