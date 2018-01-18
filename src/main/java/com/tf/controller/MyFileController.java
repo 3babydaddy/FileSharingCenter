@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.tf.commons.shiro.ShiroUser;
+import com.tf.commons.utils.DownloadSupport;
 import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.commons.utils.UploadHelper;
@@ -120,6 +122,60 @@ public class MyFileController {
 		}
 		// }
 		return result;
+	}
+
+	/**
+	 * 重命名
+	 * 
+	 * @param fileId
+	 * @param fileName
+	 * @return
+	 */
+	@RequestMapping("/rename/{fileId}")
+	@ResponseBody
+	public String rename(@PathVariable long fileId, String fileName) {
+		boolean result = fileService.reName(fileId, fileName);
+		return result ? "success" : "fail";
+	}
+
+	/**
+	 * 删除文件（或文件夹），返回删除文件后的网盘容量
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	@RequestMapping("/delete/{fileId}")
+	@ResponseBody
+	public String delete(@PathVariable long fileId, String pwd) {
+		fileService.deleteFileOrFolder(fileId);
+		return "";
+	}
+
+	/**
+	 * 下载文件
+	 * 
+	 * @param fileId
+	 * @param response
+	 */
+	@RequestMapping("/download/{fileId}")
+	public void download(@PathVariable long fileId, HttpServletResponse response) {
+		MyFile myFile = fileService.selectById(fileId);
+		DownloadSupport.download(response, myFile);
+	}
+
+	/**
+	 * 文件的移动
+	 * 
+	 * @param sourceId
+	 * @param targetId
+	 * @return
+	 */
+	@RequestMapping("/movefile")
+	@ResponseBody
+	public String moveFile(long sourceId, long targetId) {
+		// TODO:文件移动操作
+		boolean flag = fileService.moveFile(sourceId, targetId);
+		return flag ? "success" : "fail";
 	}
 
 }

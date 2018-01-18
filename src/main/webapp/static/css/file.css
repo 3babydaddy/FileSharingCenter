@@ -112,12 +112,14 @@
 .exe{background:url(../file_icon/exe.png)}
 .apk{background:url(../file_icon/apk.png);}
 .mp3{background:url(../file_icon/mp3.png) no-repeat;}
-.ppt{background:url(../file_icon/ppt.png) no-repeat;}
+.mp4,.avi,.rm,.rmvb,.wav{background:url(../file_icon/video.png) no-repeat;}
+.ppt,.pptx{background:url(../file_icon/ppt.png) no-repeat;}
 .avi{background:url(../file_icon/video.png) no-repeat;}
 .adir{background:url(../file_icon/adir.png) no-repeat;}
 .txt{background:url(../file_icon/txt.png) no-repeat;}
 .pdf{background:url(../file_icon/pdf.png) no-repeat;}
-.doc{background:url(../file_icon/doc.png) no-repeat;}
+.doc,.docx{background:url(../file_icon/doc.png) no-repeat;}
+.xls,.xlsx{background:url(../file_icon/xls.png) no-repeat;}
 .html,.htm{background:url(../file_icon/html.png) no-repeat;}
 .js{background:url(../file_icon/js.png) no-repeat;}
 .png,.jpg,.gif{background:url(../file_icon/img.png) no-repeat;}

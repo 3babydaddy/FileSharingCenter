@@ -18,6 +18,8 @@
 <script type="text/javascript" src="${staticPath }/static/drop/droppable.js"></script>
 <script type="text/javascript" src="${staticPath }/static/drop/draggable.js"></script>
 <script type="text/javascript" src="<c:url value='/static/js/general/disk.js?version=${jsversion}'/>"></script>
+<script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.exedit-3.5.min.js"></script>
 <link rel="stylesheet" href="${staticPath }/static/css/base.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/disk.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/mydisk.css"/>
@@ -33,7 +35,7 @@
 <body>
 	<div id="wrap">
 		<div id="sky">
-			<a id="logo" href="/home/disk" title=""><img src="${staticPath }/static/img/share.png" /></a>
+			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/share.png" style="height: 30px;height: 30px"/></a>
 			<div id="cloud">
 				<span>${user.name}</span>| <span><a href="javascript:void(0)" onclick="logout()" style="color: white;">[退出]</a></span>
 			</div>

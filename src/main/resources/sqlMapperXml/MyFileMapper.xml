@@ -7,11 +7,25 @@
         id,user_id,parent_id,name,size,type,path,createdate,password,islock,isshare,sharedownload,location,shareurl,md5,description
     </sql>
     
-    <select id="selectFileList" resultType="MyFile" parameterType="java.lang.Long">
-        select 
-        <include refid="Base_Column_List"/>
-        from myfile
-        where id = #{id}
+    <select id="listAllFiles" resultType="MyFile" parameterType="java.lang.Long">
+        SELECT
+			location,
+			id,
+			user_id
+		FROM
+			myfile
+		WHERE
+			path LIKE concat((select path from myfile where id =#{id}),#{id},"/%")
+		AND type != 'adir'
+		ORDER BY
+			id DESC 
     </select>
+    
+    <update id="moveDir" parameterType="java.lang.String">
+    	UPDATE myfile
+			SET path = REPLACE (path ,#{sourcePath},#{targetPath})
+			WHERE
+				path LIKE #{parentPath}
+    </update>
 
 </mapper>
