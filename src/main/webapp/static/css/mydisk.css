@@ -1,13 +1,15 @@
-body{
+body {
 	padding: 10px
 }
 
-*{
+* {
 	font-size: 14px
 }
-h3{
+
+h3 {
 	font-size: 1.3em;
 }
+
 .form {
 	width: 500px;
 	margin: 0;
@@ -19,7 +21,7 @@ h3{
 	text-align: right;
 }
 
-.form dt,.form dd {
+.form dt, .form dd {
 	padding: 3px 3px;
 }
 
@@ -85,11 +87,11 @@ input {
 	margin: 9px 0;
 }
 
-.total_progress,.current_progress,.bar_data {
+.total_progress, .current_progress, .bar_data {
 	display: block;
 }
 
-.total_progress,.bar_data {
+.total_progress, .bar_data {
 	padding: 2px;
 	text-align: center;
 }
@@ -137,7 +139,7 @@ form dt {
 	font-size: 18px;
 }
 
-form dt,form dd {
+form dt, form dd {
 	padding: 3px 3px;
 }
 
@@ -146,7 +148,7 @@ form dt,form dd {
 	resize: none;
 }
 
-#dialog textarea,#dialog input {
+#dialog textarea, #dialog input {
 	width: 250px;
 	font-size: 16px;
 	padding: 3px 4px;
@@ -159,26 +161,22 @@ form dt,form dd {
 }
 
 #chg_base_info {
-	background: url("../img/update_u.png") 15px 10px
-		no-repeat;
+	background: url("../img/update_u.png") 15px 10px no-repeat;
 }
 
 #chg_portrait {
-	background: url("../img/update_u.png") 15px -59px
-		no-repeat;
+	background: url("../img/update_u.png") 15px -59px no-repeat;
 }
 
 #chg_email {
-	background: url("../img/update_u.png") 15px -120px
-		no-repeat;
+	background: url("../img/update_u.png") 15px -120px no-repeat;
 }
 
 #chg_pwd {
-	background: url("../img/update_u.png") 15px -253px
-		no-repeat;
+	background: url("../img/update_u.png") 15px -253px no-repeat;
 }
 
-#chg_base_info,#chg_portrait,#chg_email,#chg_pwd,#back_to_disk {
+#chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	margin-bottom: 4px;
 	background-color: #38A3DB !important;
 	float: left;
@@ -191,16 +189,26 @@ form dt,form dd {
 }
 
 #netdisk {
-	height:83px;
+	height: 83px;
+}
+
+#space_bar {
 	
 }
 
-#space_bar{
-	
+#tools_bar>div {
+	float: right;
+	margin-right: 30px
 }
 
-#gridViewImg{
+#gridViewImg {
+	height: 21px;
+	background-color: #38A3DB;
+	border: #EBEBEB solid 1px
 }
 
-#listVidwImg{
+#listVidwImg {
+	height: 21px;
+	background-color: white;
+	border: #EBEBEB solid 1px
 }

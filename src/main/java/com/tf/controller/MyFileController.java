@@ -178,4 +178,19 @@ public class MyFileController {
 		return flag ? "success" : "fail";
 	}
 
+	@RequestMapping("/share")
+	public String shareFile() {
+		return "/general/share";
+	}
+
+	@RequestMapping("/shareUser")
+	public String shareUser() {
+		return "/general/share-user";
+	}
+
+	@RequestMapping("/shareOrg")
+	public String shareOrg() {
+		return "/general/share-org";
+	}
+
 }

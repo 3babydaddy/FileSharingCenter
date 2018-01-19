@@ -44,7 +44,7 @@
 			<div id="left">
 				<div id="user_info">
 					<div id="portrait">
-						<img src="${staticPath }/static/img/portrait.jpg" title="${user.name}" />
+						<img src="${staticPath }/static/img/default.png" title="${user.name}" />
 					</div>
 					<div id="user_detail">
 						<h4 id="name">天津市委组织部</h4>
@@ -65,11 +65,11 @@
 					<h3>共享空间</h3>
 				</div>
 				<!-- 组织机构树形 -->
-				<div id="org_tree">
+				<div id="org_tree" style="height:301px">
 					<ul id="orgTree" class="ztree"></ul>
 				</div>
 				<!-- 文件夹树形 -->
-				<div id="dir_tree">
+				<div id="dir_tree" style="display: none">
 					<ul id="dirTree" class="ztree"></ul>
 				</div>
 			</div>
@@ -84,9 +84,9 @@
 				</div>
 				<div id="tools_bar">
 					<span id="mkdir">新建文件夹</span> <span id="upload">上传<span id="upload_button"></span></span> <a href="/share/u/${user.id }" id="share">共享</a>
-					<div style="float:right;">
-						<img id="gridViewImg" src="${staticPath }/static/img/grid.png" style="height: 30px;height: 30px;"/>
-						<img id="listVidwImg" src="${staticPath }/static/img/list.png" style="height: 30px;height: 30px;"/>
+					<div>
+						<img id="gridViewImg" src="${staticPath }/static/img/grid-white.png" />
+						<img id="listVidwImg" src="${staticPath }/static/img/list.png"/>
 					</div>
 				</div>
 				<div id="folder">

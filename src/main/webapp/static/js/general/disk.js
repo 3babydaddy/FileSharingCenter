@@ -76,7 +76,7 @@ $(function(){
         onLoadSuccess:function()  
         {
 	    	//默认关闭叶子节点
-	        $("#orgTree").tree("collapseAll");  
+	        //$("#orgTree").tree("collapseAll");  
         } 
     });
 	
@@ -284,12 +284,25 @@ $(function(){
 	
 	//切换视图
 	$("#gridViewImg").click(function(){
+		if($(this).css("background-color") =="rgb(255, 255, 255)"){
+			$(this).css("background-color","#38A3DB");
+			$(this).attr("src", basePath +"/static/img/grid-white.png");
+			$(this).next().css("background-color","white");
+			$(this).next().attr("src",basePath +"/static/img/list.png");
+		}
+		//TODO:列表数据处理
 	});
 
 	//切换视图
 	$("#listVidwImg").click(function(){
+		if($(this).css("background-color") =="rgb(255, 255, 255)"){
+			$(this).css("background-color","#38A3DB");
+			$(this).attr("src", basePath +"/static/img/list-white.png");
+			$(this).prev().css("background-color","white");
+			$(this).prev().attr("src",basePath +"/static/img/grid.png");
+		}
+		//TODO:列表数据处理
 		var folder = $("#folder ul");
-		debugger;
 	});
 });  
 	
@@ -601,6 +614,22 @@ deleteLock = function(f) {
 	});
 };
 
+shareFile = function (f){
+	parent.$.modalDialog({
+        title : '共享设置',
+        width : 630,
+        height : 500,
+        href : ctxPath + '/myFile/share?id=' + 1,
+        buttons : [ {
+            text : '确定',
+            handler : function() {
+                var f = parent.$.modalDialog.handler.find('#roleGrantForm');
+                f.submit();
+            }
+        } ]
+    });
+}
+
 
 // 文件右键
 var fileItems = [ {
@@ -645,7 +674,13 @@ var folderItems = [ {
 		action : function(tar) {
 			rename($(tar));
 		}
-	},{}, {
+	},{
+		text : "共享",
+		icon : basePath + "/static/img/share.png",
+		action : function(tar) {
+			shareFile($(tar));
+		}
+	}, {
 		type : "aplit"
 	}, {
 		text : "删除",
