@@ -203,4 +203,12 @@ public class UserController extends BaseController {
         userService.deleteUserById(id);
         return renderSuccess("删除成功！");
     }
+    
+    
+    @RequestMapping("listAll")
+    @ResponseBody
+    public Object listAllUsers(){
+    	List<User> selectByMap = userService.selectByMap(new HashMap<String,Object>());
+    	return selectByMap;
+    }
 }

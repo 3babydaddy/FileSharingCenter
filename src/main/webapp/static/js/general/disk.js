@@ -1,3 +1,4 @@
+
 var file_template = "<li class='file'>" 
 	+ "<span class='file_icon'>"
 	+ "<span class='lock'></span>" 
