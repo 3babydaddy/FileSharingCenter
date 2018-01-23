@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2018-01-22 17:53:15
+Date: 2018-01-23 18:24:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ CREATE TABLE `myfile` (
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `myfile_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `myfile` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of myfile
@@ -57,8 +57,11 @@ INSERT INTO `myfile` VALUES ('37', '1', '1', '通用测试点及方法.xlsx', '2
 INSERT INTO `myfile` VALUES ('42', '1', '1', '测试文件.pptx', '31455', 'pptx', '/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516255177733.pptx', null, null, '');
 INSERT INTO `myfile` VALUES ('43', '1', '1', '测试PDF.pdf', '8', 'pdf', '/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516255209506.pdf', null, null, '');
 INSERT INTO `myfile` VALUES ('44', '1', '1', '丑八怪.mp4', '6', 'mp4', '/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516255350880.mp4', null, null, '');
-INSERT INTO `myfile` VALUES ('46', '1', '1', '无标题.png', '208004', 'png', '/1/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516266542692.png', null, null, '');
-INSERT INTO `myfile` VALUES ('47', '1', '1', '81ZG2 RbjEL._SX522_.jpg', '0', 'jpg', '/1/', '2018-01-22', null, '0', '0', '0', 'd:/home/temp_file/ 1516594144360.jpg', null, null, '');
+INSERT INTO `myfile` VALUES ('52', '1', '1', '微信图片_20180109082537.jpg', '534492', 'jpg', '/1/', '2018-01-23', null, '0', '0', '0', 'd:/home/temp_file/ 1516697971198.jpg', null, null, '');
+INSERT INTO `myfile` VALUES ('53', '1', '1', '微信图片_20180109082545.jpg', '471704', 'jpg', '/1/', '2018-01-23', null, '0', '0', '0', 'd:/home/temp_file/ 1516698040309.jpg', null, null, '');
+INSERT INTO `myfile` VALUES ('54', '1', '1', '文件共享系统.rar', '588673', 'rar', '/1/', '2018-01-23', null, '0', '0', '0', 'd:/home/temp_file/ 1516698040526.rar', null, null, '');
+INSERT INTO `myfile` VALUES ('55', '1', '1', '无标题.png', '208004', 'png', '/1/', '2018-01-23', null, '0', '0', '0', 'd:/home/temp_file/ 1516698040661.png', null, null, '');
+INSERT INTO `myfile` VALUES ('56', '1', '1', '81ZG2+RbjEL._SX522_.jpg', '41826', 'jpg', '/1/', '2018-01-23', null, '0', '0', '0', 'd:/home/temp_file/ 1516698064288.jpg', null, null, '');
 
 -- ----------------------------
 -- Table structure for `notice`
@@ -295,7 +298,7 @@ INSERT INTO `role_resource` VALUES ('478', '8', '229');
 -- ----------------------------
 DROP TABLE IF EXISTS `share_disk_info`;
 CREATE TABLE `share_disk_info` (
-  `id` bigint(19) NOT NULL COMMENT '主键',
+  `id` bigint(19) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(19) DEFAULT NULL COMMENT '用户id',
   `totalsize` bigint(19) DEFAULT NULL COMMENT '总磁盘空间',
   `usedsize` bigint(19) DEFAULT NULL COMMENT '已用空间',
@@ -304,11 +307,16 @@ CREATE TABLE `share_disk_info` (
   `status` varchar(2) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   KEY `Index_userid` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享空间磁盘信息';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='共享空间磁盘信息';
 
 -- ----------------------------
 -- Records of share_disk_info
 -- ----------------------------
+INSERT INTO `share_disk_info` VALUES ('1', '17', '200', null, null, '2018-01-23 12:07:19', '0');
+INSERT INTO `share_disk_info` VALUES ('2', '13', '200', null, null, '2018-01-23 14:40:10', '0');
+INSERT INTO `share_disk_info` VALUES ('3', '14', '200', null, null, '2018-01-23 14:40:25', '0');
+INSERT INTO `share_disk_info` VALUES ('4', '15', '200', null, null, '2018-01-23 14:40:46', '0');
+INSERT INTO `share_disk_info` VALUES ('5', '1', '200', null, null, '2018-01-23 14:41:36', '0');
 
 -- ----------------------------
 -- Table structure for `share_to_org`
@@ -326,17 +334,21 @@ CREATE TABLE `share_to_org` (
   PRIMARY KEY (`id`),
   KEY `Index_orgid` (`org_id`),
   KEY `Index_fileid` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='共享给群组\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='共享给群组\r\n';
 
 -- ----------------------------
 -- Records of share_to_org
 -- ----------------------------
-INSERT INTO `share_to_org` VALUES ('1', '1', '1', null, '0', '2018-01-22 17:04:10', 'admin', '1');
-INSERT INTO `share_to_org` VALUES ('2', '1', '12', null, '0', '2018-01-22 17:07:30', 'admin', '1');
-INSERT INTO `share_to_org` VALUES ('3', '1', '12', null, '0', '2018-01-22 17:07:58', 'admin', '1');
-INSERT INTO `share_to_org` VALUES ('4', '1', '11', null, '0', '2018-01-22 17:08:05', 'admin', '1');
-INSERT INTO `share_to_org` VALUES ('5', '1', '12', null, '0', '2018-01-22 17:08:52', 'admin', '1');
-INSERT INTO `share_to_org` VALUES ('6', '1', '10', null, '0', '2018-01-22 17:17:24', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('1', '2', '1', '1', '0', '2018-01-22 17:04:10', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('2', '2', '12', '1', '0', '2018-01-22 17:07:30', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('3', '2', '12', '1', '0', '2018-01-22 17:07:58', 'admin', '0');
+INSERT INTO `share_to_org` VALUES ('4', '2', '11', '1', '0', '2018-01-22 17:08:05', 'admin', '0');
+INSERT INTO `share_to_org` VALUES ('5', '2', '12', '1', '0', '2018-01-22 17:08:52', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('6', '2', '10', '1', '0', '2018-01-22 17:17:24', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('7', '2', '11', '1', '0', '2018-01-23 13:44:07', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('8', '2', '1', '1', '0', '2018-01-23 16:37:11', 'admin', '0');
+INSERT INTO `share_to_org` VALUES ('9', '2', '11', '1', '0', '2018-01-23 16:37:53', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('10', '2', '9', '1', '0', '2018-01-23 16:58:37', '超级管理员', '1');
 
 -- ----------------------------
 -- Table structure for `share_to_user`
@@ -354,11 +366,14 @@ CREATE TABLE `share_to_user` (
   PRIMARY KEY (`id`),
   KEY `Index_userid` (`user_id`),
   KEY `Index_fileid` (`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享给用户';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='共享给用户';
 
 -- ----------------------------
 -- Records of share_to_user
 -- ----------------------------
+INSERT INTO `share_to_user` VALUES ('1', '2', '13', '1', '0', '2018-01-23 16:38:56', 'admin', '1');
+INSERT INTO `share_to_user` VALUES ('2', '2', '14', '1', '0', '2018-01-23 16:56:45', '超级管理员', '1');
+INSERT INTO `share_to_user` VALUES ('3', '2', '14', '1', '0', '2018-01-23 18:23:17', '超级管理员', '1');
 
 -- ----------------------------
 -- Table structure for `sys_log`
@@ -372,7 +387,7 @@ CREATE TABLE `sys_log` (
   `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端ip',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=utf8 COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=699 DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
@@ -562,6 +577,129 @@ INSERT INTO `sys_log` VALUES ('572', 'admin', 'admin', '[类名]:com.tf.controll
 INSERT INTO `sys_log` VALUES ('573', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:42:14');
 INSERT INTO `sys_log` VALUES ('574', 'test', 'test', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:43:14');
 INSERT INTO `sys_log` VALUES ('575', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:47:40');
+INSERT INTO `sys_log` VALUES ('576', 'test', 'test', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 09:56:44');
+INSERT INTO `sys_log` VALUES ('577', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 10:00:31');
+INSERT INTO `sys_log` VALUES ('578', 'test', 'test', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 10:05:28');
+INSERT INTO `sys_log` VALUES ('579', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516673148840&', '0:0:0:0:0:0:0:1', '2018-01-23 10:15:15');
+INSERT INTO `sys_log` VALUES ('580', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516673148841&', '0:0:0:0:0:0:0:1', '2018-01-23 10:21:48');
+INSERT INTO `sys_log` VALUES ('581', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516673148842&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:06');
+INSERT INTO `sys_log` VALUES ('582', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516673148843&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:11');
+INSERT INTO `sys_log` VALUES ('583', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516673148844&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:23');
+INSERT INTO `sys_log` VALUES ('584', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516673148845&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:28');
+INSERT INTO `sys_log` VALUES ('585', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516673148846&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:34');
+INSERT INTO `sys_log` VALUES ('586', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=14&loginName=dreamlu&name=dreamlu&password=&sex=0&age=25&userType=1&organizationId=5&roleIds=[7]&phone=18707173376&status=0&', '0:0:0:0:0:0:0:1', '2018-01-23 10:22:51');
+INSERT INTO `sys_log` VALUES ('587', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516673148847&', '0:0:0:0:0:0:0:1', '2018-01-23 10:23:19');
+INSERT INTO `sys_log` VALUES ('588', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516673148848&', '0:0:0:0:0:0:0:1', '2018-01-23 10:23:22');
+INSERT INTO `sys_log` VALUES ('589', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:editPage,[参数]:id=7&_=1516674832340&', '0:0:0:0:0:0:0:1', '2018-01-23 10:34:20');
+INSERT INTO `sys_log` VALUES ('590', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=10&_=1516674832343&', '0:0:0:0:0:0:0:1', '2018-01-23 10:34:35');
+INSERT INTO `sys_log` VALUES ('591', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=10&_=1516674832344&', '0:0:0:0:0:0:0:1', '2018-01-23 10:34:41');
+INSERT INTO `sys_log` VALUES ('592', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516674832345&', '0:0:0:0:0:0:0:1', '2018-01-23 10:34:53');
+INSERT INTO `sys_log` VALUES ('593', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-23 10:35:06');
+INSERT INTO `sys_log` VALUES ('594', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516674960312&', '0:0:0:0:0:0:0:1', '2018-01-23 10:36:04');
+INSERT INTO `sys_log` VALUES ('595', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516674960313&', '0:0:0:0:0:0:0:1', '2018-01-23 10:36:07');
+INSERT INTO `sys_log` VALUES ('596', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675037674&', '0:0:0:0:0:0:0:1', '2018-01-23 10:38:41');
+INSERT INTO `sys_log` VALUES ('597', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675148558&', '0:0:0:0:0:0:0:1', '2018-01-23 10:39:10');
+INSERT INTO `sys_log` VALUES ('598', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675148559&', '0:0:0:0:0:0:0:1', '2018-01-23 10:39:34');
+INSERT INTO `sys_log` VALUES ('599', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675261050&', '0:0:0:0:0:0:0:1', '2018-01-23 10:41:05');
+INSERT INTO `sys_log` VALUES ('600', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675261051&', '0:0:0:0:0:0:0:1', '2018-01-23 10:42:43');
+INSERT INTO `sys_log` VALUES ('601', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516675261052&', '0:0:0:0:0:0:0:1', '2018-01-23 10:45:57');
+INSERT INTO `sys_log` VALUES ('602', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-23 10:49:22');
+INSERT INTO `sys_log` VALUES ('603', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-23 10:50:13');
+INSERT INTO `sys_log` VALUES ('604', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516677680772&', '0:0:0:0:0:0:0:1', '2018-01-23 11:21:32');
+INSERT INTO `sys_log` VALUES ('605', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516677680773&', '0:0:0:0:0:0:0:1', '2018-01-23 11:21:34');
+INSERT INTO `sys_log` VALUES ('606', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516680353656&', '0:0:0:0:0:0:0:1', '2018-01-23 12:06:01');
+INSERT INTO `sys_log` VALUES ('607', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:add,[参数]:loginName=liujun&name=刘军&password=lxgw123456&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=300&', '0:0:0:0:0:0:0:1', '2018-01-23 12:06:49');
+INSERT INTO `sys_log` VALUES ('608', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:add,[参数]:loginName=liujun&name=刘军&password=lxgw123456&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=300&', '0:0:0:0:0:0:0:1', '2018-01-23 12:07:19');
+INSERT INTO `sys_log` VALUES ('609', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 12:07:44');
+INSERT INTO `sys_log` VALUES ('610', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516680549292&', '0:0:0:0:0:0:0:1', '2018-01-23 12:09:12');
+INSERT INTO `sys_log` VALUES ('611', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 12:09:36');
+INSERT INTO `sys_log` VALUES ('612', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516680599919&', '0:0:0:0:0:0:0:1', '2018-01-23 13:31:19');
+INSERT INTO `sys_log` VALUES ('613', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516680599920&', '0:0:0:0:0:0:0:1', '2018-01-23 13:31:27');
+INSERT INTO `sys_log` VALUES ('614', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516680599921&', '0:0:0:0:0:0:0:1', '2018-01-23 13:31:32');
+INSERT INTO `sys_log` VALUES ('615', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516687710862&', '0:0:0:0:0:0:0:1', '2018-01-23 14:08:38');
+INSERT INTO `sys_log` VALUES ('616', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516687710863&', '0:0:0:0:0:0:0:1', '2018-01-23 14:08:51');
+INSERT INTO `sys_log` VALUES ('617', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516687710864&', '0:0:0:0:0:0:0:1', '2018-01-23 14:08:57');
+INSERT INTO `sys_log` VALUES ('618', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516687710865&', '0:0:0:0:0:0:0:1', '2018-01-23 14:09:23');
+INSERT INTO `sys_log` VALUES ('619', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516687710866&', '0:0:0:0:0:0:0:1', '2018-01-23 14:09:41');
+INSERT INTO `sys_log` VALUES ('620', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516687710867&', '0:0:0:0:0:0:0:1', '2018-01-23 14:09:46');
+INSERT INTO `sys_log` VALUES ('621', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516687710868&', '0:0:0:0:0:0:0:1', '2018-01-23 14:09:51');
+INSERT INTO `sys_log` VALUES ('622', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516687710869&', '0:0:0:0:0:0:0:1', '2018-01-23 14:09:56');
+INSERT INTO `sys_log` VALUES ('623', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516687710870&', '0:0:0:0:0:0:0:1', '2018-01-23 14:10:21');
+INSERT INTO `sys_log` VALUES ('624', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516687710871&', '0:0:0:0:0:0:0:1', '2018-01-23 14:10:30');
+INSERT INTO `sys_log` VALUES ('625', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516688096130&', '0:0:0:0:0:0:0:1', '2018-01-23 14:15:06');
+INSERT INTO `sys_log` VALUES ('626', 'liujun', 'liujun', '[类名]:com.tf.controller.OrganizationController,[方法]:addPage,[参数]:', null, '2018-01-23 14:15:33');
+INSERT INTO `sys_log` VALUES ('627', 'liujun', 'liujun', '[类名]:com.tf.controller.ResourceController,[方法]:addPage,[参数]:', null, '2018-01-23 14:15:44');
+INSERT INTO `sys_log` VALUES ('628', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516688096134&', '0:0:0:0:0:0:0:1', '2018-01-23 14:16:09');
+INSERT INTO `sys_log` VALUES ('629', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516688208540&', '0:0:0:0:0:0:0:1', '2018-01-23 14:16:57');
+INSERT INTO `sys_log` VALUES ('630', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516688208541&', '0:0:0:0:0:0:0:1', '2018-01-23 14:17:01');
+INSERT INTO `sys_log` VALUES ('631', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516688208542&', '0:0:0:0:0:0:0:1', '2018-01-23 14:18:02');
+INSERT INTO `sys_log` VALUES ('632', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516688737405&', '0:0:0:0:0:0:0:1', '2018-01-23 14:25:40');
+INSERT INTO `sys_log` VALUES ('633', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516688836342&', '0:0:0:0:0:0:0:1', '2018-01-23 14:27:43');
+INSERT INTO `sys_log` VALUES ('634', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516688836343&', '0:0:0:0:0:0:0:1', '2018-01-23 14:28:31');
+INSERT INTO `sys_log` VALUES ('635', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=1&loginName=admin&name=admin&password=&sex=0&age=25&userType=0&organizationId=1&roleIds=1&phone=18707173376&status=0&initStorageSize=100&', '0:0:0:0:0:0:0:1', '2018-01-23 14:28:36');
+INSERT INTO `sys_log` VALUES ('636', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516688836344&', '0:0:0:0:0:0:0:1', '2018-01-23 14:29:24');
+INSERT INTO `sys_log` VALUES ('637', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516688836345&', '0:0:0:0:0:0:0:1', '2018-01-23 14:29:47');
+INSERT INTO `sys_log` VALUES ('638', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516688836346&', '0:0:0:0:0:0:0:1', '2018-01-23 14:30:26');
+INSERT INTO `sys_log` VALUES ('639', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=17&loginName=liujun&name=刘军&password=&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=305&', '0:0:0:0:0:0:0:1', '2018-01-23 14:30:30');
+INSERT INTO `sys_log` VALUES ('640', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516688836347&', '0:0:0:0:0:0:0:1', '2018-01-23 14:30:34');
+INSERT INTO `sys_log` VALUES ('641', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516689283902&', '0:0:0:0:0:0:0:1', '2018-01-23 14:35:02');
+INSERT INTO `sys_log` VALUES ('642', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=17&loginName=liujun&name=刘军&password=&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=305&', '0:0:0:0:0:0:0:1', '2018-01-23 14:35:08');
+INSERT INTO `sys_log` VALUES ('643', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516689283903&', '0:0:0:0:0:0:0:1', '2018-01-23 14:35:11');
+INSERT INTO `sys_log` VALUES ('644', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689471958&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:01');
+INSERT INTO `sys_log` VALUES ('645', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516689471959&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:04');
+INSERT INTO `sys_log` VALUES ('646', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=17&loginName=liujun&name=刘军&password=&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=303&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:09');
+INSERT INTO `sys_log` VALUES ('647', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516689471960&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:19');
+INSERT INTO `sys_log` VALUES ('648', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689471961&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:24');
+INSERT INTO `sys_log` VALUES ('649', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=1&loginName=admin&name=admin&password=&sex=0&age=25&userType=0&organizationId=1&roleIds=1&phone=18707173376&status=0&initStorageSize=111&', '0:0:0:0:0:0:0:1', '2018-01-23 14:38:27');
+INSERT INTO `sys_log` VALUES ('650', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516689471962&', '0:0:0:0:0:0:0:1', '2018-01-23 14:40:55');
+INSERT INTO `sys_log` VALUES ('651', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516689471963&', '0:0:0:0:0:0:0:1', '2018-01-23 14:40:58');
+INSERT INTO `sys_log` VALUES ('652', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516689471964&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:04');
+INSERT INTO `sys_log` VALUES ('653', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689471965&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:08');
+INSERT INTO `sys_log` VALUES ('654', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=1&loginName=admin&name=超级管理员&password=&sex=0&age=25&userType=0&organizationId=1&roleIds=1&phone=18707173376&status=0&initStorageSize=&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:15');
+INSERT INTO `sys_log` VALUES ('655', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689471966&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:46');
+INSERT INTO `sys_log` VALUES ('656', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=1&loginName=admin&name=超级管理员&password=&sex=0&age=25&userType=0&organizationId=1&roleIds=1&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:53');
+INSERT INTO `sys_log` VALUES ('657', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689471967&', '0:0:0:0:0:0:0:1', '2018-01-23 14:41:55');
+INSERT INTO `sys_log` VALUES ('658', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516689471968&', '0:0:0:0:0:0:0:1', '2018-01-23 14:44:02');
+INSERT INTO `sys_log` VALUES ('659', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516689471969&', '0:0:0:0:0:0:0:1', '2018-01-23 14:44:14');
+INSERT INTO `sys_log` VALUES ('660', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516689881131&', '0:0:0:0:0:0:0:1', '2018-01-23 14:44:44');
+INSERT INTO `sys_log` VALUES ('661', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516689881132&', '0:0:0:0:0:0:0:1', '2018-01-23 14:45:13');
+INSERT INTO `sys_log` VALUES ('662', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516689881133&', '0:0:0:0:0:0:0:1', '2018-01-23 14:45:28');
+INSERT INTO `sys_log` VALUES ('663', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=13&_=1516689957685&', '0:0:0:0:0:0:0:1', '2018-01-23 14:46:00');
+INSERT INTO `sys_log` VALUES ('664', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516689957686&', '0:0:0:0:0:0:0:1', '2018-01-23 14:47:50');
+INSERT INTO `sys_log` VALUES ('665', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516690204413&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:07');
+INSERT INTO `sys_log` VALUES ('666', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=1&loginName=admin&name=超级管理员&password=&sex=0&age=25&userType=0&organizationId=1&roleIds=1&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:10');
+INSERT INTO `sys_log` VALUES ('667', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516690204414&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:12');
+INSERT INTO `sys_log` VALUES ('668', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=15&loginName=test&name=test&password=&sex=0&age=25&userType=1&organizationId=6&roleIds=8&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:14');
+INSERT INTO `sys_log` VALUES ('669', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516690204415&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:17');
+INSERT INTO `sys_log` VALUES ('670', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=17&loginName=liujun&name=刘军&password=&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=303&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:19');
+INSERT INTO `sys_log` VALUES ('671', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516690204416&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:23');
+INSERT INTO `sys_log` VALUES ('672', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=15&loginName=test&name=test&password=&sex=0&age=25&userType=1&organizationId=6&roleIds=8&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:24');
+INSERT INTO `sys_log` VALUES ('673', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516690204417&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:26');
+INSERT INTO `sys_log` VALUES ('674', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=14&loginName=dreamlu&name=dreamlu&password=&sex=0&age=25&userType=1&organizationId=5&roleIds=7&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:29');
+INSERT INTO `sys_log` VALUES ('675', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=14&_=1516690204418&', '0:0:0:0:0:0:0:1', '2018-01-23 14:50:32');
+INSERT INTO `sys_log` VALUES ('676', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516690204419&', '0:0:0:0:0:0:0:1', '2018-01-23 14:51:16');
+INSERT INTO `sys_log` VALUES ('677', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516690204420&', '0:0:0:0:0:0:0:1', '2018-01-23 14:51:22');
+INSERT INTO `sys_log` VALUES ('678', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=15&loginName=test&name=test&password=1&sex=0&age=25&userType=1&organizationId=6&roleIds=8&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:51:25');
+INSERT INTO `sys_log` VALUES ('679', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 14:51:27');
+INSERT INTO `sys_log` VALUES ('680', 'test', 'test', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 14:52:00');
+INSERT INTO `sys_log` VALUES ('681', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=15&_=1516690333781&', '0:0:0:0:0:0:0:1', '2018-01-23 14:52:15');
+INSERT INTO `sys_log` VALUES ('682', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=15&loginName=test&name=test&password=test&sex=0&age=25&userType=1&organizationId=6&roleIds=8&phone=18707173376&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:52:18');
+INSERT INTO `sys_log` VALUES ('683', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=17&_=1516690333782&', '0:0:0:0:0:0:0:1', '2018-01-23 14:52:34');
+INSERT INTO `sys_log` VALUES ('684', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=17&loginName=liujun&name=刘军&password=&sex=0&age=30&userType=1&organizationId=3&roleIds=1&phone=13888888888&status=0&initStorageSize=200&', '0:0:0:0:0:0:0:1', '2018-01-23 14:52:41');
+INSERT INTO `sys_log` VALUES ('685', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516690333783&', '0:0:0:0:0:0:0:1', '2018-01-23 15:04:13');
+INSERT INTO `sys_log` VALUES ('686', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 16:44:33');
+INSERT INTO `sys_log` VALUES ('687', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 16:48:15');
+INSERT INTO `sys_log` VALUES ('688', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 16:48:18');
+INSERT INTO `sys_log` VALUES ('689', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 16:48:20');
+INSERT INTO `sys_log` VALUES ('690', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 16:48:23');
+INSERT INTO `sys_log` VALUES ('691', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 16:49:52');
+INSERT INTO `sys_log` VALUES ('692', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516700666248&', '0:0:0:0:0:0:0:1', '2018-01-23 17:44:31');
+INSERT INTO `sys_log` VALUES ('693', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-23 17:44:40');
+INSERT INTO `sys_log` VALUES ('694', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1516701602183&', '0:0:0:0:0:0:0:1', '2018-01-23 18:00:13');
+INSERT INTO `sys_log` VALUES ('695', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=1&_=1516701602184&', '0:0:0:0:0:0:0:1', '2018-01-23 18:00:19');
+INSERT INTO `sys_log` VALUES ('696', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-23 18:02:47');
+INSERT INTO `sys_log` VALUES ('697', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 18:19:17');
+INSERT INTO `sys_log` VALUES ('698', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-23 18:19:23');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -582,15 +720,16 @@ CREATE TABLE `user` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `IDx_user_login_name` (`login_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'admin', '05a671c66aefea124cc08b76ea6d30bb', 'test', '0', '25', '18707173376', '0', '0', '1', '2015-12-06 13:14:05');
+INSERT INTO `user` VALUES ('1', 'admin', '超级管理员', '05a671c66aefea124cc08b76ea6d30bb', 'test', '0', '25', '18707173376', '0', '0', '1', '2015-12-06 13:14:05');
 INSERT INTO `user` VALUES ('13', 'snoopy', 'snoopy', '05a671c66aefea124cc08b76ea6d30bb', 'test', '0', '25', '18707173376', '1', '0', '3', '2015-10-01 13:12:07');
 INSERT INTO `user` VALUES ('14', 'dreamlu', 'dreamlu', '05a671c66aefea124cc08b76ea6d30bb', 'test', '0', '25', '18707173376', '1', '0', '5', '2015-10-11 23:12:58');
 INSERT INTO `user` VALUES ('15', 'test', 'test', '05a671c66aefea124cc08b76ea6d30bb', 'test', '0', '25', '18707173376', '1', '0', '6', '2015-12-06 13:13:03');
+INSERT INTO `user` VALUES ('17', 'liujun', '刘军', '79ea7bbebf5e9a5d67ac9b6b660fd691', 'e3543168-b5e1-40d7-a3c9-9ab777cdf756', '0', '30', '13888888888', '1', '0', '3', '2018-01-23 12:07:19');
 
 -- ----------------------------
 -- Table structure for `user_role`
@@ -602,15 +741,16 @@ CREATE TABLE `user_role` (
   `role_id` bigint(19) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`),
   KEY `idx_user_role_ids` (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
-INSERT INTO `user_role` VALUES ('71', '1', '1');
-INSERT INTO `user_role` VALUES ('72', '1', '2');
-INSERT INTO `user_role` VALUES ('73', '1', '7');
-INSERT INTO `user_role` VALUES ('74', '1', '8');
+INSERT INTO `user_role` VALUES ('94', '1', '1');
+INSERT INTO `user_role` VALUES ('95', '1', '2');
+INSERT INTO `user_role` VALUES ('96', '1', '7');
+INSERT INTO `user_role` VALUES ('97', '1', '8');
 INSERT INTO `user_role` VALUES ('63', '13', '2');
-INSERT INTO `user_role` VALUES ('64', '14', '7');
-INSERT INTO `user_role` VALUES ('76', '15', '8');
+INSERT INTO `user_role` VALUES ('101', '14', '7');
+INSERT INTO `user_role` VALUES ('103', '15', '8');
+INSERT INTO `user_role` VALUES ('104', '17', '1');

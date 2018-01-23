@@ -72,9 +72,7 @@
 	
 		       }
 		};
-		
 		$('#gridPanel').datagrid(options);
-		
 	}
 	
 	function deleteOption(shareId){
@@ -108,11 +106,8 @@
 		<a id="linkBtnGrop" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-company" style="margin-top: 15px">共享给群组</a>
 	</div>
 	<div id="share_to" data-options="region:'center',title:'共享设置',split:true" style="padding: 5px; background: #eee;">
-		<div id="shareView" class="easyui-layout" style="width: 100%; height: 100%;">
-			<div data-options="region:'south'" id="gridPanel" class="easyui-panel" style="width:100%;height: 70%;">
-				
-			</div>
-			<div data-options="region:'north'"   style="height: 30%;width: 100%">
+		<div id="shareViewRight" class="easyui-layout" style="width: 100%; height: 100%;">
+			<div data-options="region:'north',title:'共享给群组',split:true" style="height: 30%;">
 				<table>
 					<tr>
 						<td>群组:</td>
@@ -131,5 +126,9 @@
 				</table>
 				<input id="fileId" type="hidden" value="${fileId }" />
 			</div>
+			<div data-options="region:'south',split:true" style="width:100%;height: 70%;">
+				<div id="gridPanel"></div>
+			</div>
+		</div>
 	</div>
 </div>

@@ -113,8 +113,7 @@ $("#shareUsers").combobox({
 
 </script>
 <div id="shareView" class="easyui-layout" style="width: 100%; height: 100%;">
-	<div data-options="region:'north',title:'明细',split:true" id="gridPanel" style="height: 70%;"></div>
-	<div data-options="region:'south',title:'共享给用户',split:true" style="height: 30%;">
+	<div data-options="region:'north',title:'共享给用户',split:true" style="height: 30%;">
 		<table>
 			<tr>
 				<td>用户:</td>
@@ -134,5 +133,8 @@ $("#shareUsers").combobox({
 			</tr>
 			<input id="fileId" type="hidden" value="${fileId }" />
 		</table>
+	</div>
+	<div data-options="region:'south',split:true"  style="height: 70%;">
+		<div id="gridPanel"></div>
 	</div>
 </div>
