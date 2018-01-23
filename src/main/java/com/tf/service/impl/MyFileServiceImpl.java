@@ -16,13 +16,21 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.mapper.MyFileMapper;
+import com.tf.mapper.ShareOrgMapper;
+import com.tf.mapper.ShareUserMapper;
 import com.tf.model.MyFile;
+import com.tf.model.ShareOrg;
+import com.tf.model.ShareUser;
 import com.tf.service.IMyFileService;
 
 @Service
 public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> implements IMyFileService {
 	@Autowired
 	private MyFileMapper mapper;
+	@Autowired
+	private ShareUserMapper shareUserMapper;
+	@Autowired
+	private ShareOrgMapper shareOrgMapper;
 
 	@Override
 	public List<MyFile> listFiles(Long parent_id) {
@@ -116,5 +124,40 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		Integer updateById = mapper.updateById(selectById);
 
 		return updateById>0?true:false;
+	}
+	
+	@Override
+	public void shareUserSave(ShareUser share)throws Exception{
+		// 获取当前用户
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		share.setShareUser(user.getId());
+		share.setCreateTime(new Date());
+		share.setCreator(user.getName());
+		share.setStatus("1");
+		shareUserMapper.insert(share);
+	}
+	
+	@Override
+	public void shareOrgSave(ShareOrg share)throws Exception{
+		// 获取当前用户
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		share.setShareUser(user.getId());
+		share.setCreateTime(new Date());
+		share.setCreator(user.getName());
+		share.setStatus("1");
+		shareOrgMapper.insert(share);
+		
+	}
+
+	@Override
+	public List<ShareOrg> queryShareOrgList() {
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		return shareOrgMapper.queryShareOrgList(user.getId());
+	}
+
+	@Override
+	public List<ShareUser> queryShareUserList() {
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		return shareUserMapper.queryShareUserList(user.getId());
 	}
 }

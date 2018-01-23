@@ -13,19 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.tf.commons.result.PageInfo;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.DownloadSupport;
 import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.commons.utils.UploadHelper;
 import com.tf.model.MyFile;
+import com.tf.model.ShareOrg;
+import com.tf.model.ShareUser;
 import com.tf.service.IMyFileService;
+import com.tf.service.IShareOrgService;
+import com.tf.service.IShareUserService;
 
 @Controller
 @RequestMapping("/myFile")
@@ -35,7 +42,11 @@ public class MyFileController {
 
 	@Autowired
 	private IMyFileService fileService;
-
+	@Autowired
+	private IShareOrgService shareOrgService;
+	@Autowired
+	private IShareUserService shareUserService;
+	
 	/**
 	 * 列出文件夹的内的所有子文件
 	 * 
@@ -179,18 +190,119 @@ public class MyFileController {
 	}
 
 	@RequestMapping("/share")
-	public String shareFile() {
+	public String shareFile(String id, Model model) {
+		model.addAttribute("fileId", id);
 		return "/general/share";
 	}
 
 	@RequestMapping("/shareUser")
-	public String shareUser() {
+	public String shareUser(String fileId, Model model) {
+		
+		model.addAttribute("fileId", fileId);
 		return "/general/share-user";
 	}
 
+	/**
+	 * 保存共享用户信息
+	 * @param share
+	 * @return
+	 */
+	@RequestMapping("/shareUserSave")
+	@ResponseBody
+	public String shareUserSave(ShareUser share) {
+		String msg = "";
+		try{
+			fileService.shareUserSave(share);
+			msg = "保存成功";
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = "保存失败";
+		}
+		return msg;
+	}
+	
 	@RequestMapping("/shareOrg")
-	public String shareOrg() {
+	public String shareOrg(String fileId, Model model) {
+		model.addAttribute("fileId", fileId);
 		return "/general/share-org";
 	}
+	
+	/**
+	 * 保存共享单位信息
+	 * @param share
+	 * @return
+	 */
+	@RequestMapping("/shareOrgSave")
+	@ResponseBody
+	public String shareOrgSave(ShareOrg share) {
+		String msg = "";
+		try{
+			fileService.shareOrgSave(share);
+			msg = "保存成功";
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = "保存失败";
+		}
+		return msg;
+	}
 
+	/**
+	 * 查询共享信息列表
+	 * @param params
+	 * @param page
+	 * @param rows
+	 * @param response
+	 */
+	@RequestMapping(value="/queryShareList",method=RequestMethod.POST)
+	@ResponseBody	
+	public Object orglist(String flag, int page, int rows, HttpServletResponse response){
+		// 获取当前用户
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+				
+		PageInfo pageInfo = new PageInfo(page, rows);
+		if("org".equals(flag)){
+			pageInfo = shareOrgService.queryShareOrgList(pageInfo, user.getId());
+		}else if("user".equals(flag)){
+			pageInfo = shareUserService.queryShareUserList(pageInfo, user.getId());
+		}
+		return pageInfo;
+	}
+	
+	/**
+	 * 删除共享单位信息
+	 * @param share
+	 * @return
+	 */
+	@RequestMapping("/shareOrgDel")
+	@ResponseBody
+	public String shareOrgDel(String shareId) {
+		String msg = "";
+		try{
+			shareOrgService.shareOrgDel(shareId);
+			msg = "删除成功";
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = "删除失败";
+		}
+		return msg;
+	}
+	
+	/**
+	 * 删除共享人员信息
+	 * @param share
+	 * @return
+	 */
+	@RequestMapping("/shareUserDel")
+	@ResponseBody
+	public String shareUserDel(String shareId) {
+		String msg = "";
+		try{
+			shareUserService.shareUserDel(shareId);
+			msg = "删除成功";
+		}catch(Exception e){
+			e.printStackTrace();
+			msg = "删除失败";
+		}
+		return msg;
+	}
 }

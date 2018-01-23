@@ -356,7 +356,7 @@ createPath = function(tNode) {
 listFiles = function(tNode,type) {
 	$("#folder").data("folder_id", tNode.id).data("node_id", tNode.tId);
 	createPath(tNode);
-
+	//debugger;
 	var files = tNode.children;
 	var file,folder = $("#folder ul");
 	folder.html("");
@@ -620,12 +620,14 @@ shareFile = function (f){
         title : '共享设置',
         width : 630,
         height : 500,
-        href : ctxPath + '/myFile/share?id=' + 1,
+        href : ctxPath + '/myFile/share?id=' + 2,
         buttons : [ {
-            text : '确定',
+            text : '关闭',
             handler : function() {
-                var f = parent.$.modalDialog.handler.find('#roleGrantForm');
-                f.submit();
+               // var f = parent.$.modalDialog.handler.find('#roleGrantForm');
+                //f.submit();
+            	parent.$.modalDialog.handler.dialog('destroy');
+        		parent.$.modalDialog.handler = undefined;
             }
         } ]
     });

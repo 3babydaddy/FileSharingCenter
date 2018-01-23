@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.tf.model.MyFile;
+import com.tf.model.ShareOrg;
+import com.tf.model.ShareUser;
 
 public interface IMyFileService extends IService<MyFile> {
 
@@ -28,5 +30,13 @@ public interface IMyFileService extends IService<MyFile> {
 	String deleteFileOrFolder(long id);
 	
 	boolean moveFile(long sourceId, long targetId);
+	
+	void shareUserSave(ShareUser share)throws Exception;
+	
+	void shareOrgSave(ShareOrg share)throws Exception;
+	
+	List<ShareOrg> queryShareOrgList();
+	
+	List<ShareUser> queryShareUserList();
 
 }

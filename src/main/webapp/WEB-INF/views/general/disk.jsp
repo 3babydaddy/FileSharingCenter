@@ -69,7 +69,7 @@
 					<ul id="orgTree" class="ztree"></ul>
 				</div>
 				<!-- 文件夹树形 -->
-				<div id="dir_tree" style="display: none">
+				<div id="dir_tree" style="">
 					<ul id="dirTree" class="ztree"></ul>
 				</div>
 			</div>

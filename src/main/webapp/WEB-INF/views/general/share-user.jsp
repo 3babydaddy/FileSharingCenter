@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/commons/global.jsp"%>
 <script type="text/javascript">
+$(function() {
+	loadData();
+});
+
 $("#shareUsers").combobox({
 	valueField : 'id',
 	textField : 'name',
@@ -26,9 +30,91 @@ $("#shareUsers").combobox({
 		console.log(row.name);
 	}
 })
+
+	function submitInfo(){
+	
+		var userId = $("input[name='shareUsers']")[0].value;
+		var shareRoleAtt = $('#shareRoleAtt').val();
+		var fileId = $('#fileId').val();
+		if(userId == null){
+			alert('请选择用户');
+			return;
+		}
+		
+		$.ajax({
+			url:'${path }/myFile/shareUserSave',
+			type : 'post',
+			data:{fileId:fileId, userId:userId, attribute:shareRoleAtt},
+			//dataType:'json',
+			async: false,
+			success:function(result){
+				alert(result);
+				$('#gridPanel').datagrid('reload');
+			},
+			 error: function(XMLHttpRequest, textStatus, errorThrown) {
+				 //debugger;
+			 },
+		});
+	}
+
+	function loadData(){
+		var options = {
+				url : '${path }/myFile/queryShareList',
+				queryParams : {flag:'user'},
+				title: '共享信息列表',
+				rownumbers:true,
+				fitColumns : true,
+				striped : true,
+				singleSelect : false,
+				remoteSort: true,
+				pagination:true,
+				nowrap:false,
+				columns : [ [
+					 {field :"fileName",title :"共享文件",width :"60", align:"center",formatter:ifNullShowHeng}
+					,{field :"userName",title :"共享人员",width :"90", align:"center",formatter:ifNullShowHeng}
+		            ,{field :"creator",title :"创建人",width :"70", align:"center",formatter:ifNullShowHeng}
+		            ,{field :"createTimeStr",title :"共享时间",width :"70", align:"center",formatter:ifNullShowHeng}
+		            ,{field : 'statusAndDo',title : '操作',width : "60" ,align:'center',
+						formatter:function(value,row,index){
+							return '<a href="javascript:void(0)" class="easyui-linkbutton" name="editBtn" onclick="deleteOption(\''+ row.id  + '\')">删除</a>';
+			            }	
+		             }
+		       ] ],
+		       onLoadSuccess : function(data) {
+	
+		       }
+		};
+		
+		$('#gridPanel').datagrid(options);
+		
+	}
+	
+	function deleteOption(shareId){
+		$.ajax({
+			url:'${path }/myFile/shareUserDel',
+			type : 'post',
+			data:{shareId:shareId},
+			success:function(result){
+				alert(result);
+				$('#gridPanel').datagrid('reload');
+			},
+			 error: function(XMLHttpRequest, textStatus, errorThrown) {
+				 //debugger;
+			 },
+		});
+	}
+	
+	function ifNullShowHeng(value,row,index){
+		if(value==null||value==undefined||value==""){
+			return "－";
+		}
+		return value;
+	}
+
 </script>
 <div id="shareView" class="easyui-layout" style="width: 100%; height: 100%;">
-	<div data-options="region:'north',title:'共享给用户',split:true" style="height: 30%;">
+	<div data-options="region:'north',title:'明细',split:true" id="gridPanel" style="height: 70%;"></div>
+	<div data-options="region:'south',title:'共享给用户',split:true" style="height: 30%;">
 		<table>
 			<tr>
 				<td>用户:</td>
@@ -43,10 +129,10 @@ $("#shareUsers").combobox({
                 	</select>
                 </td>
                 <td>
-                	<button class="easyui-linkbutton">保存</button>
+                	<button type="button" class="btn btn-primary" onclick="javascript:submitInfo();">保存</button>
                 </td>
 			</tr>
+			<input id="fileId" type="hidden" value="${fileId }" />
 		</table>
 	</div>
-	<div data-options="region:'south',title:'明细',split:true" style="height: 70%;"></div>
 </div>
