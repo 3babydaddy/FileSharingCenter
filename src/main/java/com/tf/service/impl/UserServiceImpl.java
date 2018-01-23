@@ -13,8 +13,10 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.result.PageInfo;
 import com.tf.commons.utils.BeanUtils;
 import com.tf.commons.utils.StringUtils;
+import com.tf.mapper.ShareDiskInfoMapper;
 import com.tf.mapper.UserMapper;
 import com.tf.mapper.UserRoleMapper;
+import com.tf.model.ShareDiskInfo;
 import com.tf.model.User;
 import com.tf.model.UserRole;
 import com.tf.model.vo.UserVo;
@@ -32,6 +34,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private ShareDiskInfoMapper diskMapper;
     
     @Override
     public List<User> selectByLoginName(UserVo userVo) {
@@ -49,7 +53,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = BeanUtils.copy(userVo, User.class);
         user.setCreateTime(new Date());
         this.insert(user);
-        
         Long id = user.getId();
         String[] roles = userVo.getRoleIds().split(",");
         UserRole userRole = new UserRole();
@@ -58,6 +61,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userRole.setRoleId(Long.valueOf(string));
             userRoleMapper.insert(userRole);
         }
+        //add share_disk_info 
+        ShareDiskInfo diskInfo = new ShareDiskInfo();
+        diskInfo.setCreteTime(new Date());
+        diskInfo.setUserId(user.getId());
+        //diskInfo.setFilenumber();
+        diskInfo.setTotalsize(userVo.getInitStorageSize().longValue());
+        diskInfo.setStatus("0");
+        diskMapper.insert(diskInfo);
     }
 
     @Override
@@ -80,6 +91,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 userRoleMapper.deleteById(userRole.getId());
             }
         }
+        
+        //update diskInfo
+        ShareDiskInfo shareDiskInfo = new ShareDiskInfo();
+        shareDiskInfo.setTotalsize(userVo.getInitStorageSize().longValue());
+        EntityWrapper<ShareDiskInfo> wrapper = new EntityWrapper<ShareDiskInfo>();
+        wrapper.where("user_id = {0}", userVo.getId());
+        diskMapper.update(shareDiskInfo, wrapper);
 
         String[] roles = userVo.getRoleIds().split(",");
         UserRole userRole = new UserRole();

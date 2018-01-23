@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2018-01-18 18:11:03
+Date: 2018-01-22 17:53:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ CREATE TABLE `myfile` (
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `myfile_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `myfile` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of myfile
@@ -58,6 +58,43 @@ INSERT INTO `myfile` VALUES ('42', '1', '1', '测试文件.pptx', '31455', 'pptx
 INSERT INTO `myfile` VALUES ('43', '1', '1', '测试PDF.pdf', '8', 'pdf', '/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516255209506.pdf', null, null, '');
 INSERT INTO `myfile` VALUES ('44', '1', '1', '丑八怪.mp4', '6', 'mp4', '/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516255350880.mp4', null, null, '');
 INSERT INTO `myfile` VALUES ('46', '1', '1', '无标题.png', '208004', 'png', '/1/', '2018-01-18', null, '0', '0', '0', 'd:/home/temp_file/ 1516266542692.png', null, null, '');
+INSERT INTO `myfile` VALUES ('47', '1', '1', '81ZG2 RbjEL._SX522_.jpg', '0', 'jpg', '/1/', '2018-01-22', null, '0', '0', '0', 'd:/home/temp_file/ 1516594144360.jpg', null, null, '');
+
+-- ----------------------------
+-- Table structure for `notice`
+-- ----------------------------
+DROP TABLE IF EXISTS `notice`;
+CREATE TABLE `notice` (
+  `notice_id` bigint(19) NOT NULL COMMENT '通知id',
+  `content` varchar(255) DEFAULT NULL COMMENT '通知内容',
+  `type` varchar(2) DEFAULT NULL COMMENT '01-普通 02-公文',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间\r\n            ',
+  `creator` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `status` varchar(2) DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of notice
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `notice_involve`
+-- ----------------------------
+DROP TABLE IF EXISTS `notice_involve`;
+CREATE TABLE `notice_involve` (
+  `id` bigint(19) NOT NULL COMMENT '主键',
+  `notice_id` bigint(19) DEFAULT NULL COMMENT '通知id',
+  `user_id` bigint(19) DEFAULT NULL COMMENT '涉及用户id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `status` varchar(2) DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通知涉及人员';
+
+-- ----------------------------
+-- Records of notice_involve
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `organization`
@@ -73,21 +110,22 @@ CREATE TABLE `organization` (
   `seq` tinyint(2) NOT NULL DEFAULT '0' COMMENT '排序',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='组织机构';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='组织机构';
 
 -- ----------------------------
 -- Records of organization
 -- ----------------------------
-INSERT INTO `organization` VALUES ('1', ' 办公室', '', '01', 'fi-social-windows', null, '0', '2014-02-19 01:00:00');
-INSERT INTO `organization` VALUES ('3', '信息处', '', '02', 'fi-social-github', null, '1', '2015-10-01 13:10:42');
-INSERT INTO `organization` VALUES ('5', '综合计划处', '', '03', 'fi-social-apple', null, '2', '2015-12-06 12:15:30');
-INSERT INTO `organization` VALUES ('6', '信息一处', '', '04', 'fi-social-snapchat', '3', '0', '2015-12-06 13:12:18');
+INSERT INTO `organization` VALUES ('1', ' 办公室', '', '01', 'fi-folder', '13', '0', '2014-02-19 01:00:00');
+INSERT INTO `organization` VALUES ('3', '信息处', '', '02', 'fi-folder', '13', '1', '2015-10-01 13:10:42');
+INSERT INTO `organization` VALUES ('5', '综合计划处', '', '03', 'fi-folder', '13', '2', '2015-12-06 12:15:30');
+INSERT INTO `organization` VALUES ('6', '信息一处', '', '04', 'fi-folder', '3', '0', '2015-12-06 13:12:18');
 INSERT INTO `organization` VALUES ('7', '信息二处', '', '05', 'fi-folder', '3', '0', '2018-01-15 15:48:05');
 INSERT INTO `organization` VALUES ('8', '信息三处', '', '06', 'fi-folder', '3', '0', '2018-01-15 15:48:20');
-INSERT INTO `organization` VALUES ('9', ' 法规处', '', '07', 'fi-folder', null, '0', '2018-01-15 15:49:08');
-INSERT INTO `organization` VALUES ('10', '事业单位人事管理处', '', '08', 'fi-folder', null, '0', '2018-01-15 15:52:02');
-INSERT INTO `organization` VALUES ('11', '机关事业单位工资福利处', '', '09', 'fi-folder', null, '0', '2018-01-15 15:52:49');
-INSERT INTO `organization` VALUES ('12', '老干部处', '', '10', 'fi-folder', null, '0', '2018-01-15 15:53:03');
+INSERT INTO `organization` VALUES ('9', ' 法规处', '', '07', 'fi-folder', '13', '0', '2018-01-15 15:49:08');
+INSERT INTO `organization` VALUES ('10', '事业单位人事管理处', '', '08', 'fi-folder', '13', '0', '2018-01-15 15:52:02');
+INSERT INTO `organization` VALUES ('11', '机关事业单位工资福利处', '', '09', 'fi-folder', '13', '0', '2018-01-15 15:52:49');
+INSERT INTO `organization` VALUES ('12', '老干部处', '', '10', 'fi-folder', '13', '0', '2018-01-15 15:53:03');
+INSERT INTO `organization` VALUES ('13', '天津市委组织部', '天津市河西区', '011', 'fi-folder', null, '0', '2018-01-19 14:48:53');
 
 -- ----------------------------
 -- Table structure for `resource`
@@ -253,6 +291,76 @@ INSERT INTO `role_resource` VALUES ('462', '8', '228');
 INSERT INTO `role_resource` VALUES ('478', '8', '229');
 
 -- ----------------------------
+-- Table structure for `share_disk_info`
+-- ----------------------------
+DROP TABLE IF EXISTS `share_disk_info`;
+CREATE TABLE `share_disk_info` (
+  `id` bigint(19) NOT NULL COMMENT '主键',
+  `user_id` bigint(19) DEFAULT NULL COMMENT '用户id',
+  `totalsize` bigint(19) DEFAULT NULL COMMENT '总磁盘空间',
+  `usedsize` bigint(19) DEFAULT NULL COMMENT '已用空间',
+  `filenumber` bigint(19) DEFAULT NULL COMMENT '文件数',
+  `crete_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `status` varchar(2) DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`id`),
+  KEY `Index_userid` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享空间磁盘信息';
+
+-- ----------------------------
+-- Records of share_disk_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `share_to_org`
+-- ----------------------------
+DROP TABLE IF EXISTS `share_to_org`;
+CREATE TABLE `share_to_org` (
+  `id` bigint(19) NOT NULL AUTO_INCREMENT,
+  `file_id` bigint(19) DEFAULT NULL,
+  `org_id` bigint(19) DEFAULT NULL,
+  `share_user` bigint(19) DEFAULT NULL,
+  `attribute` varchar(2) DEFAULT NULL COMMENT '01-只读 02-读写',
+  `create_time` datetime DEFAULT NULL,
+  `creator` varchar(32) DEFAULT NULL,
+  `status` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Index_orgid` (`org_id`),
+  KEY `Index_fileid` (`file_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='共享给群组\r\n';
+
+-- ----------------------------
+-- Records of share_to_org
+-- ----------------------------
+INSERT INTO `share_to_org` VALUES ('1', '1', '1', null, '0', '2018-01-22 17:04:10', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('2', '1', '12', null, '0', '2018-01-22 17:07:30', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('3', '1', '12', null, '0', '2018-01-22 17:07:58', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('4', '1', '11', null, '0', '2018-01-22 17:08:05', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('5', '1', '12', null, '0', '2018-01-22 17:08:52', 'admin', '1');
+INSERT INTO `share_to_org` VALUES ('6', '1', '10', null, '0', '2018-01-22 17:17:24', 'admin', '1');
+
+-- ----------------------------
+-- Table structure for `share_to_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `share_to_user`;
+CREATE TABLE `share_to_user` (
+  `id` bigint(19) NOT NULL AUTO_INCREMENT,
+  `file_id` bigint(19) DEFAULT NULL,
+  `user_id` bigint(19) DEFAULT NULL,
+  `share_user` bigint(19) DEFAULT NULL,
+  `attribute` varchar(2) DEFAULT NULL COMMENT '01-只读 02-读写',
+  `create_time` datetime DEFAULT NULL,
+  `creator` varchar(32) DEFAULT NULL,
+  `status` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Index_userid` (`user_id`),
+  KEY `Index_fileid` (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='共享给用户';
+
+-- ----------------------------
+-- Records of share_to_user
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sys_log`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
@@ -264,7 +372,7 @@ CREATE TABLE `sys_log` (
   `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端ip',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8 COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
@@ -390,6 +498,70 @@ INSERT INTO `sys_log` VALUES ('508', 'admin', 'admin', '[类名]:com.tf.controll
 INSERT INTO `sys_log` VALUES ('509', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-18 17:09:19');
 INSERT INTO `sys_log` VALUES ('510', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-18 18:09:59');
 INSERT INTO `sys_log` VALUES ('511', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-18 18:10:14');
+INSERT INTO `sys_log` VALUES ('512', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-19 11:08:08');
+INSERT INTO `sys_log` VALUES ('513', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-19 11:35:53');
+INSERT INTO `sys_log` VALUES ('514', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:login,[参数]:', null, '2018-01-19 11:36:11');
+INSERT INTO `sys_log` VALUES ('515', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-19 11:36:14');
+INSERT INTO `sys_log` VALUES ('516', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-19 12:19:17');
+INSERT INTO `sys_log` VALUES ('517', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-19 13:46:24');
+INSERT INTO `sys_log` VALUES ('518', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-19 13:46:37');
+INSERT INTO `sys_log` VALUES ('519', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408018&', '0:0:0:0:0:0:0:1', '2018-01-19 13:46:42');
+INSERT INTO `sys_log` VALUES ('520', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408019&', '0:0:0:0:0:0:0:1', '2018-01-19 13:47:54');
+INSERT INTO `sys_log` VALUES ('521', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408020&', '0:0:0:0:0:0:0:1', '2018-01-19 13:53:00');
+INSERT INTO `sys_log` VALUES ('522', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408021&', '0:0:0:0:0:0:0:1', '2018-01-19 13:53:11');
+INSERT INTO `sys_log` VALUES ('523', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408022&', '0:0:0:0:0:0:0:1', '2018-01-19 13:54:58');
+INSERT INTO `sys_log` VALUES ('524', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408023&', '0:0:0:0:0:0:0:1', '2018-01-19 14:01:56');
+INSERT INTO `sys_log` VALUES ('525', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408024&', '0:0:0:0:0:0:0:1', '2018-01-19 14:02:05');
+INSERT INTO `sys_log` VALUES ('526', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:addPage,[参数]:', null, '2018-01-19 14:36:28');
+INSERT INTO `sys_log` VALUES ('527', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:addPage,[参数]:', null, '2018-01-19 14:37:13');
+INSERT INTO `sys_log` VALUES ('528', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408027&', '0:0:0:0:0:0:0:1', '2018-01-19 14:41:05');
+INSERT INTO `sys_log` VALUES ('529', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516340408028&', '0:0:0:0:0:0:0:1', '2018-01-19 14:41:15');
+INSERT INTO `sys_log` VALUES ('530', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516344232611&', '0:0:0:0:0:0:0:1', '2018-01-19 14:43:54');
+INSERT INTO `sys_log` VALUES ('531', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:addPage,[参数]:', null, '2018-01-19 14:47:58');
+INSERT INTO `sys_log` VALUES ('532', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:add,[参数]:code=011&name=天津市委组织部&seq=0&icon=fi-folder&address=天津市河西区&pid=&', '0:0:0:0:0:0:0:1', '2018-01-19 14:48:53');
+INSERT INTO `sys_log` VALUES ('533', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=1&_=1516340408030&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:00');
+INSERT INTO `sys_log` VALUES ('534', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=1&code=01&name= 办公室&seq=0&icon=fi-social-windows&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:07');
+INSERT INTO `sys_log` VALUES ('535', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=12&_=1516340408031&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:11');
+INSERT INTO `sys_log` VALUES ('536', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=12&code=10&name=老干部处&seq=0&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:19');
+INSERT INTO `sys_log` VALUES ('537', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=9&_=1516340408032&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:25');
+INSERT INTO `sys_log` VALUES ('538', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=9&code=07&name= 法规处&seq=0&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:31');
+INSERT INTO `sys_log` VALUES ('539', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=10&_=1516340408033&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:33');
+INSERT INTO `sys_log` VALUES ('540', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=10&code=08&name=事业单位人事管理处&seq=0&icon=fi-folder&address=&pid=10&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:37');
+INSERT INTO `sys_log` VALUES ('541', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=10&_=1516340408034&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:40');
+INSERT INTO `sys_log` VALUES ('542', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=10&code=08&name=事业单位人事管理处&seq=0&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:44');
+INSERT INTO `sys_log` VALUES ('543', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=11&_=1516340408035&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:47');
+INSERT INTO `sys_log` VALUES ('544', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=11&code=09&name=机关事业单位工资福利处&seq=0&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:49');
+INSERT INTO `sys_log` VALUES ('545', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=3&_=1516340408036&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:53');
+INSERT INTO `sys_log` VALUES ('546', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=3&code=02&name=信息处&seq=1&icon=fi-social-github&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:49:56');
+INSERT INTO `sys_log` VALUES ('547', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=5&_=1516340408037&', '0:0:0:0:0:0:0:1', '2018-01-19 14:50:00');
+INSERT INTO `sys_log` VALUES ('548', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=5&code=03&name=综合计划处&seq=2&icon=fi-social-apple&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:50:04');
+INSERT INTO `sys_log` VALUES ('549', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=1&_=1516340408040&', '0:0:0:0:0:0:0:1', '2018-01-19 14:55:45');
+INSERT INTO `sys_log` VALUES ('550', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=1&code=01&name= 办公室&seq=0&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:55:50');
+INSERT INTO `sys_log` VALUES ('551', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=3&_=1516340408041&', '0:0:0:0:0:0:0:1', '2018-01-19 14:55:53');
+INSERT INTO `sys_log` VALUES ('552', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=3&code=02&name=信息处&seq=1&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:55:57');
+INSERT INTO `sys_log` VALUES ('553', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=6&_=1516340408042&', '0:0:0:0:0:0:0:1', '2018-01-19 14:56:00');
+INSERT INTO `sys_log` VALUES ('554', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=6&code=04&name=信息一处&seq=0&icon=fi-folder&address=&pid=3&', '0:0:0:0:0:0:0:1', '2018-01-19 14:56:02');
+INSERT INTO `sys_log` VALUES ('555', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=5&_=1516340408043&', '0:0:0:0:0:0:0:1', '2018-01-19 14:56:04');
+INSERT INTO `sys_log` VALUES ('556', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:edit,[参数]:id=5&code=03&name=综合计划处&seq=2&icon=fi-folder&address=&pid=13&', '0:0:0:0:0:0:0:1', '2018-01-19 14:56:06');
+INSERT INTO `sys_log` VALUES ('557', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516346000310&', '0:0:0:0:0:0:0:1', '2018-01-19 15:13:23');
+INSERT INTO `sys_log` VALUES ('558', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516346965423&', '0:0:0:0:0:0:0:1', '2018-01-19 15:30:29');
+INSERT INTO `sys_log` VALUES ('559', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=1&_=1516347432193&', '0:0:0:0:0:0:0:1', '2018-01-19 15:37:14');
+INSERT INTO `sys_log` VALUES ('560', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:addPage,[参数]:', null, '2018-01-19 16:00:51');
+INSERT INTO `sys_log` VALUES ('561', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-19 16:01:22');
+INSERT INTO `sys_log` VALUES ('562', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:addPage,[参数]:', null, '2018-01-19 16:01:27');
+INSERT INTO `sys_log` VALUES ('563', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=13&_=1516353370273&', '0:0:0:0:0:0:0:1', '2018-01-19 17:16:23');
+INSERT INTO `sys_log` VALUES ('564', 'admin', 'admin', '[类名]:com.tf.controller.OrganizationController,[方法]:editPage,[参数]:id=1&_=1516353370274&', '0:0:0:0:0:0:0:1', '2018-01-19 17:16:27');
+INSERT INTO `sys_log` VALUES ('565', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-22 12:17:40');
+INSERT INTO `sys_log` VALUES ('566', 'admin', 'admin', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-01-22 13:40:06');
+INSERT INTO `sys_log` VALUES ('567', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 15:05:06');
+INSERT INTO `sys_log` VALUES ('568', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 15:07:18');
+INSERT INTO `sys_log` VALUES ('569', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 15:39:00');
+INSERT INTO `sys_log` VALUES ('570', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=2&_=1516610934468&', '0:0:0:0:0:0:0:1', '2018-01-22 16:50:06');
+INSERT INTO `sys_log` VALUES ('571', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=7&_=1516610934469&', '0:0:0:0:0:0:0:1', '2018-01-22 16:50:13');
+INSERT INTO `sys_log` VALUES ('572', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:', null, '2018-01-22 16:50:34');
+INSERT INTO `sys_log` VALUES ('573', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:42:14');
+INSERT INTO `sys_log` VALUES ('574', 'test', 'test', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:43:14');
+INSERT INTO `sys_log` VALUES ('575', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-01-22 17:47:40');
 
 -- ----------------------------
 -- Table structure for `user`

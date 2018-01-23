@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tf.commons.base.BaseController;
 import com.tf.commons.result.PageInfo;
 import com.tf.commons.shiro.PasswordHash;
+import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.StringUtils;
 import com.tf.model.Role;
 import com.tf.model.User;
@@ -87,7 +88,9 @@ public class UserController extends BaseController {
      * @return
      */
     @GetMapping("/addPage")
-    public String addPage() {
+    public String addPage(Model model) {
+    	String initSize = FileStorage.getProperty("init_storage_size");
+    	model.addAttribute("initSize", initSize);
         return "admin/user/userAdd";
     }
 
