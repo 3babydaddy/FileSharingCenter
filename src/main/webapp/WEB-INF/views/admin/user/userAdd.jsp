@@ -47,7 +47,7 @@
             <table class="grid">
                 <tr>
                     <td>登录名</td>
-                    <td><input name="loginName" type="text" placeholder="请输入登录名称" class="easyui-validatebox" data-options="required:true" value=""></td>
+                    <td><input name="loginName" type="text" placeholder="请输入登录名称" class="easyui-textbox easyui-validatebox" data-options="required:true" value=""></td>
                     <td>姓名</td>
                     <td><input name="name" type="text" placeholder="请输入姓名" class="easyui-validatebox" data-options="required:true" value=""></td>
                 </tr>
@@ -91,6 +91,10 @@
                                 <option value="1">停用</option>
                         </select>
                     </td>
+                </tr>
+                <tr>
+                	<td>初始化(MB)</td>
+                    <td><input type="text" name="initStorageSize" value="${initSize}" class="easyui-numberbox easyui-validatebox" data-options="required:true"/></td>
                 </tr>
             </table>
         </form>

@@ -55,6 +55,11 @@ public class UserVo implements Serializable {
 
 	private Date createdateStart;
 	private Date createdateEnd;
+	
+	/**
+	 * 初始化磁盘大小
+	 */
+	private Integer initStorageSize;
 
 	public Long getId() {
 		return id;
@@ -192,6 +197,15 @@ public class UserVo implements Serializable {
 		this.createdateEnd = createdateEnd;
 	}
 	
+	
+	public Integer getInitStorageSize() {
+		return initStorageSize;
+	}
+
+	public void setInitStorageSize(Integer initStorageSize) {
+		this.initStorageSize = initStorageSize;
+	}
+
 	/**
 	 * 比较vo和数据库中的用户是否同一个user，采用id比较
 	 * @param user 用户

@@ -7,7 +7,7 @@
 	padding:30px 2px;
 	padding-bottom:10px;
 }
-#path_wrap{margin:4px;border:1px solid #999;padding:1px 0;}
+#path_wrap{margin:4px;border:1px solid white;padding:1px 0;}
 #root,#children_path{
 	display:inline-block;
 }
@@ -28,9 +28,10 @@
 #tools_bar span,#tools_bar a{
 	border:#C6E4DB solid 1px;
 	letter-spacing:1px;
-	margin-right:18px;
+	/* margin-right:18px; */
+	margin-left:15px;
 	padding:0 4px;
-	padding-left:25px;
+	/* padding-left:25px; */
 }
 #tools_bar a{text-decoration:none;}
 #tools_bar span:hover,#file_path span:hover,#tools_bar a:hover{

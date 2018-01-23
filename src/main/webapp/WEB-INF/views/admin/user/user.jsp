@@ -182,7 +182,7 @@
         parent.$.modalDialog({
             title : '编辑',
             width : 500,
-            height : 300,
+            height : 320,
             href : '${path }/user/editPage?id=' + id,
             buttons : [ {
                 text : '确定',
@@ -209,7 +209,7 @@
             <table>
                 <tr>
                     <th>姓名:</th>
-                    <td><input name="name" placeholder="请输入用户姓名"/></td>
+                    <td><input name="name" class="easyui-textbox" placeholder="请输入用户姓名"/></td>
                     <th>创建时间:</th>
                     <td>
                         <input name="createdateStart" placeholder="点击选择时间" onclick="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" />至

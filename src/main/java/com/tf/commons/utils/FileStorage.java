@@ -51,6 +51,15 @@ public class FileStorage {
 	public static String getFilePath() {
 		return getProperties().getProperty("file_path");
 	}
+	
+	/**
+	 * 获取对应的property
+	 * @param property 属性名
+	 * @return 属性值
+	 */
+	public static String getProperty(String property){
+		return getProperties().getProperty(property);
+	}
 
 	/**
 	 * 获取临时肖像图片路径

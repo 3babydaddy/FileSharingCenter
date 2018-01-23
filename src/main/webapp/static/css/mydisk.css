@@ -102,9 +102,9 @@ input {
 }
 
 .current_progress {
-	background: #A9D5F4;
+	background: #F0E68C;
 	float: left;
-	color: black;
+	color: #696969;
 	font-weight: 800;
 }
 
@@ -178,7 +178,6 @@ form dt, form dd {
 
 #chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	margin-bottom: 4px;
-	background-color: #38A3DB !important;
 	float: left;
 	width: 212px;
 	padding-left: 80px;
