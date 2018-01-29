@@ -6,13 +6,14 @@
     <result column="file_id" jdbcType="BIGINT" property="fileId" />
     <result column="org_id" jdbcType="BIGINT" property="orgId" />
     <result column="share_user" jdbcType="BIGINT" property="shareUser" />
+    <result column="share_type" jdbcType="VARCHAR" property="shareType" />
     <result column="attribute" jdbcType="VARCHAR" property="attribute" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, org_id, share_user, attribute, create_time, creator, status
+    id, file_id, org_id, share_user, share_type, attribute, create_time, creator, status
   </sql>
   <select id="querySameOrgFiles" resultType="com.tf.model.MyFile">
   	select 
@@ -20,11 +21,25 @@
   		o.attribute as attribute 
   	 from share_to_org o 
   	 	  LEFT JOIN myfile m on o.file_id = m.id 
-  		where o.org_id = #{orgId} and status = 1 
+  		where o.org_id = #{orgId} 
+  		and status = 1 
+  		and share_type = '0'
   		and o.share_user in 
   		 <foreach item="item" collection="userIdList" open="(" separator="," close=")">
             #{item}
         </foreach>
   		
+  </select>
+  <select id="queryFilesByOrg" resultType="com.tf.model.MyFile">
+  	select * from myfile
+  		where id in (SELECT file_id
+			FROM
+				share_to_org
+			WHERE
+				org_id = #{orgId}
+			AND share_user IN (
+				SELECT id FROM USER WHERE organization_id = #{shareOrgId}
+			)
+		)
   </select>
 </mapper>

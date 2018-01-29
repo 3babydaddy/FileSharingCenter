@@ -5,10 +5,10 @@
 	$(function() {
 		//$("#share_to").panel('refresh', ctxPath + "/myFile/shareOrg");
 		$("#linkBtnMan").click(function() {
-			$("#share_to").panel('refresh', ctxPath + "/myFile/shareUser?fileId="+$("#fileId").val());
+			$("#share_to").panel('refresh', ctxPath + "/myFile/shareUser?fileId="+$("#fileId").val()+'&shareType='+$("#shareType").val());
 		});
 		$("#linkBtnGrop").click(function() {
-			$("#share_to").panel('refresh', ctxPath + "/myFile/shareOrg?fileId="+$("#fileId").val());
+			$("#share_to").panel('refresh', ctxPath + "/myFile/shareOrg?fileId="+$("#fileId").val()+'&shareType='+$("#shareType").val());
 		});
 		
 		$('#shareOrganizationId').combotree({
@@ -25,6 +25,7 @@
 		var orgId = $("input[name='organizationId']")[0].value;
 		var shareRoleAtt = $('#shareRoleAtt').combobox('getValue');
 		var fileId = $('#fileId').val();
+		var shareType = $('#shareType').val();
 		if(orgId == null || orgId == ''){
 			alert('请选择组群');
 			return;
@@ -33,7 +34,7 @@
 		 $.ajax({
 			url:'${path }/myFile/shareOrgSave',
 			type : 'post',
-			data:{fileId:fileId, orgId:orgId, attribute:shareRoleAtt},
+			data:{fileId:fileId, orgId:orgId, attribute:shareRoleAtt, shareType : shareType},
 			async: false,
 			success:function(result){
 				alert(result);
@@ -58,8 +59,8 @@
 				pagination:true,
 				nowrap:false,
 				columns : [ [
-					 {field :"fileName",title :"共享文件",width :"60", align:"center",formatter:ifNullShowHeng}
-					,{field :"orgName",title :"共享机构",width :"90", align:"center",formatter:ifNullShowHeng}
+					 {field :"fileName",title :"共享文件",width :"90", align:"center",formatter:ifNullShowHeng}
+					,{field :"orgName",title :"共享机构",width :"135", align:"center",formatter:ifNullShowHeng}
 		            ,{field :"creator",title :"创建人",width :"70", align:"center",formatter:ifNullShowHeng}
 		            ,{field :"createTimeStr",title :"共享时间",width :"70", align:"center",formatter:ifNullShowHeng}
 		            ,{field : 'statusAndDo',title : '操作',width : "60" ,align:'center',
@@ -101,7 +102,7 @@
 	<!-- <div data-options="region:'north',title:'共享文件设置',split:true" style="height: 100px;"></div> -->
 	<!-- <div data-options="region:'south',title:'South Title',split:true" style="height: 100px;"></div> -->
 	<!-- <div data-options="region:'east',title:'East',split:true" style="width: 100px;"></div> -->
-	<div data-options="region:'west',title:'类型',split:true" style="width: 28%; text-align: center; padding-top: 30px">
+	<div data-options="region:'west',title:'类型',split:true" style="width: 25%; text-align: center; padding-top: 30px">
 		<a id="linkBtnMan" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-man">共享给用户</a>
 		<a id="linkBtnGrop" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-company" style="margin-top: 15px">共享给群组</a>
 	</div>
@@ -125,6 +126,7 @@
 					</tr>
 				</table>
 				<input id="fileId" type="hidden" value="${fileId }" />
+				<input id="shareType" type="hidden" value="${shareType }" />
 			</div>
 			<div data-options="region:'south',split:true" style="width:100%;height:70%;">
 				<div style="width:98%;" id="gridPanel"></div>

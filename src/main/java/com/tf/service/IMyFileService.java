@@ -14,7 +14,7 @@ public interface IMyFileService extends IService<MyFile> {
 
 	MyFile queryFile(Long id);
 
-	String mkdir(long folderId, String folderName);
+	String mkdir(long folderId, String folderName, String filecreatetype);
 
 	boolean reName(long folderId, String folderName);
 

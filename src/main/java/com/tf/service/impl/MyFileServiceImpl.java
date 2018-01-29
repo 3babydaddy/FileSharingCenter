@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -61,7 +60,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	}
 
 	@Override
-	public String mkdir(long folderId, String folderName) {
+	public String mkdir(long folderId, String folderName, String filecreatetype) {
 		// 查询当前文件夹所在路径
 		MyFile currentFile = mapper.selectById(folderId);
 		// 新建文件夹的路径
@@ -74,6 +73,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		dir.setCreateDate(sdf.format(new Date()));
 		dir.setParent_id(folderId);
 		dir.setName(folderName);
+		dir.setFilecreatetype(filecreatetype);
 		dir.setPath(path);
 		dir.setType("adir");
 		dir.setDescription("");
@@ -222,21 +222,16 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 				TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
 				fileSet.addAll(filesByUser);
 				//处室管理员新建
-				TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#"+orgInfo.getId());
-				fileSet.addAll(filesByCreate);
-				Iterator<MyFile> it = fileSet.iterator();
-			    while (it.hasNext()) {
-			    	MyFile file = it.next();
-			    	boolean sign = this.removeBaseInfo(file, "#"+orgInfo.getId());
-			    	if(sign){
-			    		it.remove();
-			    	}
-			    }
+				if(user.getRoles().contains("org_admin")){
+					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#"+orgInfo.getId());
+					fileSet.addAll(filesByCreate);
+				}
 			}
 		}else if("portrait".equals(flag) && id == treeRootId){
 			//个人空间
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
+			map.put("filecreatetype", '1');
 			files = mapper.selectByMap(map);
 			return files;
 		}else if("email".equals(flag) && id == treeRootId){
@@ -272,13 +267,4 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		return files;
 	}
 	
-	private boolean removeBaseInfo(MyFile file, String name){
-    	if(file.getParent_id() != null){
-    		MyFile myFile = mapper.selectById(file.getParent_id());
-    		this.removeBaseInfo(myFile, name);
-    	}else if(file.getParent_id() == null && !name.equals(file.getName())){
-    		return true;
-    	}
-    	return false;
-	}
 }

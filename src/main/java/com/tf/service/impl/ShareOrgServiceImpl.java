@@ -7,17 +7,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.result.PageInfo;
+import com.tf.commons.shiro.ShiroUser;
 import com.tf.mapper.MyFileMapper;
 import com.tf.mapper.OrganizationMapper;
 import com.tf.mapper.ShareOrgMapper;
+import com.tf.mapper.UserMapper;
 import com.tf.model.MyFile;
 import com.tf.model.Organization;
 import com.tf.model.ShareOrg;
+import com.tf.model.vo.UserVo;
 import com.tf.service.IShareOrgService;
 
 /**
@@ -34,6 +38,8 @@ public class ShareOrgServiceImpl extends ServiceImpl<ShareOrgMapper, ShareOrg> i
 	private OrganizationMapper organizationMapper;
 	@Autowired
 	private MyFileMapper myFileMapper;
+	@Autowired
+	private UserMapper userMapper;
     
 	@Override
 	public PageInfo queryShareOrgList(PageInfo page, Long shareId) {
@@ -64,9 +70,11 @@ public class ShareOrgServiceImpl extends ServiceImpl<ShareOrgMapper, ShareOrg> i
 	public List<MyFile> queryOrgFiles(Long orgId, Long id) {
 		List<MyFile> files = new ArrayList<>();
 		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
+    	UserVo userInfo = userMapper.selectUserVoById(user.getId());
 		if(id == 1){
 			//点击机构树查询文件
-			fileSet = shareOrgMapper.queryOrgFiles(orgId);
+			fileSet = shareOrgMapper.queryFilesByOrg(userInfo.getOrganizationId(), orgId);
 			files.addAll(fileSet);
 		}else{
 			//点击右侧文件查询子文件

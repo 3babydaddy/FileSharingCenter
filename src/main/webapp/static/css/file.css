@@ -118,6 +118,7 @@
 .ppt,.pptx{background:url(../file_icon/ppt.png) no-repeat;}
 .avi{background:url(../file_icon/video.png) no-repeat;}
 .adir{background:url(../file_icon/adir.png) no-repeat;}
+.adir_readonly{background:url(../file_icon/adir_readonly.png) no-repeat;}
 .txt{background:url(../file_icon/txt.png) no-repeat;}
 .pdf{background:url(../file_icon/pdf.png) no-repeat;}
 .doc,.docx{background:url(../file_icon/doc.png) no-repeat;}

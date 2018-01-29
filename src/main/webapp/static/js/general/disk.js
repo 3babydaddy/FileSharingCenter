@@ -28,11 +28,15 @@ $(function(){
 		return myFiles;
 	};
 	/* zTree的context */
+	var treeRootId = $("#fileOrgRootId").val();
 	var setting = {
 		async : {
 			enable : true,
+			//type:"get",
 			autoParam : [ "id" ],
-			url : ctxPath + '/myFile/list',
+			//url : ctxPath + '/myFile/list',
+			otherParam: {'flag': function(){return "baseInfo"}, 'treeRootId':function(){return treeRootId}}, 
+			url : ctxPath + '/myFile/getSpaceFileList',
 			dataFilter : dataFilter
 		},
 		data:{keep:{parent:true}},
@@ -89,8 +93,8 @@ $(function(){
 		name : "我的网盘",
 		open : true,
 		// TODO:加载某个人/机构的树形，通过treeRootId来加载
-		//id : {treeRootId},
-		id : 1,
+		id : treeRootId,
+		//id : 1,
 		type : "adir"
 	} ];
 	
@@ -245,7 +249,7 @@ $(function(){
 			if (result) {
 				var url = null, data = null;
 				if (form.hasClass("mkdir")) {
-					url = ctxPath + "/myFile/mkdir/" + $("#folder").data("folder_id");
+					url = ctxPath + "/myFile/mkdir/" + $("#folder").data("folder_id") +"/"+$("#createMkdirType").val();
 					data = form.serialize();
 					$.post(url,data,function(d) {
 						addFile(d);
@@ -315,32 +319,45 @@ $(function(){
 	//处室共享
 	$("#chg_base_info").click(function() {
 		var fileRootId = $("#fileOrgRootId").val();
+		//更改新建文件夹类型
+		$("#createMkdirType").val("0");
 		clickSpaceTree("baseInfo", fileRootId);
 	});
 	//个人共享
 	$("#chg_portrait").click(function() {
 		var fileRootId = $("#fileRootId").val();
+		//更改新建文件夹类型
+		$("#createMkdirType").val("1");
 		clickSpaceTree("portrait", fileRootId);
 	});
 	//空间共享
 	$("#chg_email").click(function() {
 		var fileRootId = $("#fileRootId").val();
+		//更改新建文件夹类型
+		$("#createMkdirType").val("1");
 		clickSpaceTree("email", fileRootId);
 	});
 	
 	document.onmousedown = function(event){ 
-		var yesNoRole = $("#pass").val();
 		var target = event.target || event.srcElement;
 		var text = target.innerText;
-		if(text.indexOf('处室共享') >= 0 && yesNoRole != 'pass'){
-			document.getElementById("mkdir").style.display='none';
-		}else{
-			document.getElementById("mkdir").style.display='';
-		}
+		initPage(text);
 	}
+	//初始化页面；对“新建文件夹”按钮进行操作
+	initPage("");
+	
 });  
 	
 //========================== 页面加载事件 ========================== //
+
+function initPage(text){
+	var yesNoRole = $("#pass").val();
+	if((text.indexOf('处室共享') >= 0 || text == "") && yesNoRole != 'pass'){
+		document.getElementById("mkdir").style.display='none';
+	}else{
+		document.getElementById("mkdir").style.display='';
+	}
+}
 
 var dialog = dialog({
 	height : 'auto',
@@ -400,11 +417,14 @@ listFiles = function(tNode,type) {
 		}
 		if(files[i].attribute == undefined){
 			files[i].attribute = '02';
+		}else if(files[i].attribute == '01' ){
+			files[i].type = 'adir_readonly';
 		}
 		file.find(".file_icon").
 			addClass(files[i].type + " lock_" + files[i].isLock + " share_" + files[i].isShare + " role_" + files[i].attribute).
 			data("file_id",files[i].id).
 			data("node_id",files[i].tId).
+			data("shareType",files[i].filecreatetype).
 			attr("title",files[i].name);
 		file.find(".file_name").html(strLimit(files[i].name,20));
 		folder.append(file);
@@ -654,9 +674,9 @@ shareFile = function (f){
 	var tNode = zTree.getNodeByTId(f.data("node_id"));
 	parent.$.modalDialog({
         title : '共享设置',
-        width : 650,
+        width : 750,
         height : 500,
-        href : ctxPath + '/myFile/share?id=' + tNode.id,
+        href : ctxPath + '/myFile/share?id=' + tNode.id + '&shareType=' + tNode.filecreatetype,
         buttons : [ {
             text : '关闭',
             handler : function() {
@@ -751,11 +771,11 @@ var folderItemReadOnly = [ {
 
 
 /* 文件的右键菜单 */
-$(".share_0,.role_02").not(".adir").contextmenu({
+$(".share_0.role_02:not(.adir)").contextmenu({
 	items : fileItems
 });
 
-$(".share_0,.role_01").not(".adir").contextmenu({
+$(".share_0.role_01:not(.adir)").contextmenu({
 	items : fileItemsReadOnly
 });
 
@@ -780,11 +800,11 @@ $(".share_1").contextmenu({
 });
 
 /* 文件夹右键菜单 */
-$(".adir,.role_02").not(".lock_1,.lock_2").contextmenu({
+$(".adir.role_02:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItems
 });
 
-$(".adir,.role_01").not(".lock_1,.lock_2").contextmenu({
+$(".adir.role_01:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItemReadOnly
 });
 

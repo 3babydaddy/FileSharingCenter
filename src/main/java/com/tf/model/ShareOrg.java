@@ -31,6 +31,10 @@ public class ShareOrg implements Serializable {
 	@TableField(value = "share_user")
 	private Long shareUser;
 	
+	//共享人类型
+	@TableField(value = "share_type")
+	private Long shareType;
+	
 	//权限 
 	private String attribute;
 	
@@ -157,6 +161,16 @@ public class ShareOrg implements Serializable {
 
 	public void setCreateTimeStr(String createTimeStr) {
 		this.createTimeStr = createTimeStr;
+	}
+
+
+	public Long getShareType() {
+		return shareType;
+	}
+
+
+	public void setShareType(Long shareType) {
+		this.shareType = shareType;
 	}
 
 

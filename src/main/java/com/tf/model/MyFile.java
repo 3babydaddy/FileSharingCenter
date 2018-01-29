@@ -30,7 +30,8 @@ public class MyFile implements Comparable<MyFile> {
 	private String shareUrl;
 	@TableField(value = "createdate")
 	private String createDate;
-
+	private String filecreatetype;
+	
 	@TableField(exist = false)
 	private String attribute;
 	@TableField(exist = false)
@@ -180,7 +181,15 @@ public class MyFile implements Comparable<MyFile> {
 		this.orgRootId = orgRootId;
 	}
 
-	 public MyFile() {
+	 public String getFilecreatetype() {
+		return filecreatetype;
+	}
+
+	public void setFilecreatetype(String filecreatetype) {
+		this.filecreatetype = filecreatetype;
+	}
+
+	public MyFile() {
 	       
 	 }
 	 

@@ -34,6 +34,8 @@ public interface ShareOrgMapper extends BaseMapper<ShareOrg> {
     @ResultType(MyFile.class)
 	TreeSet<MyFile> queryOrgFiles(@Param("orgId") Long orgId);
 	
+	TreeSet<MyFile> queryFilesByOrg(@Param("orgId") Integer orgId, @Param("shareOrgId") Long shareOrgId);	
+	
 	TreeSet<MyFile> querySameOrgFiles(@Param("orgId") Long orgId, @Param("userIdList") List<String> userIdList);
 	
 }
