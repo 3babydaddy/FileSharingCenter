@@ -1,6 +1,7 @@
 package com.tf.mapper;
 
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.tf.model.MyFile;
 import com.tf.model.ShareOrg;
 
 /**
@@ -25,4 +27,13 @@ public interface ShareOrgMapper extends BaseMapper<ShareOrg> {
 	
 	@Update("update share_to_org set status = 0 where id = #{shareId}")
 	int shareOrgDel(@Param("shareId") String shareId);
+	
+
+	@Select("select m.*, o.attribute as attribute from share_to_org o LEFT JOIN myfile m on o.file_id = m.id "
+			+ "where o.org_id = #{orgId} and status = 1")
+    @ResultType(MyFile.class)
+	TreeSet<MyFile> queryOrgFiles(@Param("orgId") Long orgId);
+	
+	TreeSet<MyFile> querySameOrgFiles(@Param("orgId") Long orgId, @Param("userIdList") List<String> userIdList);
+	
 }

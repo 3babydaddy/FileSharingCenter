@@ -1,7 +1,11 @@
 package com.tf.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +59,22 @@ public class ShareOrgServiceImpl extends ServiceImpl<ShareOrgMapper, ShareOrg> i
 	public void shareOrgDel(String shareId) {
 		shareOrgMapper.shareOrgDel(shareId);
 	}
-   
+
+	@Override
+	public List<MyFile> queryOrgFiles(Long orgId, Long id) {
+		List<MyFile> files = new ArrayList<>();
+		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		if(id == 1){
+			//点击机构树查询文件
+			fileSet = shareOrgMapper.queryOrgFiles(orgId);
+			files.addAll(fileSet);
+		}else{
+			//点击右侧文件查询子文件
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			files = myFileMapper.selectByMap(map);
+		}
+		return files;
+	}
 
 }

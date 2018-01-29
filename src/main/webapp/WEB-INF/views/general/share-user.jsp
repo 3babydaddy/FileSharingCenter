@@ -34,9 +34,9 @@ $("#shareUsers").combobox({
 	function submitInfo(){
 	
 		var userId = $("input[name='shareUsers']")[0].value;
-		var shareRoleAtt = $('#shareRoleAtt').val();
+		var shareRoleAtt = $('#shareRoleAtt').combobox('getValue');
 		var fileId = $('#fileId').val();
-		if(userId == null){
+		if(userId == null || userId == ''){
 			alert('请选择用户');
 			return;
 		}
@@ -123,8 +123,8 @@ $("#shareUsers").combobox({
 				<td>权限:</td>
                 <td>
                 	<select id="shareRoleAtt" name="shareRoleAtt" style="width: 80px; height: 29px;" class="easyui-validatebox easyui-combobox" data-options="required:true">
-                		<option value="0">只读</option>
-                  		<option value="1">读写</option>
+                		<option value="01">只读</option>
+                  		<option value="02">读写</option>
                 	</select>
                 </td>
                 <td>
@@ -134,7 +134,7 @@ $("#shareUsers").combobox({
 			<input id="fileId" type="hidden" value="${fileId }" />
 		</table>
 	</div>
-	<div data-options="region:'south',split:true"  style="height: 70%;">
-		<div id="gridPanel"></div>
+	<div data-options="region:'south',split:true"  style="width:100%;height:70%;">
+		<div style="width:98%;" id="gridPanel"></div>
 	</div>
 </div>

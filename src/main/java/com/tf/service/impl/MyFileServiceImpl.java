@@ -2,10 +2,13 @@ package com.tf.service.impl;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,18 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.mapper.MyFileMapper;
+import com.tf.mapper.OrganizationMapper;
+import com.tf.mapper.ShareDiskInfoMapper;
 import com.tf.mapper.ShareOrgMapper;
 import com.tf.mapper.ShareUserMapper;
+import com.tf.mapper.UserMapper;
 import com.tf.model.MyFile;
+import com.tf.model.Organization;
+import com.tf.model.ShareDiskInfo;
 import com.tf.model.ShareOrg;
 import com.tf.model.ShareUser;
+import com.tf.model.User;
+import com.tf.model.vo.UserVo;
 import com.tf.service.IMyFileService;
 
 @Service
@@ -31,6 +41,12 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	private ShareUserMapper shareUserMapper;
 	@Autowired
 	private ShareOrgMapper shareOrgMapper;
+	@Autowired
+	private ShareDiskInfoMapper shareDiskInfoMapper;
+	@Autowired
+	private OrganizationMapper organizationMapper;
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public List<MyFile> listFiles(Long parent_id) {
@@ -104,8 +120,21 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			}
 		}
 		// TODO：更新磁盘信息mydiskinfo
-
-		return "";
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user.getId());
+		List<MyFile> files = mapper.selectByMap(map);
+		long usedsize = 0;
+		long filenumber = 0;
+		for(MyFile file : files){
+			usedsize = usedsize + file.getSize();
+			filenumber++;
+		}
+		ShareDiskInfo diskInfo = shareDiskInfoMapper.getUserDiskInfo(user.getId());
+		diskInfo.setUsedsize((long)Math.ceil(usedsize/1048576));
+		diskInfo.setFilenumber(filenumber);
+		shareDiskInfoMapper.updateAllColumnById(diskInfo);
+		return (diskInfo.getTotalsize() - usedsize) + "";
 	}
 
 	@Override
@@ -159,5 +188,97 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	public List<ShareUser> queryShareUserList() {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return shareUserMapper.queryShareUserList(user.getId());
+	}
+
+	@Override
+	public MyFile getInfoByName(UserVo user) {
+		MyFile fileTem = new MyFile();
+		fileTem.setName("#"+user.getId());
+		MyFile file = mapper.selectOne(fileTem);
+		fileTem.setName("#"+user.getOrganizationId());
+		fileTem = mapper.selectOne(fileTem);
+		file.setOrgRootId(fileTem.getId()+"");
+		return file;
+	}
+
+	@Override
+	public List<MyFile> getSpaceFileList(String flag, long id, long treeRootId) {
+		List<MyFile> files = new ArrayList<>();
+		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		//获取当前用户
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		
+		if("baseInfo".equals(flag) && id == treeRootId){
+			//处室空间
+			User userInfo = userMapper.selectById(user.getId());
+			Organization orgInfo = organizationMapper.selectById(userInfo.getOrganizationId());
+			//查询出本部门中的处室管理员
+			List<String> userIdList = userMapper.getUserIdList(orgInfo.getId());
+			if(userIdList.size() > 0){
+				//分享处室
+				TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(orgInfo.getId(), userIdList);
+				fileSet.addAll(filesByOrg);
+				//分享个人
+				TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
+				fileSet.addAll(filesByUser);
+				//处室管理员新建
+				TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#"+orgInfo.getId());
+				fileSet.addAll(filesByCreate);
+				Iterator<MyFile> it = fileSet.iterator();
+			    while (it.hasNext()) {
+			    	MyFile file = it.next();
+			    	boolean sign = this.removeBaseInfo(file, "#"+orgInfo.getId());
+			    	if(sign){
+			    		it.remove();
+			    	}
+			    }
+			}
+		}else if("portrait".equals(flag) && id == treeRootId){
+			//个人空间
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			files = mapper.selectByMap(map);
+			return files;
+		}else if("email".equals(flag) && id == treeRootId){
+			//共享空间
+			User userInfo = userMapper.selectById(user.getId());
+			Organization orgInfo = organizationMapper.selectById(userInfo.getOrganizationId());
+			//分享处室及上级
+			fileSet = this.getOrgFileList(orgInfo);
+			//分享个人
+			TreeSet<MyFile> filesByUser = shareUserMapper.getFileInfoList(user.getId());
+			fileSet.addAll(filesByUser);
+		}else{
+			//文件树查询
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			files = mapper.selectByMap(map);
+		}
+		files.addAll(fileSet);
+		return files;
+	}
+	
+	private TreeSet<MyFile> getOrgFileList(Organization orgInfo){
+		TreeSet<MyFile> files = new TreeSet<MyFile>();
+		TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgInfo.getId());
+		files.addAll(filesByOrg);
+		
+		Organization org = new Organization();
+		org.setId(orgInfo.getPid());
+		Organization pidOrg = organizationMapper.selectOne(org);
+		if(pidOrg.getPid() != null){
+			this.getOrgFileList(pidOrg);
+		}
+		return files;
+	}
+	
+	private boolean removeBaseInfo(MyFile file, String name){
+    	if(file.getParent_id() != null){
+    		MyFile myFile = mapper.selectById(file.getParent_id());
+    		this.removeBaseInfo(myFile, name);
+    	}else if(file.getParent_id() == null && !name.equals(file.getName())){
+    		return true;
+    	}
+    	return false;
 	}
 }

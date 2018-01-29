@@ -13,9 +13,11 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.result.PageInfo;
 import com.tf.commons.utils.BeanUtils;
 import com.tf.commons.utils.StringUtils;
+import com.tf.mapper.MyFileMapper;
 import com.tf.mapper.ShareDiskInfoMapper;
 import com.tf.mapper.UserMapper;
 import com.tf.mapper.UserRoleMapper;
+import com.tf.model.MyFile;
 import com.tf.model.ShareDiskInfo;
 import com.tf.model.User;
 import com.tf.model.UserRole;
@@ -36,6 +38,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserRoleMapper userRoleMapper;
     @Autowired
     private ShareDiskInfoMapper diskMapper;
+    @Autowired
+    private MyFileMapper myFileMapper;
     
     @Override
     public List<User> selectByLoginName(UserVo userVo) {
@@ -69,6 +73,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         diskInfo.setTotalsize(userVo.getInitStorageSize().longValue());
         diskInfo.setStatus("0");
         diskMapper.insert(diskInfo);
+        
+        MyFile file = new MyFile();
+        file.setUser_id(id);
+        file.setName("#"+id);
+        file.setSize(0);
+        file.setType("adir");
+        file.setPath("/");
+        file.setIsLock(0);
+        file.setIsShare(0);
+        file.setShareDownload(0);
+        myFileMapper.insert(file);
     }
 
     @Override
@@ -130,6 +145,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void deleteUserById(Long id) {
         this.deleteById(id);
         userRoleMapper.deleteByUserId(id);
+        
     }
 
 }

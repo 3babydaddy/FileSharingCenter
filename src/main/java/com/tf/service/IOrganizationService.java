@@ -19,5 +19,7 @@ public interface IOrganizationService extends IService<Organization> {
     List<Ztree> selectzTree();
 
     List<Organization> selectTreeGrid();
+    
+    Organization getOrgInfo(Long orgId);
 
 }

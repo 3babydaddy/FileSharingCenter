@@ -11,6 +11,7 @@ var zTree;
 
 //========================== 页面加载事件 ========================== //
 $(function(){ 
+	
 	/* zTree处理异步加载返回得的数据 */
 	dataFilter = function(tId, pNode, myFiles) {
 		if (myFiles) {
@@ -70,9 +71,10 @@ $(function(){
         parentField : 'pid',
         lines : true,
         onClick : function(node) {
-            userDataGrid.datagrid('load', {
-                organizationId: node.id
-            });
+//            userDataGrid.datagrid('load', {
+//                organizationId: node.id
+//            });
+        	clickTree(node.id);
         },
         onLoadSuccess:function()  
         {
@@ -113,15 +115,19 @@ $(function(){
 	});
 	
 	/* 进度条 */
+	var totalsize = $("#totalsize").val();
+	var usedsize = $("#usedsize").val();
 	$("#space_bar").progressBar({
 		width : 265,
 		height : 15,
-		unit : "KB",
-		totalProgress : Number("1024000000" / (1024)).toFixed(0),
+		unit : "MB",
+		//totalProgress : Number("1024000000" / (1024)).toFixed(0),
+		totalProgress : Number(totalsize).toFixed(0),
 		currentProgress : 50
 	});
+	
 	var pBar = $("#space_bar").getProgressBar();
-	pBar.setProgress(Number(255000000/(1024)).toFixed(0));
+	pBar.setProgress(Number(usedsize).toFixed(0));
 	
 	/* 上传按钮点击事件 */
 	$("#upload_button").uploadify({
@@ -305,6 +311,33 @@ $(function(){
 		//TODO:列表数据处理
 		var folder = $("#folder ul");
 	});
+	
+	//处室共享
+	$("#chg_base_info").click(function() {
+		var fileRootId = $("#fileOrgRootId").val();
+		clickSpaceTree("baseInfo", fileRootId);
+	});
+	//个人共享
+	$("#chg_portrait").click(function() {
+		var fileRootId = $("#fileRootId").val();
+		clickSpaceTree("portrait", fileRootId);
+	});
+	//空间共享
+	$("#chg_email").click(function() {
+		var fileRootId = $("#fileRootId").val();
+		clickSpaceTree("email", fileRootId);
+	});
+	
+	document.onmousedown = function(event){ 
+		var yesNoRole = $("#pass").val();
+		var target = event.target || event.srcElement;
+		var text = target.innerText;
+		if(text.indexOf('处室共享') >= 0 && yesNoRole != 'pass'){
+			document.getElementById("mkdir").style.display='none';
+		}else{
+			document.getElementById("mkdir").style.display='';
+		}
+	}
 });  
 	
 //========================== 页面加载事件 ========================== //
@@ -365,12 +398,14 @@ listFiles = function(tNode,type) {
 		if(files[i].type == "adir"){
 			file.addClass("folder");
 		}
+		if(files[i].attribute == undefined){
+			files[i].attribute = '02';
+		}
 		file.find(".file_icon").
-			addClass(files[i].type + " lock_" + files[i].isLock + " share_" + files[i].isShare).
+			addClass(files[i].type + " lock_" + files[i].isLock + " share_" + files[i].isShare + " role_" + files[i].attribute).
 			data("file_id",files[i].id).
 			data("node_id",files[i].tId).
 			attr("title",files[i].name);
-	
 		file.find(".file_name").html(strLimit(files[i].name,20));
 		folder.append(file);
 	}
@@ -616,11 +651,12 @@ deleteLock = function(f) {
 };
 
 shareFile = function (f){
+	var tNode = zTree.getNodeByTId(f.data("node_id"));
 	parent.$.modalDialog({
         title : '共享设置',
-        width : 630,
+        width : 650,
         height : 500,
-        href : ctxPath + '/myFile/share?id=' + 2,
+        href : ctxPath + '/myFile/share?id=' + tNode.id,
         buttons : [ {
             text : '关闭',
             handler : function() {
@@ -665,6 +701,14 @@ var fileItems = [ {
 	}
 } ];
 
+var fileItemsReadOnly = [ {
+	text : "下载",
+	icon : basePath + "/static/img/download.png",
+	action : function(tar) {
+		window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
+	}
+} ];
+
 var folderItems = [ {
 		text : "打开",
 		icon : basePath + "/static/img/open.png",
@@ -696,10 +740,26 @@ var folderItems = [ {
 		    });
 		}
 } ];
+
+var folderItemReadOnly = [ {
+	text : "打开",
+	icon : basePath + "/static/img/open.png",
+	action : function(tar) {
+		openFile($(tar));
+	}
+} ];
+
+
 /* 文件的右键菜单 */
-$(".share_0:not(.adir)").contextmenu({
+$(".share_0,.role_02").not(".adir").contextmenu({
 	items : fileItems
 });
+
+$(".share_0,.role_01").not(".adir").contextmenu({
+	items : fileItemsReadOnly
+});
+
+
 $(".share_1").contextmenu({
 	items : function() {
 		fileItems[1] = {
@@ -718,10 +778,16 @@ $(".share_1").contextmenu({
 		return fileItems;
 	}()
 });
+
 /* 文件夹右键菜单 */
-$(".adir:not(.lock_1):not(lock_2)").contextmenu({
+$(".adir,.role_02").not(".lock_1,.lock_2").contextmenu({
 	items : folderItems
 });
+
+$(".adir,.role_01").not(".lock_1,.lock_2").contextmenu({
+	items : folderItemReadOnly
+});
+
 $(".adir:not(.lock_0)").contextmenu({
 	items : function() {
 		folderItems[3] = {
@@ -809,3 +875,101 @@ function logout(){
     });
 }
 
+function clickTree(orgId){
+	//debugger;
+	var setting = {
+			async : {
+				enable : true,
+				autoParam : [ "id" ],
+				otherParam: {'orgId': function(){return orgId}}, 
+				url : ctxPath + '/myFile/orgByFileList',
+				dataFilter : dataFilter
+			},
+			data:{keep:{parent:true}},
+			callback : {
+				beforeAsync : function(tId, tNode) {
+					if (tNode.isLock == 1) {
+						return false;
+					}
+					return true;
+				},
+				onAsyncSuccess : function(event, treeId, tNode, msg) {
+					if (tNode.isClick) {
+						listFiles(tNode);
+					}
+				}
+				
+			}
+		};
+	/* 初始化的sTree */
+	var zNodes = [ {
+		isParent : true,
+		name : "我的网盘",
+		open : true,
+		// TODO:加载某个人/机构的树形，通过treeRootId来加载
+		//id : {treeRootId},
+		id : 1,
+		type : "adir"
+	} ];
+	
+	/* 初始化zTree并加载根目录 */
+	zTree = $.fn.zTree.init($("#dirTree"), setting, zNodes);
+	var root = zTree.getNodeByTId("dirTree_1",true);
+	//zTree.reAsyncChildNodes(root, "refresh",true);
+	//默认展开第一节点
+	zTree.reAsyncChildNodes(root, "refresh");
+	// TODO:加载某个人/机构的树形，通过treeRootId来加载
+	//$("#root span").data("node_id", "dirTree_1").data("file_id","${treeRootId}");
+	$("#root span").data("node_id", "dirTree_1").data("file_id",1);
+	root.isClick = true;
+}
+
+
+function clickSpaceTree(flag, treeRootId){
+	//debugger;
+	var setting = {
+			async : {
+				enable : true,
+				autoParam : [ "id" ],
+				otherParam: {'flag': function(){return flag}, 'treeRootId':function(){return treeRootId}}, 
+				url : ctxPath + '/myFile/getSpaceFileList',
+				dataFilter : dataFilter
+			},
+			data:{keep:{parent:true}},
+			callback : {
+				beforeAsync : function(tId, tNode) {
+					if (tNode.isLock == 1) {
+						return false;
+					}
+					return true;
+				},
+				onAsyncSuccess : function(event, treeId, tNode, msg) {
+					if (tNode.isClick) {
+						listFiles(tNode);
+					}
+				}
+				
+			}
+		};
+	/* 初始化的sTree */
+	var zNodes = [ {
+		isParent : true,
+		name : "我的网盘",
+		open : true,
+		// TODO:加载某个人/机构的树形，通过treeRootId来加载
+		//id : {treeRootId},
+		id : treeRootId,
+		type : "adir"
+	} ];
+	
+	/* 初始化zTree并加载根目录 */
+	zTree = $.fn.zTree.init($("#dirTree"), setting, zNodes);
+	var root = zTree.getNodeByTId("dirTree_1",true);
+	//zTree.reAsyncChildNodes(root, "refresh",true);
+	//默认展开第一节点
+	zTree.reAsyncChildNodes(root, "refresh");
+	// TODO:加载某个人/机构的树形，通过treeRootId来加载
+	//$("#root span").data("node_id", "dirTree_1").data("file_id","${treeRootId}");
+	$("#root span").data("node_id", "dirTree_1").data("file_id",1);
+	root.isClick = true;
+}

@@ -69,5 +69,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return organizationMapper.selectList(wrapper);
     }
 
+	@Override
+	public Organization getOrgInfo(Long orgId) {
+		return organizationMapper.selectById(orgId);
+	}
+
 
 }

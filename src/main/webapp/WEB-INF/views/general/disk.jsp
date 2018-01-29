@@ -48,15 +48,20 @@
 					</div>
 					<div id="user_detail">
 						<h4 id="name">天津市委组织部</h4>
-						<h4 id="name">信息管理处 刘军</h4>
-						<span id="gender gender_"></span> <span>共11个资源</span>
+						<h4 id="name">${org.name}&nbsp;&nbsp;${user.name }</h4>
+						<span id="gender gender_"></span> <span>共${empty disk.filenumber ? 0 : disk.filenumber}个资源</span>
 					</div>
 				</div>
 				<div id="netdisk">
 					<span id="space_bar">空间概览</span>
+					<input id="totalsize" type="hidden" value="${empty disk.totalsize ? 0 : disk.totalsize}" />
+					<input id="usedsize" type="hidden" value="${empty disk.usedsize ? 0 : disk.usedsize}" />
 				</div>
 				<div id="chg_base_info">
 					<h3>处室共享</h3>
+					<shiro:hasRole name="org_admin"> 
+					    <input type="hidden" value="pass" id="pass" />
+					</shiro:hasRole>
 				</div>
 				<div id="chg_portrait">
 					<h3>个人共享</h3>
@@ -64,12 +69,14 @@
 				<div id="chg_email">
 					<h3>共享空间</h3>
 				</div>
+				<input type="hidden" id="fileRootId" value="${fileRootId }" />
+				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree" style="height:301px">
 					<ul id="orgTree" class="ztree"></ul>
 				</div>
 				<!-- 文件夹树形 -->
-				<div id="dir_tree" style="">
+				<div id="dir_tree" style="display:none;">
 					<ul id="dirTree" class="ztree"></ul>
 				</div>
 			</div>

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.tf.model.MyFile;
 import com.tf.model.ShareOrg;
 import com.tf.model.ShareUser;
+import com.tf.model.vo.UserVo;
 
 public interface IMyFileService extends IService<MyFile> {
 
@@ -38,5 +39,8 @@ public interface IMyFileService extends IService<MyFile> {
 	List<ShareOrg> queryShareOrgList();
 	
 	List<ShareUser> queryShareUserList();
+	
+	MyFile getInfoByName(UserVo id);
 
+	List<MyFile> getSpaceFileList(String flag, long id, long treeRootId);
 }

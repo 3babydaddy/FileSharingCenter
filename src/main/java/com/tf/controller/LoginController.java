@@ -22,6 +22,14 @@ import com.tf.commons.csrf.CsrfToken;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.shiro.captcha.DreamCaptcha;
 import com.tf.commons.utils.StringUtils;
+import com.tf.model.MyFile;
+import com.tf.model.Organization;
+import com.tf.model.ShareDiskInfo;
+import com.tf.model.vo.UserVo;
+import com.tf.service.IMyFileService;
+import com.tf.service.IOrganizationService;
+import com.tf.service.IShareDiskInfoService;
+import com.tf.service.IUserService;
 
 /**
  * @description：登录退出
@@ -32,6 +40,15 @@ import com.tf.commons.utils.StringUtils;
 public class LoginController extends BaseController {
     @Autowired
     private DreamCaptcha dreamCaptcha;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IOrganizationService organizationService;
+    @Autowired
+    private IShareDiskInfoService shareDiskInfoService;
+    @Autowired
+    private IMyFileService myFileService;
+    
     /**
      * 首页
      *
@@ -62,7 +79,15 @@ public class LoginController extends BaseController {
     @GetMapping("/disk")
     public String disk(Model model) {
     	ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
-    	model.addAttribute("user", user);
+    	UserVo userInfo = userService.selectVoById(user.getId());
+    	Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
+    	ShareDiskInfo disk = shareDiskInfoService.getUserDiskInfo(userInfo.getId());
+		MyFile file = myFileService.getInfoByName(userInfo);
+    	model.addAttribute("user", userInfo);
+    	model.addAttribute("org", orgInfo);
+    	model.addAttribute("disk", disk);
+    	model.addAttribute("fileRootId", file.getId());
+    	model.addAttribute("fileOrgRootId", file.getOrgRootId());
         return "/general/disk";
     }
 

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tf.commons.base.BaseController;
+import com.tf.model.MyFile;
 import com.tf.model.Organization;
+import com.tf.service.IMyFileService;
 import com.tf.service.IOrganizationService;
 
 /**
@@ -27,7 +29,8 @@ public class OrganizationController extends BaseController {
 
     @Autowired
     private IOrganizationService organizationService;
-
+    @Autowired
+    private IMyFileService myFileService;
     /**
      * 部门管理主页
      *
@@ -92,6 +95,17 @@ public class OrganizationController extends BaseController {
     public Object add(@Valid Organization organization) {
         organization.setCreateTime(new Date());
         organizationService.insert(organization);
+        
+        MyFile file = new MyFile();
+        file.setUser_id(organization.getId());
+        file.setName("#"+organization.getId());
+        file.setSize(0);
+        file.setType("adir");
+        file.setPath("/");
+        file.setIsLock(0);
+        file.setIsShare(0);
+        file.setShareDownload(0);
+        myFileService.insert(file);
         return renderSuccess("添加成功！");
     }
 

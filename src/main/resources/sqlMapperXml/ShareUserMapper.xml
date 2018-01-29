@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tf.mapper.ShareUserMapper">
+  <resultMap id="BaseResultMap" type="com.tf.model.ShareUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="file_id" jdbcType="BIGINT" property="fileId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="share_user" jdbcType="BIGINT" property="shareUser" />
+    <result column="attribute" jdbcType="VARCHAR" property="attribute" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, file_id, user_id, share_user, attribute, create_time, creator, status
+  </sql>
+  <select id="getSameUserFiles" resultType="com.tf.model.MyFile">
+  	select 
+  		m.*, 
+  		o.attribute as attribute 
+  	 from share_to_user o 
+  	 	  LEFT JOIN myfile m on o.file_id = m.id 
+  		where o.user_id = #{userId} and status = 1 
+  		and o.share_user in 
+  		 <foreach item="item" collection="userIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+  		
+  </select>
+</mapper>

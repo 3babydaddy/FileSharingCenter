@@ -4,6 +4,8 @@ import com.tf.model.ShareDiskInfo;
 import com.tf.mapper.ShareDiskInfoMapper;
 import com.tf.service.IShareDiskInfoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +18,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ShareDiskInfoServiceImpl extends ServiceImpl<ShareDiskInfoMapper, ShareDiskInfo> implements IShareDiskInfoService {
+
+	@Autowired
+	private ShareDiskInfoMapper shareDiskInfoMapper;
+	
+	@Override
+	public ShareDiskInfo getUserDiskInfo(Long userId) {
+		return shareDiskInfoMapper.getUserDiskInfo(userId);
+	}
 	
 }

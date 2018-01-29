@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * 
  */
 @TableName("myfile")
-public class MyFile {
+public class MyFile implements Comparable<MyFile> {
 	private Long id;
 	private Long user_id;
 	private Long parent_id;
@@ -31,6 +31,11 @@ public class MyFile {
 	@TableField(value = "createdate")
 	private String createDate;
 
+	@TableField(exist = false)
+	private String attribute;
+	@TableField(exist = false)
+	private String orgRootId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -158,4 +163,44 @@ public class MyFile {
 	public String getCreateDate() {
 		return createDate;
 	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
+	}
+
+	public String getOrgRootId() {
+		return orgRootId;
+	}
+
+	public void setOrgRootId(String orgRootId) {
+		this.orgRootId = orgRootId;
+	}
+
+	 public MyFile() {
+	       
+	 }
+	 
+	 public MyFile(Long id, String attribute) {
+		 super();
+		 this.id = id;
+		 this.attribute = attribute;
+	 }
+	
+	@Override
+	public int compareTo(MyFile o) {
+		int flag = -1;
+		if(this.getId() == o.getId()){
+			if(o.getAttribute() != null && this.getAttribute() != null && (o.getAttribute().equals(this.getAttribute()))){
+				flag = 0;
+			}
+		}else{
+			return 1;
+		}
+		return flag;
+	}
+	
 }

@@ -28,9 +28,11 @@ import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.commons.utils.UploadHelper;
 import com.tf.model.MyFile;
+import com.tf.model.ShareDiskInfo;
 import com.tf.model.ShareOrg;
 import com.tf.model.ShareUser;
 import com.tf.service.IMyFileService;
+import com.tf.service.IShareDiskInfoService;
 import com.tf.service.IShareOrgService;
 import com.tf.service.IShareUserService;
 
@@ -46,6 +48,8 @@ public class MyFileController {
 	private IShareOrgService shareOrgService;
 	@Autowired
 	private IShareUserService shareUserService;
+	@Autowired
+	private IShareDiskInfoService shareDiskInfoService;
 	
 	/**
 	 * 列出文件夹的内的所有子文件
@@ -57,6 +61,38 @@ public class MyFileController {
 	@ResponseBody
 	public Object listFiles(long id, String pwd) {
 		List<MyFile> myFiles = fileService.listFiles(id);
+		for (MyFile myFile : myFiles) {
+			myFile.setParent_id(null);
+		}
+		return myFiles;
+	}
+	
+	/**
+	 * 列出某个机构所有子文件
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/orgByFileList")
+	@ResponseBody
+	public Object queryOrgFiles(long orgId, long id) {
+		List<MyFile> myFiles = shareOrgService.queryOrgFiles(orgId, id);
+		for (MyFile myFile : myFiles) {
+			myFile.setParent_id(null);
+		}
+		return myFiles;
+	}
+	
+	/**
+	 * 查询处室、个人和共享的列表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getSpaceFileList")
+	@ResponseBody
+	public Object getSpaceFileList(String flag, long id, long treeRootId) {
+		List<MyFile> myFiles = fileService.getSpaceFileList(flag, id, treeRootId);
 		for (MyFile myFile : myFiles) {
 			myFile.setParent_id(null);
 		}
@@ -84,7 +120,7 @@ public class MyFileController {
 	 */
 	@RequestMapping("/upload/{folderid}")
 	@ResponseBody
-	public String upload(HttpServletRequest request, @PathVariable long folderid) {
+	public String upload(HttpServletRequest request, @PathVariable long folderid)throws Exception {
 		UploadHelper utils = new UploadHelper();
 		MultipartFile file = utils.getFiles(request).get(0);
 
@@ -118,6 +154,17 @@ public class MyFileController {
 			myFile.setDescription("");
 
 			fileService.insert(myFile);
+			
+			ShareDiskInfo diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId());
+			long usedSize = diskInfo.getUsedsize() + file.getSize();
+			long fileNumber = diskInfo.getFilenumber() + 1;
+			if(Math.ceil(usedSize/1048576) > diskInfo.getTotalsize()){
+				throw new Exception("空间不足");
+			}
+			diskInfo.setUsedsize((long)Math.ceil(usedSize/1048576));
+			diskInfo.setFilenumber(fileNumber);
+			shareDiskInfoService.updateAllColumnById(diskInfo);
+			
 			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
 			wrapper.setEntity(myFile);
 			MyFile selectOne = fileService.selectOne(wrapper);
@@ -158,8 +205,7 @@ public class MyFileController {
 	@RequestMapping("/delete/{fileId}")
 	@ResponseBody
 	public String delete(@PathVariable long fileId, String pwd) {
-		fileService.deleteFileOrFolder(fileId);
-		return "";
+		return fileService.deleteFileOrFolder(fileId);
 	}
 
 	/**

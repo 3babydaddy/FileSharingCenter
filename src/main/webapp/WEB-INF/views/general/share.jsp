@@ -23,14 +23,14 @@
 	function submitInfo(){
 		
 		var orgId = $("input[name='organizationId']")[0].value;
-		var shareRoleAtt = $('#shareRoleAtt').val();
+		var shareRoleAtt = $('#shareRoleAtt').combobox('getValue');
 		var fileId = $('#fileId').val();
-		if(orgId == null){
+		if(orgId == null || orgId == ''){
 			alert('请选择组群');
 			return;
 		}
 		
-		$.ajax({
+		 $.ajax({
 			url:'${path }/myFile/shareOrgSave',
 			type : 'post',
 			data:{fileId:fileId, orgId:orgId, attribute:shareRoleAtt},
@@ -42,7 +42,7 @@
 			 error: function(XMLHttpRequest, textStatus, errorThrown) {
 				 //debugger;
 			 },
-		});
+		}); 
 	}
 	
 	function loadData(){
@@ -101,7 +101,7 @@
 	<!-- <div data-options="region:'north',title:'共享文件设置',split:true" style="height: 100px;"></div> -->
 	<!-- <div data-options="region:'south',title:'South Title',split:true" style="height: 100px;"></div> -->
 	<!-- <div data-options="region:'east',title:'East',split:true" style="width: 100px;"></div> -->
-	<div data-options="region:'west',title:'类型',split:true" style="width: 30%; text-align: center; padding-top: 30px">
+	<div data-options="region:'west',title:'类型',split:true" style="width: 28%; text-align: center; padding-top: 30px">
 		<a id="linkBtnMan" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-man">共享给用户</a>
 		<a id="linkBtnGrop" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-company" style="margin-top: 15px">共享给群组</a>
 	</div>
@@ -115,8 +115,8 @@
 						<td>权限:</td>
 		                <td>
 		                	<select id="shareRoleAtt" name="shareRoleAtt" style="width: 80px; height: 29px;" class="easyui-validatebox easyui-combobox" data-options="required:true">
-		                		<option value="0">只读</option>
-		                  		<option value="1">读写</option>
+		                		<option value="01">只读</option>
+		                  		<option value="02">读写</option>
 		                	</select>
 		                </td>
 		                <td>
@@ -126,8 +126,8 @@
 				</table>
 				<input id="fileId" type="hidden" value="${fileId }" />
 			</div>
-			<div data-options="region:'south',split:true" style="width:100%;height: 70%;">
-				<div id="gridPanel"></div>
+			<div data-options="region:'south',split:true" style="width:100%;height:70%;">
+				<div style="width:98%;" id="gridPanel"></div>
 			</div>
 		</div>
 	</div>
