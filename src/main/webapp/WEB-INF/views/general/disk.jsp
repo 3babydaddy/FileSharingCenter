@@ -58,16 +58,16 @@
 					<input id="totalsize" type="hidden" value="${empty disk.totalsize ? 0 : disk.totalsize}" />
 					<input id="usedsize" type="hidden" value="${empty disk.usedsize ? 0 : disk.usedsize}" />
 				</div>
-				<div id="chg_base_info">
+				<div id="chg_base_info" class="menu_div">
 					<h3>处室共享</h3>
 					<shiro:hasRole name="org_admin"> 
 					    <input type="hidden" value="pass" id="pass" />
 					</shiro:hasRole>
 				</div>
-				<div id="chg_portrait">
+				<div id="chg_portrait" class="menu_div">
 					<h3>个人共享</h3>
 				</div>
-				<div id="chg_email">
+				<div id="chg_email" class="menu_div">
 					<h3>共享空间</h3>
 				</div>
 				<input type="hidden" id="fileRootId" value="${fileRootId }" />

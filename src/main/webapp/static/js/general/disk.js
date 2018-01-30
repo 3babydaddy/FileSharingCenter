@@ -346,6 +346,12 @@ $(function(){
 	//初始化页面；对“新建文件夹”按钮进行操作
 	initPage("");
 	
+	$(".menu_div").on("click",function(obj){
+		$(".menu_div").each(function(){
+			$(this).removeClass("div-active");
+		});
+		$(obj.currentTarget).addClass("div-active");
+	});
 });  
 	
 //========================== 页面加载事件 ========================== //

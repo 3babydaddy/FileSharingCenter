@@ -127,7 +127,7 @@
 	height: 51%;
 	overflow: auto;
 	width: 100%;
-	background: #FFF
+	/* background: #FFF */
 }
 
 #user_info, #netdisk, #dir_tree {
