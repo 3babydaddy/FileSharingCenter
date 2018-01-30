@@ -44,6 +44,11 @@ public class ShareUserServiceImpl extends ServiceImpl<ShareUserMapper, ShareUser
 			if(file != null){
 				info.setFileName(file.getName());
 			}
+			if("01".equals(info.getAttribute())){
+				info.setAttribute("只读");
+			}else if("02".equals(info.getAttribute())){
+				info.setAttribute("读写");
+			}
 			info.setCreateTimeStr(sdf.format(info.getCreateTime()));
 		}
 		page.setRows(list);

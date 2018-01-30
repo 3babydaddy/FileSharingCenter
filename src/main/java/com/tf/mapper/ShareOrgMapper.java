@@ -20,7 +20,8 @@ import com.tf.model.ShareOrg;
 public interface ShareOrgMapper extends BaseMapper<ShareOrg> {
 
 	@Select("select id as id, file_id as fileId, org_id as orgId, attribute as attribute,"
-			+ "create_time as createTime, creator as creator  from share_to_org where share_user = #{shareId} and status = '1'")
+			+ "create_time as createTime, creator as creator from share_to_org "
+			+ "where share_user = #{shareId} and status = '1' ORDER BY create_time desc")
     @ResultType(ShareOrg.class)
 	List<ShareOrg> queryShareOrgList(@Param("shareId") Long shareId);
 

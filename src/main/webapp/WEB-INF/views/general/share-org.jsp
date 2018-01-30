@@ -48,13 +48,14 @@
 				singleSelect : false,
 				remoteSort: true,
 				pagination:true,
+				fit: true,
 				nowrap:false,
 				columns : [ [
-					 {field :"fileName",title :"共享文件",width :"90", align:"center",formatter:ifNullShowHeng}
-					,{field :"orgName",title :"共享机构",width :"135", align:"center",formatter:ifNullShowHeng}
-		            ,{field :"creator",title :"创建人",width :"70", align:"center",formatter:ifNullShowHeng}
-		            ,{field :"createTimeStr",title :"共享时间",width :"70", align:"center",formatter:ifNullShowHeng}
-		            ,{field : 'statusAndDo',title : '操作',width : "60" ,align:'center',
+					 {field :"fileName",title :"共享文件",width :"26%", align:"center",formatter:ifNullShowHeng}
+					,{field :"orgName",title :"共享机构",width :"26%", align:"center",formatter:ifNullShowHeng}
+		            ,{field :"creator",title :"创建人",width :"26%", align:"center",formatter:ifNullShowHeng}
+		            ,{field :"attribute",title :"权限",width :"10%", align:"center",formatter:ifNullShowHeng}
+		            ,{field : 'statusAndDo',title : '操作',width : "10%" ,align:'center',
 						formatter:function(value,row,index){
 							return '<a href="javascript:void(0)" class="easyui-linkbutton" name="editBtn" onclick="deleteOption(\''+ row.id  + '\')">删除</a>';
 			            }	

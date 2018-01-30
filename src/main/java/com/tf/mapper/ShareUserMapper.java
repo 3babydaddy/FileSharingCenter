@@ -20,7 +20,8 @@ import com.tf.model.ShareUser;
 public interface ShareUserMapper extends BaseMapper<ShareUser> {
 
 	@Select("select id as id, file_id as fileId, user_id as userId, attribute as attribute, "
-			+ "create_time as createTime, creator as creator from share_to_user where share_user = #{shareId} and status = '1'")
+			+ "create_time as createTime, creator as creator from share_to_user "
+			+ "where share_user = #{shareId} and status = '1' ORDER BY create_time desc")
 	@ResultType(ShareUser.class)
 	List<ShareUser> queryShareUserList(@Param("shareId") Long shareId);
 

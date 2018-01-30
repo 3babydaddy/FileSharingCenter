@@ -54,6 +54,11 @@ public class ShareOrgServiceImpl extends ServiceImpl<ShareOrgMapper, ShareOrg> i
 			if(file != null){
 				info.setFileName(file.getName());
 			}
+			if("01".equals(info.getAttribute())){
+				info.setAttribute("只读");
+			}else if("02".equals(info.getAttribute())){
+				info.setAttribute("读写");
+			}
 			info.setCreateTimeStr(sdf.format(info.getCreateTime()));
 		}
 		page.setRows(list);
@@ -72,8 +77,9 @@ public class ShareOrgServiceImpl extends ServiceImpl<ShareOrgMapper, ShareOrg> i
 		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
 		ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
     	UserVo userInfo = userMapper.selectUserVoById(user.getId());
-		if(id == 1){
-			//点击机构树查询文件
+    	MyFile file = myFileMapper.selectById(id);
+		if(file.getName().equals("#"+userInfo.getOrganizationId())){
+			//点击机构树查询文件;根目录
 			fileSet = shareOrgMapper.queryFilesByOrg(userInfo.getOrganizationId(), orgId);
 			files.addAll(fileSet);
 		}else{

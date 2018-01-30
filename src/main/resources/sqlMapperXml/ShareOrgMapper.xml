@@ -31,15 +31,12 @@
   		
   </select>
   <select id="queryFilesByOrg" resultType="com.tf.model.MyFile">
-  	select * from myfile
-  		where id in (SELECT file_id
-			FROM
-				share_to_org
-			WHERE
-				org_id = #{orgId}
-			AND share_user IN (
-				SELECT id FROM USER WHERE organization_id = #{shareOrgId}
-			)
-		)
+  	select 
+  		m.*, 
+  		o.attribute 
+  	from myfile m, share_to_org o 
+	where m.id = o.file_id 
+	and o.org_id = #{orgId}
+	and o.share_user in (SELECT id FROM USER WHERE organization_id = #{shareOrgId})
   </select>
 </mapper>

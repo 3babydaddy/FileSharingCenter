@@ -73,6 +73,7 @@
 				<input type="hidden" id="fileRootId" value="${fileRootId }" />
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
 				<input type="hidden" id="createMkdirType" value="0" />
+				<input type="hidden" id="flag" value="0" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree">
 					<ul id="orgTree" class="ztree"></ul>
@@ -92,7 +93,7 @@
 					</div>
 				</div>
 				<div id="tools_bar">
-					<span id="mkdir">新建文件夹</span> 
+					<span id="mkdir" style="display:none;">新建文件夹</span> 
 					<span id="upload">上　传<span id="upload_button"></span></span> 
 					<span id="share">共　享</span>
 					<%-- <div>
