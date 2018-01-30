@@ -397,7 +397,7 @@ createPath = function(tNode) {
 	cPath.html("");
 	while (tempNode.getParentNode() != null) {
 		cPath.prepend($("<span/>").data("file_id", tempNode.id).data("node_id",tempNode.tId).addClass("lock_" + tempNode.isLock).html(tempNode.name));
-		cPath.prepend("》");
+		cPath.prepend('<img style="height: 20px;vertical-align: middle;" src="'+basePath +'/static/img/path_spilt.png ">');
 		tempNode = tempNode.getParentNode();
 	}
 };

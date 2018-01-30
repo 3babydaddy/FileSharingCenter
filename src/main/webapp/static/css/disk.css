@@ -13,24 +13,24 @@
 }
 
 #sky>a {
-	display:inline-block;
-	margin:10px 0px 0px 20px;
+	display: inline-block;
+	margin: 10px 0px 0px 20px;
 }
 
-#sky>a>img{
-	height:30px;
+#sky>a>img {
+	height: 30px;
 	width: 30px;
-	vertical-align:middle;
+	vertical-align: middle;
 	margin-right: 10px
 }
 
 #sky>span {
-	display:inline-block;
+	display: inline-block;
 	font-weight: bold;
 	color: #ffffff;
 	font-size: 24px;
 	font-family: ﻿MicrosoftYaHei-Bold;
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
 #cloud span {
@@ -49,26 +49,28 @@
 }
 
 #main {
-	height:100%
+	/* height: 100%; */
 	width: 100%;
 	position: relative;
-	padding-top: 15px;
+	padding-top: 5px;
 }
 
 #left {
-	position: absolute;
+	/* position: absolute; */
 	height: 91%;
 	width: 18%;
-/* 	color: white; */
+	/* 	color: white; */
 	color: #333;
 	font-size: 16px;
 	border: solid 1px rgba(221, 219, 217, 1);
+	float: left
 }
 
 #right {
 	height: 91%;
 	margin-left: 18%;
 	overflow: hidden;
+	border: solid 1px rgba(221, 219, 217, 1);
 }
 
 #user_info, #setting, #other, #netdisk, #dir_tree {
@@ -81,7 +83,11 @@
 }
 
 #user_info, #setting, #other, #netdisk {
-	height: 120px;
+	height: 13%;
+}
+
+#netdisk {
+	height: 12%;
 }
 
 #setting {
@@ -118,7 +124,7 @@
 #org_tree {
 	float: left;
 	margin-bottom: 4px;
-	height: 140px;
+	height: 51%;
 	overflow: auto;
 	width: 100%;
 	background: #FFF
@@ -129,10 +135,10 @@
 }
 
 #portrait img {
-	height: 114px;
-	width: 114px;
-	border: 1px #00B945 solid;
+	height: 93%;
+	/* border: 1px #00B945 solid; */
 	padding: 2px;
+	margin: 1% 0 0 1%
 }
 
 #portrait, #user_detail {
@@ -140,13 +146,12 @@
 }
 
 #user_detail {
-	width:40%;
-	padding: 0 7px;
+	width: 50%;
+	padding: 0 10px;
 }
 
 #user_detail #name {
-	width: 140px;
-	margin: 15px 0;
+	margin: 5% 0;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;

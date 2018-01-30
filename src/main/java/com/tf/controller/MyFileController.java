@@ -1,5 +1,6 @@
 package com.tf.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -137,8 +138,14 @@ public class MyFileController {
 
 		// TODO:是否有足够的空间
 		// if (MyDiskInfoDao.isEnoughSpace(myFile)) {
+		
 		String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
 		try {
+			//路径是否存在
+			File filePth = new File(FILEBASEPATH);
+			if (!filePth.exists()) {
+				filePth.mkdirs();
+			}
 			utils.upload(file, filePath);// 文件没有成功保存返回失败信息
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

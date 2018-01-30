@@ -7,7 +7,7 @@ body {
 	background: #FFF;
 }
 
-/* #sky, #user_info, #setting, #other, #netdisk, #chg_base_info,
+#sky, #user_info, #setting, #other, #netdisk, #chg_base_info,
 	#chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	background-color: rgba(229, 169, 54, 1);
 } 
@@ -18,9 +18,9 @@ body {
 
 #chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	color: white;
-} */
+}
 
-#sky, #setting, #other{
+/* #sky, #setting, #other{
 	background-color: rgba(229, 169, 54, 1);
 } 
 
@@ -30,11 +30,11 @@ body {
 
 #chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	color: #434343;
-}
+} */
 
 
 #portrait img {
-	border: 1px #38A3DB solid;
+	/* border: 1px #38A3DB solid; */
 	background: white;
 }
 

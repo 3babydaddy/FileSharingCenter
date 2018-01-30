@@ -38,7 +38,7 @@
 			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png" style="height: 30px;height: 30px"/></a>
 			<span >文件共享系统</span>
 			<div id="cloud">
-				<span>${user.name}</span>| <span><a href="javascript:void(0)" onclick="logout()" style="color: white;">[退出]</a></span>
+				<span>${user.name}</span><span><a href="javascript:void(0)" onclick="logout()" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
 			</div>
 		</div>
 		<div id="main">
@@ -74,7 +74,7 @@
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
 				<input type="hidden" id="createMkdirType" value="0" />
 				<!-- 组织机构树形 -->
-				<div id="org_tree" style="height:301px">
+				<div id="org_tree">
 					<ul id="orgTree" class="ztree"></ul>
 				</div>
 				<!-- 文件夹树形 -->
@@ -86,7 +86,7 @@
 				<div id="file_path">
 					<div id="path_wrap">
 						<div id="root">
-							<span>我的网盘</span>:
+							<span>根目录</span>
 						</div>
 						<div id="children_path"></div>
 					</div>
@@ -105,6 +105,9 @@
 					</ul>
 				</div>
 			</div>
+			<!-- <div id="footer">
+				<span>中共天津市委组织部　天津市天房科技发展股份有限公司　联合研发</span>
+			</div> -->
 		</div>
 	</div>
 	<div id="upload_queue"></div>

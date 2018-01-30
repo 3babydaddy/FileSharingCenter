@@ -55,7 +55,7 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/")
     public String index() {
-        return "redirect:/index";
+        return "redirect:/disk";
     }
 
     /**
@@ -64,9 +64,9 @@ public class LoginController extends BaseController {
      * @param model
      * @return
      */
-    @GetMapping("/index")
+    @GetMapping("/admin")
     public String index(Model model) {
-        return "index";
+        return "admin";
     }
     
     /**

@@ -20,7 +20,7 @@ h2 {font-size:18px;font-weight:bold;margin:0;margin-bottom:15px;}
 .light-tip{width:16px;height:16px;margin-right:8px;float:left;}
  
 [class*="fi-"] {
-    color: #5f9ea0;
+    color: rgba(229, 169, 54, 1);
     font-size: 18px;
     background-image:none!important;
     overflow: visible!important;
