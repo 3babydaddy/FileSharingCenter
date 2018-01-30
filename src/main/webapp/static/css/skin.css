@@ -6,8 +6,8 @@ body {
 #right, #dir_tree {
 	background: #FFF;
 }
-
-#sky, #user_info, #setting, #other, #netdisk, #chg_base_info,
+/* style 1 */
+/* #sky, #user_info, #setting, #other, #netdisk, #chg_base_info,
 	#chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	background-color: rgba(229, 169, 54, 1);
 } 
@@ -18,21 +18,35 @@ body {
 
 #chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	color: white;
-}
+} */
+/* style 1 */
 
-/* #sky, #setting, #other{
+/* style 2 */
+#sky, #setting, #other, #netdisk, #user_info {
 	background-color: rgba(229, 169, 54, 1);
-} 
+}
 
 #left {
 	color: #333;
-} 
+}
 
-#chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
+#netdisk, #user_info {
+	color: white;
+}
+
+#chg_base_info, #chg_portrait, #chg_email {
 	color: #434343;
-} */
+}
 
+#chg_base_info:HOVER, #chg_portrait:HOVER, #chg_email:HOVER {
+	background-color: #E0EEEE;
+}
 
+.menu_div.div-active {
+	background-color: #F7F6C3!important;
+}
+
+/* style 2 */
 #portrait img {
 	/* border: 1px #38A3DB solid; */
 	background: white;
@@ -64,22 +78,20 @@ body {
 	vertical-align: middle;
 	line-height: 37px;
 	font-weight: bold;
-	font-size:15px;
+	font-size: 15px;
 	/* padding-left: 25px; */
-	
 	background-color: rgba(229, 169, 54, 1);
-	box-shadow: 0px 1px 1px 0px 
-		rgba(0, 0, 0, 0.08);
+	box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.08);
 	border-radius: 2px 2px 2px 2px;
 }
 
-#tools_bar span:hover,#tools_bar a:hover {
+#tools_bar span:hover, #tools_bar a:hover {
 	box-shadow: 0 1px 3px rgba(200, 200, 200, 0.6);
 	background-color: #FFD700;
 	border-color: #FFD700;
 }
 
-#file_path span:hover{
+#file_path span:hover {
 	box-shadow: 0 1px 3px rgba(200, 200, 200, 0.6);
 	background-color: #EAF4FE;
 	border-color: #4D90FE;
