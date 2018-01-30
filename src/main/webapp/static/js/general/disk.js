@@ -189,8 +189,11 @@ $(function(){
 	$("#folder ul").delegate(".adir", "dblclick", function() {
 		openFile($(this));
 	});
+	$("#folder ul").delegate(".adir_readonly", "dblclick", function() {
+		openFile($(this));
+	});
 	/* 双击下载文件 */
-	$("#folder ul").delegate(".file_icon:not(.adir)", "dblclick", function(e) {
+	$("#folder ul").delegate(".file_icon:not(.adir,.adir_readonly)", "dblclick", function(e) {
 		window.location.href =  ctxPath +"/myFile/download/" + $(e.target).data("file_id");
 	});
 
@@ -341,6 +344,7 @@ $(function(){
 	document.onmousedown = function(event){ 
 		var target = event.target || event.srcElement;
 		var text = target.innerText;
+		debugger;
 		initPage(text);
 	}
 	//初始化页面；对“新建文件夹”按钮进行操作
@@ -771,11 +775,11 @@ var folderItemReadOnly = [ {
 
 
 /* 文件的右键菜单 */
-$(".share_0.role_02:not(.adir)").contextmenu({
+$(".share_0.role_02:not(.adir,.adir_readonly )").contextmenu({
 	items : fileItems
 });
 
-$(".share_0.role_01:not(.adir)").contextmenu({
+$(".share_0.role_01:not(.adir,.adir_readonly )").contextmenu({
 	items : fileItemsReadOnly
 });
 
@@ -804,7 +808,7 @@ $(".adir.role_02:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItems
 });
 
-$(".adir.role_01:not(.lock_1,.lock_2)").contextmenu({
+$(".adir_readonly.role_01:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItemReadOnly
 });
 

@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,8 @@ import com.tf.service.IMyFileService;
 
 @Service
 public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> implements IMyFileService {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MyFileMapper mapper;
 	@Autowired
@@ -67,7 +71,6 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		String path = currentFile.getPath() + folderId + "/";
 		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-
 		MyFile dir = new MyFile();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		dir.setCreateDate(sdf.format(new Date()));
@@ -80,6 +83,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		dir.setUser_id(user.getId());
 		dir.setSize(0);
 		mapper.insert(dir);
+		logger.info("新建文件夹成功");
 		MyFile mkdir = mapper.selectOne(dir);
 		dir.setId(mkdir.getId());
 		return JsonUtils.toJson(dir);
@@ -227,12 +231,14 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 					fileSet.addAll(filesByCreate);
 				}
 			}
+			logger.info("查询处室文件");
 		}else if("portrait".equals(flag) && id == treeRootId){
 			//个人空间
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
 			map.put("filecreatetype", '1');
 			files = mapper.selectByMap(map);
+			logger.info("查询个人空间");
 			return files;
 		}else if("email".equals(flag) && id == treeRootId){
 			//共享空间
@@ -243,6 +249,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			//分享个人
 			TreeSet<MyFile> filesByUser = shareUserMapper.getFileInfoList(user.getId());
 			fileSet.addAll(filesByUser);
+			logger.info("查询共享空间文件");
 		}else{
 			//文件树查询
 			Map<String, Object> map = new HashMap<String, Object>();
