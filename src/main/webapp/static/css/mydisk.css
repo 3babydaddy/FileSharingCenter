@@ -7,7 +7,8 @@ body {
 }
 
 h3 {
-	font-size: 1.3em;
+	font-size: 1.2em;
+	margin-top: 12px;
 }
 
 .form {
@@ -94,6 +95,7 @@ input {
 .total_progress, .bar_data {
 	padding: 2px;
 	text-align: center;
+	width: 92% !important;
 }
 
 .total_progress {
@@ -161,30 +163,33 @@ form dt, form dd {
 }
 
 #chg_base_info {
-	background: url("../img/update_u.png") 15px 10px no-repeat;
+	background: url("../img/orgshare.png") no-repeat;
+	background-position: 5%;
 }
 
 #chg_portrait {
-	background: url("../img/update_u.png") 15px -59px no-repeat;
+	background: url("../img/persional.png") no-repeat;
+	background-position: 5%;
 }
 
 #chg_email {
-	background: url("../img/update_u.png") 15px -120px no-repeat;
+	background: url("../img/sharespace.png") no-repeat;
+	background-position: 5%;
 }
 
 #chg_pwd {
-	background: url("../img/update_u.png") 15px -253px no-repeat;
+	background: url("../img/update_u.png") no-repeat;
 }
 
 #chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
 	margin-bottom: 4px;
 	float: left;
-	width: 212px;
-	padding-left: 80px;
+	width: 80%;
+	/* padding-left: 80px; */
+	padding-left: 20%;
 	cursor: pointer;
-	color: white;
 	text-decoration: none;
-	height: 63px;
+	height: 50px;
 }
 
 #netdisk {

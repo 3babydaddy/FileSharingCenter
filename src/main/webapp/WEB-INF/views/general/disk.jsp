@@ -35,7 +35,8 @@
 <body>
 	<div id="wrap">
 		<div id="sky">
-			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/share.png" style="height: 30px;height: 30px"/></a>
+			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png" style="height: 30px;height: 30px"/></a>
+			<span >文件共享系统</span>
 			<div id="cloud">
 				<span>${user.name}</span>| <span><a href="javascript:void(0)" onclick="logout()" style="color: white;">[退出]</a></span>
 			</div>
@@ -91,12 +92,12 @@
 				</div>
 				<div id="tools_bar">
 					<span id="mkdir">新建文件夹</span> 
-					<span id="upload">上传<span id="upload_button"></span></span> 
-					<span id="share">共享</span>
-					<div>
+					<span id="upload">上　传<span id="upload_button"></span></span> 
+					<span id="share">共　享</span>
+					<%-- <div>
 						<img id="gridViewImg" src="${staticPath }/static/img/grid-white.png" />
 						<img id="listVidwImg" src="${staticPath }/static/img/list.png"/>
-					</div>
+					</div> --%>
 				</div>
 				<div id="folder">
 					<ul>

@@ -64,7 +64,7 @@ $(function () {
                 //window.location.href = basePath + '/index';
             }else{
                 // 刷新验证码
-                $("#captcha")[0].click();
+                //$("#captcha")[0].click();
                 showMsg(result.msg);
             }
         }
