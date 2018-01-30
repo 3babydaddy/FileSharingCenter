@@ -1,97 +1,166 @@
-body{
-	font-size:16px;
+﻿y {
+	font-size: 16px;
 }
-#wrap{
-	min-width:1000px;
-	max-width:2000px;
-	
+
+#wrap {
+	min-width: 1000px;
+	max-width: 2000px;
 }
+
 #sky {
-	padding:8px 0;
-	height:30px;
-	line-height:40px;
-	width:100%;
+	height: 50px;
+	width: 100%;
 }
 
-#cloud span{padding-right:10px;}
-#cloud{float:right;color:white;padding-right:30px;}
-#ground{text-align:center;}
-#main{width:100%;position:relative;padding-top:15px;}
+#sky>a {
+	display: inline-block;
+	margin: 10px 0px 0px 20px;
+}
+
+#sky>a>img {
+	height: 30px;
+	width: 30px;
+	vertical-align: middle;
+	margin-right: 10px
+}
+
+#sky>span {
+	display: inline-block;
+	font-weight: bold;
+	color: #ffffff;
+	font-size: 24px;
+	font-family: ﻿MicrosoftYaHei-Bold;
+	vertical-align: middle;
+}
+
+#cloud span {
+	padding-right: 10px;
+}
+
+#cloud {
+	float: right;
+	color: white;
+	padding-right: 30px;
+	margin-top: 15px;
+}
+
+#ground {
+	text-align: center;
+}
+
+#main {
+	/* height: 100%; */
+	width: 100%;
+	position: relative;
+	padding-top: 5px;
+}
+
 #left {
-	position:absolute;
-	height: 713px;
-	width: 296px;
-	color:white;
-	font-size:16px;
-}
-#right {
-	height: 713px;
-	margin-left: 296px;
-	overflow:hidden;
+	/* position: absolute; */
+	height: 91%;
+	width: 18%;
+	/* 	color: white; */
+	color: #333;
+	font-size: 16px;
+	border: solid 1px rgba(221, 219, 217, 1);
+	float: left
 }
 
-#user_info,#setting,#other,#netdisk,#dir_tree {
+#right {
+	height: 91%;
+	margin-left: 18%;
+	overflow: hidden;
+	border: solid 1px rgba(221, 219, 217, 1);
+}
+
+#user_info, #setting, #other, #netdisk, #dir_tree {
 	float: left;
 	margin-bottom: 4px;
 }
-#other{margin-left:4px;}
-#user_info,#setting,#other,#netdisk {
-	height: 120px;
+
+#other {
+	margin-left: 4px;
+}
+
+#user_info, #setting, #other, #netdisk {
+	height: 13%;
+}
+
+#netdisk {
+	height: 12%;
 }
 
 #setting {
 	width: 144px;
-	background:url("../img/setting.png") no-repeat 33px 5px;
+	background: url("../img/setting.png") no-repeat 33px 5px;
 }
 
 #other {
 	width: 144px;
-	background:url("../img/smile.png") no-repeat 33px 5px;
+	background: url("../img/smile.png") no-repeat 33px 5px;
 	margin-right: 4px;
 }
-#setting,#other{text-decoration:none;color:white;text-align:center;}
-#setting span,#other span{
-	margin-top:90px;
-	display:block;
+
+#setting, #other {
+	text-decoration: none;
+	color: white;
+	text-align: center;
 }
+
+#setting span, #other span {
+	margin-top: 90px;
+	display: block;
+}
+
 #netdisk {
-	text-align:center;
+	text-align: center;
 }
 
 #dir_tree {
 	height: 160px;
-	overflow:auto;
+	overflow: auto;
 }
+
 #org_tree {
 	float: left;
 	margin-bottom: 4px;
-	height: 140px;
-	overflow:auto;
-	width: 292px;
-	background:#FFF
+	height: 51%;
+	overflow: auto;
+	width: 100%;
+	background: #FFF
 }
-#user_info,#netdisk,#dir_tree {
-	width: 292px;
+
+#user_info, #netdisk, #dir_tree {
+	width: 100%;
 }
 
 #portrait img {
-	height: 114px;
-	width: 114px;
-	border: 1px #00B945 solid;
+	height: 93%;
+	/* border: 1px #00B945 solid; */
 	padding: 2px;
+	margin: 1% 0 0 1%
 }
-#portrait,#user_detail {
+
+#portrait, #user_detail {
 	float: left;
 }
-#user_detail{
-	padding:0 7px;
+
+#user_detail {
+	width: 50%;
+	padding: 0 10px;
 }
-#user_detail #name{
-	width:140px;
-	margin:15px 0;
-	overflow:hidden;
-    white-space: nowrap; 
-    text-overflow: ellipsis;
+
+#user_detail #name {
+	margin: 5% 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
-.gender_01{background:url(../img/gender.png) no-repeat 0 6px;}
-.gender_11{background:url(../img/gender.png) no-repeat 20px 0;}
+
+.gender_01 {
+	background: url(../img/gender.png) no-repeat 0 6px;
+}
+
+.gender_11 {
+	background: url(../img/gender.png) no-repeat 20px 0;
+}

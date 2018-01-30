@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tf.commons.base.BaseController;
 import com.tf.commons.csrf.CsrfToken;
 import com.tf.commons.shiro.ShiroUser;
-import com.tf.commons.shiro.captcha.DreamCaptcha;
 import com.tf.commons.utils.StringUtils;
 import com.tf.model.MyFile;
 import com.tf.model.Organization;
@@ -38,8 +37,8 @@ import com.tf.service.IUserService;
  */
 @Controller
 public class LoginController extends BaseController {
-    @Autowired
-    private DreamCaptcha dreamCaptcha;
+    //@Autowired
+    //private DreamCaptcha dreamCaptcha;
     @Autowired
     private IUserService userService;
     @Autowired
@@ -56,7 +55,7 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/")
     public String index() {
-        return "redirect:/index";
+        return "redirect:/disk";
     }
 
     /**
@@ -65,9 +64,9 @@ public class LoginController extends BaseController {
      * @param model
      * @return
      */
-    @GetMapping("/index")
+    @GetMapping("/admin")
     public String index(Model model) {
-        return "index";
+        return "admin";
     }
     
     /**
@@ -126,12 +125,12 @@ public class LoginController extends BaseController {
         if (StringUtils.isBlank(password)) {
             throw new RuntimeException("密码不能为空");
         }
-        if (StringUtils.isBlank(captcha)) {
-            throw new RuntimeException("验证码不能为空");
-        }
-        if (!dreamCaptcha.validate(request, response, captcha)) {
-            throw new RuntimeException("验证码错误");
-        }
+        //if (StringUtils.isBlank(captcha)) {
+          //  throw new RuntimeException("验证码不能为空");
+        //}
+        //if (!dreamCaptcha.validate(request, response, captcha)) {
+          //  throw new RuntimeException("验证码错误");
+        //}
         Subject user = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         // 设置记住密码
