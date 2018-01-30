@@ -72,6 +72,7 @@
 				</div>
 				<input type="hidden" id="fileRootId" value="${fileRootId }" />
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
+				<input type="hidden" id="createMkdirType" value="0" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree" style="height:301px">
 					<ul id="orgTree" class="ztree"></ul>

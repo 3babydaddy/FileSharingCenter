@@ -105,10 +105,10 @@ public class MyFileController {
 	 * @param folderId
 	 * @return
 	 */
-	@RequestMapping("/mkdir/{folderId}")
+	@RequestMapping("/mkdir/{folderId}/{filecreatetype}")
 	@ResponseBody
-	public String mkdir(@PathVariable long folderId, String folderName) {
-		return fileService.mkdir(folderId, folderName);
+	public String mkdir(@PathVariable long folderId, String folderName, @PathVariable String filecreatetype) {
+		return fileService.mkdir(folderId, folderName, filecreatetype);
 	}
 
 	/**
@@ -236,14 +236,16 @@ public class MyFileController {
 	}
 
 	@RequestMapping("/share")
-	public String shareFile(String id, Model model) {
+	public String shareFile(String id, String shareType, Model model) {
 		model.addAttribute("fileId", id);
+		model.addAttribute("shareType", shareType);
 		return "/general/share";
 	}
 
 	@RequestMapping("/shareUser")
-	public String shareUser(String fileId, Model model) {
+	public String shareUser(String fileId, String shareType, Model model) {
 		
+		model.addAttribute("shareType", shareType);
 		model.addAttribute("fileId", fileId);
 		return "/general/share-user";
 	}
@@ -268,8 +270,9 @@ public class MyFileController {
 	}
 	
 	@RequestMapping("/shareOrg")
-	public String shareOrg(String fileId, Model model) {
+	public String shareOrg(String fileId, String shareType, Model model) {
 		model.addAttribute("fileId", fileId);
+		model.addAttribute("shareType", shareType);
 		return "/general/share-org";
 	}
 	

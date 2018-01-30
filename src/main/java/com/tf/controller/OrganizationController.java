@@ -99,6 +99,7 @@ public class OrganizationController extends BaseController {
         MyFile file = new MyFile();
         file.setUser_id(organization.getId());
         file.setName("#"+organization.getId());
+        file.setFilecreatetype("0");
         file.setSize(0);
         file.setType("adir");
         file.setPath("/");

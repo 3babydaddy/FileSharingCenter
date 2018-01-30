@@ -36,6 +36,7 @@ $("#shareUsers").combobox({
 		var userId = $("input[name='shareUsers']")[0].value;
 		var shareRoleAtt = $('#shareRoleAtt').combobox('getValue');
 		var fileId = $('#fileId').val();
+		var shareType = $('#shareType').val();
 		if(userId == null || userId == ''){
 			alert('请选择用户');
 			return;
@@ -44,7 +45,7 @@ $("#shareUsers").combobox({
 		$.ajax({
 			url:'${path }/myFile/shareUserSave',
 			type : 'post',
-			data:{fileId:fileId, userId:userId, attribute:shareRoleAtt},
+			data:{fileId:fileId, userId:userId, attribute:shareRoleAtt, shareType:shareType},
 			//dataType:'json',
 			async: false,
 			success:function(result){
@@ -70,8 +71,8 @@ $("#shareUsers").combobox({
 				pagination:true,
 				nowrap:false,
 				columns : [ [
-					 {field :"fileName",title :"共享文件",width :"60", align:"center",formatter:ifNullShowHeng}
-					,{field :"userName",title :"共享人员",width :"90", align:"center",formatter:ifNullShowHeng}
+					 {field :"fileName",title :"共享文件",width :"90", align:"center",formatter:ifNullShowHeng}
+					,{field :"userName",title :"共享人员",width :"135", align:"center",formatter:ifNullShowHeng}
 		            ,{field :"creator",title :"创建人",width :"70", align:"center",formatter:ifNullShowHeng}
 		            ,{field :"createTimeStr",title :"共享时间",width :"70", align:"center",formatter:ifNullShowHeng}
 		            ,{field : 'statusAndDo',title : '操作',width : "60" ,align:'center',
@@ -132,6 +133,7 @@ $("#shareUsers").combobox({
                 </td>
 			</tr>
 			<input id="fileId" type="hidden" value="${fileId }" />
+			<input id="shareType" type="hidden" value="${shareType }" />
 		</table>
 	</div>
 	<div data-options="region:'south',split:true"  style="width:100%;height:70%;">

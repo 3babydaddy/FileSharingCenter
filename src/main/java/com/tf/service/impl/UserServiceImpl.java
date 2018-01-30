@@ -77,6 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         MyFile file = new MyFile();
         file.setUser_id(id);
         file.setName("#"+id);
+        file.setFilecreatetype("1");
         file.setSize(0);
         file.setType("adir");
         file.setPath("/");
