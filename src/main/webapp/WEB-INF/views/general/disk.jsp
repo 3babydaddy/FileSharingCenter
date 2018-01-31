@@ -38,7 +38,12 @@
 			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png" style="height: 30px;height: 30px"/></a>
 			<span >文件共享系统</span>
 			<div id="cloud">
-				<span>${user.name}</span><span><a href="javascript:void(0)" onclick="logout()" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
+				<span>${user.name}</span>
+				<!-- 仅处室管理员与超级管理员可见 -->
+				<shiro:hasAnyRoles name="org_admin,admin">
+ 					<span><a href="${ctxPath}/admin"  title="管理页面" style="color: white;"><img style="vertical-align: middle; height: 20px;" src="${staticPath }/static/img/setting.png"></a></span>
+				</shiro:hasAnyRoles>
+				<span><a href="javascript:void(0)" onclick="logout()" title="退出" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
 			</div>
 		</div>
 		<div id="main">
