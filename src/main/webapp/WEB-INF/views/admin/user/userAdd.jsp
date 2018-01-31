@@ -13,7 +13,11 @@
             url: '${path }/role/tree',
             multiple: true,
             required: true,
-            panelHeight : 'auto'
+            panelHeight : 'auto',
+            onLoadSuccess:function(node,data){ 
+            	/* 设置默认值 */
+            	$('#userAddRoleIds').combotree('setValue', 3); 
+            }            
         });
 
         $('#userAddForm').form({
@@ -87,8 +91,8 @@
                     <td>用户状态</td>
                     <td>
                         <select name="status" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
-                                <option value="0">正常</option>
-                                <option value="1">停用</option>
+	                        <option value="0">正常</option>
+	                        <option value="1">停用</option>
                         </select>
                     </td>
                 </tr>

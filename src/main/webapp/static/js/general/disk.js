@@ -124,6 +124,8 @@ $(function(){
 	/* 进度条 */
 	var totalsize = $("#totalsize").val();
 	var usedsize = $("#usedsize").val();
+	var maxUploadSize = $("#maxUploadSize").val();
+	
 	$("#space_bar").progressBar({
 		width : 265,
 		height : 15,
@@ -144,12 +146,13 @@ $(function(){
 		auto : true,
 		queueSizeLimit : 3,
 		fileTypeExts : "*.*",
-		fileSizeLimit : 1024*100 + "KB",
+		fileSizeLimit : maxUploadSize + "MB",
 		queueID : 'upload_queue',
 		onSelect : function(file) {
 			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
-				alert("您的空间不够");
+			if (newSize/ (1024) > pBar.getTotal()) {
+				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+				//alert("您的空间不够");
 				return false;
 			} else {
 				file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val();
@@ -159,8 +162,9 @@ $(function(){
 		},
 		onUploadStart : function(file) {
 			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
-				alert("您的空间不够");
+			if (newSize/ (1024) > pBar.getTotal()) {
+				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+				//alert("您的空间不够");
 				return false;
 			} else {
 				return true;
@@ -168,7 +172,8 @@ $(function(){
 		},
 		onUploadSuccess : function(file, data, response) {
 			if (data == "fail") {
-				alert("您剩余的空间已经无法容下这个文件了");
+				dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
+				//alert("您剩余的空间已经无法容下这个文件了");
 			} else {
 				var temp = JSON.parse(data);
 				addFile(temp.file);

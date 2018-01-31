@@ -38,7 +38,12 @@
 			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png" style="height: 30px;height: 30px"/></a>
 			<span >文件共享系统</span>
 			<div id="cloud">
-				<span>${user.name}</span><span><a href="javascript:void(0)" onclick="logout()" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
+				<span>${user.name}</span>
+				<!-- 仅处室管理员与超级管理员可见 -->
+				<shiro:hasAnyRoles name="org_admin,admin">
+ 					<span><a href="${ctxPath}/admin"  title="管理页面" style="color: white;"><img style="vertical-align: middle; height: 20px;" src="${staticPath }/static/img/setting.png"></a></span>
+				</shiro:hasAnyRoles>
+				<span><a href="javascript:void(0)" onclick="logout()" title="退出" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
 			</div>
 		</div>
 		<div id="main">
@@ -49,7 +54,7 @@
 					</div>
 					<div id="user_detail">
 						<h4 id="name">天津市委组织部</h4>
-						<h4 id="name">${org.name}&nbsp;&nbsp;${user.name }</h4>
+						<h4 id="name" title="${org.name}&nbsp;&nbsp;${user.name }">${org.name}&nbsp;&nbsp;${user.name }</h4>
 						<span id="gender gender_"></span> <span>共${empty disk.filenumber ? 0 : disk.filenumber}个资源</span>
 					</div>
 				</div>
@@ -65,7 +70,7 @@
 					</shiro:hasRole>
 				</div>
 				<div id="chg_portrait" class="menu_div">
-					<h3>个人共享</h3>
+					<h3>个人空间</h3>
 				</div>
 				<div id="chg_email" class="menu_div">
 					<h3>共享空间</h3>
@@ -74,6 +79,7 @@
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
 				<input type="hidden" id="createMkdirType" value="0" />
 				<input type="hidden" id="flag" value="0" />
+				<input id="maxUploadSize" type="hidden" value="${maxUploadSize}" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree">
 					<ul id="orgTree" class="ztree"></ul>

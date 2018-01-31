@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tf.commons.base.BaseController;
 import com.tf.commons.csrf.CsrfToken;
 import com.tf.commons.shiro.ShiroUser;
+import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.StringUtils;
 import com.tf.model.MyFile;
 import com.tf.model.Organization;
@@ -95,6 +96,7 @@ public class LoginController extends BaseController {
     	model.addAttribute("disk", disk);
     	model.addAttribute("fileRootId", file.getId());
     	model.addAttribute("fileOrgRootId", file.getOrgRootId());
+    	model.addAttribute("maxUploadSize",FileStorage.getProperty("max_upload_size"));
         return "/general/disk";
     }
 

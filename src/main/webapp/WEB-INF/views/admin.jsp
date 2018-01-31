@@ -193,12 +193,13 @@
     <div id="index_layout">
         <div data-options="region:'north',border:false" style="overflow: hidden;">
             <div>
-                <span style="float: right; padding-right: 20px; margin-top: 15px; color: #333">
+                <span style="float: right; line-height:41px; padding-right: 20px; color: #333" >
                     <i class="fi-torso"></i>
                     <b><shiro:principal></shiro:principal></b>&nbsp;&nbsp; 
                     <shiro:hasPermission name="/user/editPwdPage">
                         <a href="javascript:void(0)" onclick="editUserPwd()" class="easyui-linkbutton" plain="true" icon="fi-unlock" >修改密码</a>
                     </shiro:hasPermission>&nbsp;&nbsp;
+                    <a href="${ctxPath}/disk" class="easyui-linkbutton" plain="true" icon="fi-page-edit">返回</a>
                     <a href="javascript:void(0)" onclick="logout()" class="easyui-linkbutton" plain="true" icon="fi-x">安全退出</a>
                 </span>
             </div>
