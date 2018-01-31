@@ -36,6 +36,8 @@ public class MyFile implements Comparable<MyFile> {
 	private String attribute;
 	@TableField(exist = false)
 	private String orgRootId;
+	@TableField(exist = false)
+	private long usedSize;
 	
 	public Long getId() {
 		return id;
@@ -189,9 +191,17 @@ public class MyFile implements Comparable<MyFile> {
 		this.filecreatetype = filecreatetype;
 	}
 
+	public long getUsedSize() {
+		return usedSize;
+	}
+
+	public void setUsedSize(long usedSize) {
+		this.usedSize = usedSize;
+	}
+
 	public MyFile() {
-	       
-	 }
+		super();  
+	}
 	 
 	 public MyFile(Long id, String attribute) {
 		 super();
@@ -201,13 +211,17 @@ public class MyFile implements Comparable<MyFile> {
 	
 	@Override
 	public int compareTo(MyFile o) {
-		int flag = -1;
+		int flag = 0;
 		if(this.getId() == o.getId()){
 			if(o.getAttribute() != null && this.getAttribute() != null && (o.getAttribute().equals(this.getAttribute()))){
 				flag = 0;
 			}
-		}else{
-			return 1;
+		}
+		if(this.getAttribute() == null || "02".equals(this.getAttribute()) ){
+			flag = 1;
+		}
+		if("01".equals(this.getAttribute()) ){
+			flag = -1;
 		}
 		return flag;
 	}

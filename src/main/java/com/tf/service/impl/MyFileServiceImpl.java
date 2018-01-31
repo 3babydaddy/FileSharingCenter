@@ -135,10 +135,11 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			filenumber++;
 		}
 		ShareDiskInfo diskInfo = shareDiskInfoMapper.getUserDiskInfo(user.getId());
-		diskInfo.setUsedsize((long)Math.ceil(usedsize/1048576));
+		diskInfo.setUsedsize(usedsize);
 		diskInfo.setFilenumber(filenumber);
 		shareDiskInfoMapper.updateAllColumnById(diskInfo);
-		return (diskInfo.getTotalsize() - usedsize) + "";
+		
+		return usedsize + "";
 	}
 
 	@Override
@@ -219,16 +220,17 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			//查询出本部门中的处室管理员
 			List<String> userIdList = userMapper.getUserIdList(orgInfo.getId());
 			if(userIdList.size() > 0){
-				//分享处室
-				TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(orgInfo.getId(), userIdList);
-				fileSet.addAll(filesByOrg);
-				//分享个人
-				TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
-				fileSet.addAll(filesByUser);
 				//处室管理员新建
 				if(user.getRoles().contains("org_admin")){
 					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#"+orgInfo.getId());
 					fileSet.addAll(filesByCreate);
+				}else{
+					//分享处室
+					TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(orgInfo.getId(), userIdList);
+					fileSet.addAll(filesByOrg);
+					//分享个人
+					TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
+					fileSet.addAll(filesByUser);
 				}
 			}
 			logger.info("查询处室文件");
