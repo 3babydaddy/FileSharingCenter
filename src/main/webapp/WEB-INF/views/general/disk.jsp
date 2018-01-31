@@ -54,7 +54,7 @@
 					</div>
 					<div id="user_detail">
 						<h4 id="name">天津市委组织部</h4>
-						<h4 id="name">${org.name}&nbsp;&nbsp;${user.name }</h4>
+						<h4 id="name" title="${org.name}&nbsp;&nbsp;${user.name }">${org.name}&nbsp;&nbsp;${user.name }</h4>
 						<span id="gender gender_"></span> <span>共${empty disk.filenumber ? 0 : disk.filenumber}个资源</span>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 					</shiro:hasRole>
 				</div>
 				<div id="chg_portrait" class="menu_div">
-					<h3>个人共享</h3>
+					<h3>个人空间</h3>
 				</div>
 				<div id="chg_email" class="menu_div">
 					<h3>共享空间</h3>

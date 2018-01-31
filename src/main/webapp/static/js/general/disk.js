@@ -160,7 +160,8 @@ $(function(){
 		onSelect : function(file) {
 			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
 			if (newSize/ (1024) > pBar.getTotal()) {
-				alert("您的空间不够");
+				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+				//alert("您的空间不够");
 				return false;
 			} else {
 				file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id");
@@ -171,7 +172,8 @@ $(function(){
 		onUploadStart : function(file) {
 			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
 			if (newSize/ (1024) > pBar.getTotal()) {
-				alert("您的空间不够");
+				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+				//alert("您的空间不够");
 				return false;
 			} else {
 				return true;
@@ -179,7 +181,8 @@ $(function(){
 		},
 		onUploadSuccess : function(file, data, response) {
 			if (data == "fail") {
-				alert("您剩余的空间已经无法容下这个文件了");
+				dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
+				//alert("您剩余的空间已经无法容下这个文件了");
 			} else {
 				var temp = JSON.parse(data);
 				addFile(temp.file);
