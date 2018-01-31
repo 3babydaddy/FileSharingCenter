@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="off">
     <Properties>
-        <Property name="logdir">${sys:catalina.base}/logs</Property>
+        <Property name="logdir">/var/log/FileSharingCenter/</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -9,8 +9,8 @@
             <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level [%file] - %msg%n" />
         </Console>
         <RollingFile name="RollingFile"
-            fileName="${logdir}/shiro.log"
-            filePattern="${logdir}/shiro.%d{yyyy-MM-dd}.log">
+            fileName="${logdir}/FileSharingCenter.log"
+            filePattern="${logdir}/FileSharingCenter.%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level [%C{36}.%M] - %msg%n" />
             <Filters>
                 <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />

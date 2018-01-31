@@ -1,6 +1,5 @@
 package com.tf.task;
 
-import java.util.Date;
 import java.util.concurrent.Callable;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +45,7 @@ public class TestTask {
 		testService.selectById(1L);
 		testService.selectById(1L);
 		
-		logger.debug(xx);
-		logger.debug(new Date());
+//		logger.debug(xx);
+//		logger.debug(new Date());
 	}
 }
