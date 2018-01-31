@@ -133,6 +133,8 @@ $(function(){
 	/* 进度条 */
 	var totalsize = $("#totalsize").val();
 	var usedsize = $("#usedsize").val();
+	var maxUploadSize = $("#maxUploadSize").val();
+	
 	$("#space_bar").progressBar({
 		width : 265,
 		height : 15,
@@ -153,11 +155,11 @@ $(function(){
 		auto : true,
 		queueSizeLimit : 3,
 		fileTypeExts : "*.*",
-		fileSizeLimit : 1024 + "KB",
+		fileSizeLimit : maxUploadSize + "MB",
 		queueID : 'upload_queue',
 		onSelect : function(file) {
 			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
+			if (newSize/ (1024) > pBar.getTotal()) {
 				alert("您的空间不够");
 				return false;
 			} else {
@@ -168,7 +170,7 @@ $(function(){
 		},
 		onUploadStart : function(file) {
 			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
+			if (newSize/ (1024) > pBar.getTotal()) {
 				alert("您的空间不够");
 				return false;
 			} else {

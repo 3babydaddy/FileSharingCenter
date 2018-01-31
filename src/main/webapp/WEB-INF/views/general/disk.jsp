@@ -79,6 +79,7 @@
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
 				<input type="hidden" id="createMkdirType" value="0" />
 				<input type="hidden" id="flag" value="0" />
+				<input id="maxUploadSize" type="hidden" value="${maxUploadSize}" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree">
 					<ul id="orgTree" class="ztree"></ul>
