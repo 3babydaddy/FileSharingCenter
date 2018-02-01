@@ -19,13 +19,14 @@ jQuery.fn.progressBar = function(options) {
 					"</span>"+
 				"</div>";
     			
-	listener = function(bar,num,pro){
+	listener = function(bar,num,pro,w){
+		//debugger;
 		var percent = Math.round(parseFloat(parseInt(bar.css("width"))/opt.width)*100);
-		bar.html(percent+"%");
+		bar.html(w);
 		num.html(Number(opt.totalProgress*percent/100).toFixed(opt.precision));
 		
 		if(!bar.data("finish")){
-			setTimeout(function(){listener(bar,num,pro);},10);
+			setTimeout(function(){listener(bar,num,pro,w);},10);
 		}else{
 			if(opt.onFinish){
 				opt.onFinish();
@@ -55,7 +56,7 @@ jQuery.fn.progressBar = function(options) {
 		bar.animate({width : w},1000,function(){
 			$(this).data("finish",true);
 		});
-		listener(bar,num,progress);
+		listener(bar,num,progress, w);
 	};
 	
     this.each(function(){

@@ -139,7 +139,7 @@ public class MyFileController {
 		// TODO:是否有足够的空间
 		// if (MyDiskInfoDao.isEnoughSpace(myFile)) {
 		
-		String filePath = "C:/WORK/woqu/" + new Date().getTime() + "." + suffix;
+		String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
 		try {
 			//路径是否存在
 			File filePth = new File(FILEBASEPATH);
