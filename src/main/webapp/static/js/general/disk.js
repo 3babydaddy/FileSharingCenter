@@ -79,6 +79,9 @@ $(function(){
 //                organizationId: node.id
 //            });
         	clickTree(node.id);
+        	$("#mkdir").hide();
+    		$("#upload").hide();
+    		$("#share").hide();
         },
         onLoadSuccess:function()  
         {
@@ -111,23 +114,11 @@ $(function(){
 		
 	/* 创建文件夹按钮点击事件 */
 	$("#mkdir").click(function() {
-		var fileId = $("#folder").data("folder_id");
-		var nodeId = $("#folder").data("node_id");
-		var flag = $("#flag").val();
-		if(fileId != $("#fileRootId").val() && fileId != $("#fileOrgRootId").val() || flag == '0'){
-			var tNode = zTree.getNodeByTId(nodeId);
-			if(tNode.attribute == '02'){
-				var fMkdir = "<form class='mkdir'><dl>"
-					+ "<dt>文件名：</dt><dd><input name='folderName' type='text'/></dd>"
-					+ "<dt></dt><dd><button type='submit'>确定</button></dd>"
-					+ "</dl></form>";
-				dialog.show(fMkdir, '新建文件夹');
-			}else{
-				alert("该目录权限为只读,不能新建文件夹！！！");
-			}
-		}else{
-			alert("根目录不能新建文件夹！！！");
-		}
+			var fMkdir = "<form class='mkdir'><dl>"
+				+ "<dt>文件名：</dt><dd><input name='folderName' type='text'/></dd>"
+				+ "<dt></dt><dd><button type='submit'>确定</button></dd>"
+				+ "</dl></form>";
+			dialog.show(fMkdir, '新建文件夹');
 	});
 	
 	/* 进度条 */
@@ -155,23 +146,23 @@ $(function(){
 		auto : true,
 		queueSizeLimit : 3,
 		fileTypeExts : "*.*",
-		fileSizeLimit : maxUploadSize + "MB",
+		fileSizeLimit : 100 + "MB",
 		queueID : 'upload_queue',
 		onSelect : function(file) {
-			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
-			if (newSize/ (1024) > pBar.getTotal()) {
+			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
+			if (newSize > pBar.getTotal()) {
 				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
 				//alert("您的空间不够");
 				return false;
 			} else {
-				file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id");
+				file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val();
 				pop.show();
 				return true;
 			}
 		},
 		onUploadStart : function(file) {
-			var newSize = file.size / (1024) + parseInt(pBar.getCurrent());
-			if (newSize/ (1024) > pBar.getTotal()) {
+			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
+			if (newSize > pBar.getTotal()) {
 				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
 				//alert("您的空间不够");
 				return false;
@@ -186,7 +177,7 @@ $(function(){
 			} else {
 				var temp = JSON.parse(data);
 				addFile(temp.file);
-				var newSize = Number(temp.usedSize / (1024)).toFixed(0);
+				var newSize = Number(temp.file.usedSize / (1024*1024)).toFixed(0);
 				pBar.setProgress(newSize);
 			}
 		},
@@ -338,32 +329,24 @@ $(function(){
 	
 	//共享
 	$("#share").click(function() {
-		var fileId = $("#folder").data("folder_id");
+		//var fileId = $("#folder").data("folder_id");
 		var nodeId = $("#folder").data("node_id");
-		if(fileId != $("#fileRootId").val() && fileId != $("#fileOrgRootId").val()){
-			var tNode = zTree.getNodeByTId(nodeId);
-			if(tNode.attribute == '02'){
-				parent.$.modalDialog({
-			        title : '共享设置',
-			        width : 750,
-			        height : 500,
-			        href : ctxPath + '/myFile/share?id=' + tNode.id + '&shareType=' + tNode.filecreatetype,
-			        buttons : [ {
-			            text : '关闭',
-			            handler : function() {
-			               // var f = parent.$.modalDialog.handler.find('#roleGrantForm');
-			                //f.submit();
-			            	parent.$.modalDialog.handler.dialog('destroy');
-			        		parent.$.modalDialog.handler = undefined;
-			            }
-			        } ]
-			    });
-			}else{
-				alert("该目录权限为只读,不能共享！！！");
-			}
-		}else{
-			alert("根目录不能共享！！！");
-		}
+		var tNode = zTree.getNodeByTId(nodeId);
+		parent.$.modalDialog({
+	        title : '共享设置',
+	        width : 750,
+	        height : 500,
+	        href : ctxPath + '/myFile/share?id=' + tNode.id + '&shareType=' + tNode.filecreatetype,
+	        buttons : [ {
+	            text : '关闭',
+	            handler : function() {
+	               // var f = parent.$.modalDialog.handler.find('#roleGrantForm');
+	                //f.submit();
+	            	parent.$.modalDialog.handler.dialog('destroy');
+	        		parent.$.modalDialog.handler = undefined;
+	            }
+	        } ]
+	    });
 		
 	});
 	
@@ -374,7 +357,6 @@ $(function(){
 		$("#createMkdirType").val("0");
 		$("#flag").val("0");
 		clickSpaceTree("baseInfo", fileRootId);
-		initPage();
 	});
 	//个人共享
 	$("#chg_portrait").click(function() {
@@ -383,7 +365,6 @@ $(function(){
 		$("#createMkdirType").val("1");
 		$("#flag").val("0");
 		clickSpaceTree("portrait", fileRootId);
-		document.getElementById("mkdir").style.display='';
 	});
 	//空间共享
 	$("#chg_email").click(function() {
@@ -392,7 +373,6 @@ $(function(){
 		$("#createMkdirType").val("1");
 		$("#flag").val("1");
 		clickSpaceTree("email", fileRootId);
-		document.getElementById("mkdir").style.display='';
 	});
 	
 	//初始化页面；对“新建文件夹”按钮进行操作
@@ -404,6 +384,7 @@ $(function(){
 		});
 		$(obj.currentTarget).addClass("div-active");
 	});
+	
 });  
 	
 //========================== 页面加载事件 ========================== //
@@ -411,9 +392,9 @@ $(function(){
 function initPage(){
 	var yesNoRole = $("#pass").val();
 	if(yesNoRole == 'pass'){
-		document.getElementById("mkdir").style.display='';
+		$("#mkdir").show();
 	}else{
-		document.getElementById("mkdir").style.display='none';
+		$("#mkdir").hide();
 	}
 }
 
@@ -464,7 +445,6 @@ createPath = function(tNode) {
 listFiles = function(tNode,type) {
 	$("#folder").data("folder_id", tNode.id).data("node_id", tNode.tId);
 	createPath(tNode);
-	//debugger;
 	var files = tNode.children;
 	var file,folder = $("#folder ul");
 	folder.html("");
@@ -474,8 +454,13 @@ listFiles = function(tNode,type) {
 			file.addClass("folder");
 		}
 		if(files[i].attribute == undefined){
-			files[i].attribute = '02';
-		}else if(files[i].attribute == '01' ){
+			if(tNode.attribute == undefined){
+				files[i].attribute = '02';
+			}else{
+				files[i].attribute = tNode.attribute;
+			}
+		}
+		if(files[i].attribute == '01' && files[i].type == 'adir'){
 			files[i].type = 'adir_readonly';
 		}
 		file.find(".file_icon").
@@ -483,26 +468,75 @@ listFiles = function(tNode,type) {
 			data("file_id",files[i].id).
 			data("node_id",files[i].tId).
 			data("shareType",files[i].filecreatetype).
+			data("attribute",files[i].attribute).
 			attr("title",files[i].name);
 		file.find(".file_name").html(strLimit(files[i].name,20));
 		folder.append(file);
 	}
+	//操作按钮的隐藏或者显示
+	optionHideShow(tNode);
+	
 };
 
-
+function optionHideShow(tNode){
+	//得到点击的按钮信息
+	//debugger;
+	var clicksign = $(".div-active")[0];
+	if(clicksign != undefined){
+		clicksign = $(".div-active")[0].innerText.replace(/\s+/g,"");
+	}
+	var yesNoRole = $("#pass").val();
+	//debugger;
+	//根节点判断：flag表示点击按钮的根节点的类型，yesNoRole判断当前用户是否是处室管理员
+	if((clicksign == '处室共享' || $("#flag").val() == '0') && $("#flag").val() != '2' && yesNoRole == 'pass'){
+		$("#upload").show();
+		$("#share").hide();
+		initPage();
+	}else if(clicksign == '个人空间' && $("#flag").val() != '2'){
+		$("#mkdir").show();
+		$("#upload").show();
+		$("#share").hide();
+	}else{
+		$("#mkdir").hide();
+		$("#upload").hide();
+		$("#share").hide();
+	}
+	//不是根节点的文件夹处理
+	if(tNode.attribute != undefined){
+		if(tNode.attribute == '01'){
+			$("#mkdir").hide();
+			$("#upload").hide();
+			$("#share").show();
+		}else if(tNode.attribute == '02'){
+			$("#mkdir").show();
+			$("#upload").show();
+			$("#share").show();
+		}
+	}else{
+		$("#share").hide();
+	}
+}
 
 /* 上传或新建文件夹时更新界面 */
 addFile = function(data) {
+	//debugger;
 	if (data.type == "adir") {
 		data.isParent = true;
 	} else {
 		data.icon = basePath + "/static/filetype/" + data.type + ".gif";
 	}
+	//上传文件或者新建文件夹默认的权限为读写
+	data.attribute = "02";
 	var tarNode = zTree.getNodeByTId($("#folder").data("node_id")), file = $(file_template), newNode = zTree.addNodes(tarNode, data, true);
 	if (data.type == "adir") {
 		file.addClass("folder");
 	}
-	file.find(".file_icon").data("file_id", data.id).data("node_id",newNode[0].tId).addClass(data.type + " lock_" + data.isLock + " share_0").attr("title",data.name);
+	file.find(".file_icon").data("file_id", data.id)
+	.data("node_id",newNode[0].tId)
+	.data("shareType",data.filecreatetype)
+	.data("attribute",'02')
+	.addClass(data.type + " lock_" + data.isLock + " share_0 role_02")
+	.attr("title",data.name);
 	file.find(".file_name").html(strLimit(data.name, 20));
 	$("#folder ul").append(file);
 };
@@ -609,8 +643,9 @@ deleteFile = function(f) {
 				zTree.removeNode(tNode);
 				f.parent(".file").remove();
 				//更新磁盘使用量
-				//var newSize = Number(data / (1024)).toFixed(0);
-				//pBar.setProgress(newSize);
+				var newSize = Number(data / (1024*1024)).toFixed(0);
+				var pBar = $("#space_bar").getProgressBar();
+				pBar.setProgress(newSize);
 			} else if (data == "fail") {
 				alert("网络错误!");
 			}
@@ -955,7 +990,7 @@ function logout(){
 
 function clickTree(orgId){
 	//debugger;
-	$("#flag").val("1");
+	$("#flag").val("2");
 	var fileOrgRootId = $("#fileOrgRootId").val();
 	var setting = {
 			async : {

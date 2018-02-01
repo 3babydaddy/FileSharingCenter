@@ -78,10 +78,18 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/disk")
     public String disk(Model model) {
+    	long usersize = 0;
     	ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
     	UserVo userInfo = userService.selectVoById(user.getId());
     	Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
     	ShareDiskInfo disk = shareDiskInfoService.getUserDiskInfo(userInfo.getId());
+    	if(disk.getUsedsize() != null && disk.getUsedsize() > 0){
+    		usersize = (long)Math.ceil(disk.getUsedsize()/1048576);
+    		if(disk.getUsedsize()%1048576 > 0){
+    			usersize += 1;
+    		}
+    		disk.setUsedsize(usersize);
+    	}
 		MyFile file = myFileService.getInfoByName(userInfo);
     	model.addAttribute("user", userInfo);
     	model.addAttribute("org", orgInfo);

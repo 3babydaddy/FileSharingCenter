@@ -119,9 +119,9 @@ public class MyFileController {
 	 * @param folderid
 	 * @return
 	 */
-	@RequestMapping("/upload/{folderid}")
+	@RequestMapping("/upload/{folderid}/{filecreatetype}")
 	@ResponseBody
-	public String upload(HttpServletRequest request, @PathVariable long folderid)throws Exception {
+	public String upload(HttpServletRequest request, @PathVariable long folderid, @PathVariable String filecreatetype)throws Exception {
 		UploadHelper utils = new UploadHelper();
 		MultipartFile file = utils.getFiles(request).get(0);
 
@@ -153,6 +153,7 @@ public class MyFileController {
 
 			myFile.setCreateDate(sdf.format(new Date()));
 			myFile.setName(fileName);
+			myFile.setFilecreatetype(filecreatetype);
 			myFile.setParent_id(folderid);
 			myFile.setType(suffix.toLowerCase());
 			myFile.setPath(folder.getPath() + folderid + "/");
@@ -163,18 +164,20 @@ public class MyFileController {
 			fileService.insert(myFile);
 			
 			ShareDiskInfo diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId());
-			long usedSize = diskInfo.getUsedsize() + file.getSize();
-			long fileNumber = diskInfo.getFilenumber() + 1;
+			long usedSize = (diskInfo.getUsedsize()==null ? (long)0 : diskInfo.getUsedsize()) + file.getSize();
+			long fileNumber = diskInfo.getFilenumber()!=null?diskInfo.getFilenumber():0  + 1;
 			if(Math.ceil(usedSize/1048576) > diskInfo.getTotalsize()){
 				throw new Exception("空间不足");
 			}
-			diskInfo.setUsedsize((long)Math.ceil(usedSize/1048576));
+			diskInfo.setUsedsize(usedSize);
 			diskInfo.setFilenumber(fileNumber);
 			shareDiskInfoService.updateAllColumnById(diskInfo);
 			
 			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
 			wrapper.setEntity(myFile);
 			MyFile selectOne = fileService.selectOne(wrapper);
+			//把新的已用空间复制给selectOne
+			selectOne.setUsedSize(usedSize);
 			// TODO: 同步网盘信息
 			// MyDiskInfo diskInfo = MyDiskInfoDao.load(user.getId());
 			// session.setAttribute("diskInfo", diskInfo);
