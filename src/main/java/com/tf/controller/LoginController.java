@@ -81,23 +81,25 @@ public class LoginController extends BaseController {
     	long usersize = 0;
     	ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
     	UserVo userInfo = userService.selectVoById(user.getId());
-    	Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
-    	ShareDiskInfo disk = shareDiskInfoService.getUserDiskInfo(userInfo.getId());
-    	if(disk.getUsedsize() != null && disk.getUsedsize() > 0){
-    		usersize = (long)Math.ceil(disk.getUsedsize()/1048576);
-    		if(disk.getUsedsize()%1048576 > 0){
-    			usersize += 1;
-    		}
-    		disk.setUsedsize(usersize);
-    	}
-		MyFile file = myFileService.getInfoByName(userInfo);
-    	model.addAttribute("user", userInfo);
-    	model.addAttribute("org", orgInfo);
-    	model.addAttribute("disk", disk);
-    	model.addAttribute("fileRootId", file.getId());
-    	model.addAttribute("fileOrgRootId", file.getOrgRootId());
-    	model.addAttribute("maxUploadSize",FileStorage.getProperty("max_upload_size"));
-        return "/general/disk";
+    	if (userInfo!=null) {
+			Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
+			ShareDiskInfo disk = shareDiskInfoService.getUserDiskInfo(userInfo.getId());
+			if (disk.getUsedsize() != null && disk.getUsedsize() > 0) {
+				usersize = (long) Math.ceil(disk.getUsedsize() / 1048576);
+				if (disk.getUsedsize() % 1048576 > 0) {
+					usersize += 1;
+				}
+				disk.setUsedsize(usersize);
+			}
+			MyFile file = myFileService.getInfoByName(userInfo);
+			model.addAttribute("user", userInfo);
+			model.addAttribute("org", orgInfo);
+			model.addAttribute("disk", disk);
+			model.addAttribute("fileRootId", file.getId());
+			model.addAttribute("fileOrgRootId", file.getOrgRootId());
+			model.addAttribute("maxUploadSize", FileStorage.getProperty("max_upload_size"));
+		}
+		return "/general/disk";
     }
 
     /**
