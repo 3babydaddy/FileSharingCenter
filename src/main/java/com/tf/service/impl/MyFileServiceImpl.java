@@ -231,7 +231,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 					fileSet.addAll(filesByCreate);
 				}
 			}
-			logger.info("查询处室文件");
+			logger.info("[userName={}] [userRole={}] [getSpaceFileList 查询处室文件]",new Object[]{user.getLoginName(),user.getRoles()});
 		}else if("portrait".equals(flag) && id == treeRootId){
 			//个人空间
 			Map<String, Object> map = new HashMap<String, Object>();
