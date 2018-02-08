@@ -1,7 +1,10 @@
 package com.tf.commons.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -52,4 +55,35 @@ public class DownloadSupport {
 			}
 		}
 	}
+
+	public static void showView(HttpServletResponse response, MyFile myFile) {
+
+		InputStream inputStream = null;
+		OutputStream writer = null;
+		try {
+			String locationStr = myFile.getLocation().substring(0, myFile.getLocation().lastIndexOf("."));
+			inputStream = new FileInputStream(new File(locationStr + ".pdf"));
+			writer = response.getOutputStream();
+			byte[] buf = new byte[1024];
+			int len = 0;
+			while ((len = inputStream.read(buf)) != -1) {
+				writer.write(buf, 0, len); // 写
+			}
+			inputStream.close();
+		} catch (Exception e) {
+			// logger.error(e.getMessage(),e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException e) {
+				// logger.error(e.getMessage(),e);
+			}
+		}
+	}
+
 }

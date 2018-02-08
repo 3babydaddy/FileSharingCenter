@@ -37,6 +37,16 @@ public class User implements Serializable {
 
 	/** 手机号 */
 	private String phone;
+	
+	/**
+	 *mac地址 
+	 */
+	private String mac;
+	
+	/**
+	 * ip地址
+	 */
+	private String ip;
 
 	/** 用户类别 */
 	private Integer userType;
@@ -57,6 +67,22 @@ public class User implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public String getLoginName() {

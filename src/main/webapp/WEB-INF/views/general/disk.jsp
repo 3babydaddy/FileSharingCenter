@@ -18,6 +18,7 @@
 <script type="text/javascript" src="${staticPath }/static/drop/droppable.js"></script>
 <script type="text/javascript" src="${staticPath }/static/drop/draggable.js"></script>
 <script type="text/javascript" src="<c:url value='/static/js/general/disk.js?version=${jsversion}'/>"></script>
+<script type="text/javascript" src="<c:url value='/static/js/pdfobject.js?version=${jsversion}'/>"></script>
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.exedit-3.5.min.js"></script>
 <link rel="stylesheet" href="${staticPath }/static/css/base.css" />
@@ -119,5 +120,9 @@
 	</div>
 	<div id="upload_queue"></div>
 	<div id="dialog"></div>
+	<div id="dialogView"></div>
+	<!-- 预览pdf的div -->
+	<div id="pdfDiv"></div>
+	
 </body>
 </html>

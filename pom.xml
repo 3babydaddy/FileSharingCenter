@@ -187,6 +187,21 @@
 		    <artifactId>commons-fileupload</artifactId>
 		    <version>1.2.2</version>
 		</dependency>
+		
+		<!-- open office -->
+		<dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+
+
+        <dependency>
+	        <groupId>com.github.livesense</groupId>
+	        <artifactId>jodconverter-core</artifactId>
+	        <version>1.0.5</version>
+        </dependency>
+        <!-- open office -->
     </dependencies>
 
     <build>

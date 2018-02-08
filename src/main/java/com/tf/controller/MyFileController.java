@@ -229,6 +229,18 @@ public class MyFileController {
 		MyFile myFile = fileService.selectById(fileId);
 		DownloadSupport.download(response, myFile);
 	}
+	
+	/**
+	 * 预览文件
+	 * 
+	 * @param fileId
+	 * @param response
+	 */
+	@RequestMapping("/showView/{fileId}")
+	public void showView(@PathVariable long fileId, HttpServletResponse response) {
+		MyFile myFile = fileService.selectById(fileId);
+		DownloadSupport.showView(response, myFile);
+	}
 
 	/**
 	 * 文件的移动

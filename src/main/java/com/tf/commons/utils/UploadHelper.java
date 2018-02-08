@@ -49,5 +49,31 @@ public class UploadHelper {
 	public void upload(MultipartFile file, String path) throws IOException {
 		FileOutputStream out = new FileOutputStream(path);
 		FileCopyUtils.copy(file.getBytes(), out);
+		if (isNeedCover(path)) {
+			OpenOfficePdfConvert pdfConvert = new OpenOfficePdfConvert();
+			String fullName = path.substring(0, path.lastIndexOf("."));
+			pdfConvert.convert2PDF(path, fullName + ".pdf");
+		}
+	}
+
+	private boolean isNeedCover(String path) throws IOException {
+		String type = path.substring(path.lastIndexOf(".") + 1, path.length()).toLowerCase();
+		// .doc, * .docx, .xls, .xlsx, .ppt, .pptx
+		if (type != null && (type.equalsIgnoreCase("txt") || 
+				type.equalsIgnoreCase("doc") || 
+				type.equalsIgnoreCase("docx") || 
+				type.equalsIgnoreCase("xls") || 
+				type.equalsIgnoreCase("xlsx") || 
+				type.equalsIgnoreCase("ppt") || 
+				type.equalsIgnoreCase("pptx") || 
+				type.equalsIgnoreCase("sql") || 
+				type.equalsIgnoreCase("gif") || 
+				type.equalsIgnoreCase("jpg") || 
+				type.equalsIgnoreCase("BMP") || 
+				type.equalsIgnoreCase("png"))) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

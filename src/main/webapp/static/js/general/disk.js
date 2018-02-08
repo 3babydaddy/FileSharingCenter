@@ -204,6 +204,16 @@ $(function(){
 	$("#folder ul").delegate(".file_icon:not(.adir,.adir_readonly)", "dblclick", function(e) {
 		window.location.href =  ctxPath +"/myFile/download/" + $(e.target).data("file_id");
 	});
+	
+	/* 单击预览文件 */
+	$("#folder ul").delegate(".file_icon:not(.adir,.adir_readonly)", "click", function(e) {
+		if(isNeedView(e)){
+			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") }).embed("pdfDiv");
+			dialog.show(pdfView, "文件预览",600,800);
+		}else{
+			return false;
+		}
+	});
 
 	/* 点击路径列出目录的内容 */
 	$("#file_path").delegate("#children_path span", "click", function() {
@@ -395,6 +405,31 @@ function initPage(){
 		$("#mkdir").show();
 	}else{
 		$("#mkdir").hide();
+	}
+}
+
+/**
+ * 判断当前对象是否需要预览
+ * @param e
+ * @returns {Boolean}
+ */
+function isNeedView(e){
+	var type = e.target.title.substring(e.target.title.lastIndexOf(".")+1);
+	if ( type == "txt" || 
+			type =="doc" || 
+			type =="docx" || 
+			type =="xls"|| 
+			type =="xlsx" || 
+			type =="ppt" || 
+			type =="pptx" || 
+			type =="sql" || 
+			type =="gif" || 
+			type =="jpg" || 
+			type =="BMP" || 
+			type =="png") {
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -791,11 +826,11 @@ var fileItems = [ {
 		window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
 	}
 }, {
-	text : "分享",
-	icon : basePath + "/static/img/share.png",
-	action : function(tar) {
-		share($(tar));
-	}
+//	text : "分享",
+//	icon : basePath + "/static/img/share.png",
+//	action : function(tar) {
+//		share($(tar));
+//	}
 }, {}, {
 	text : "重命名",
 	icon : basePath + "/static/img/edit.png",
