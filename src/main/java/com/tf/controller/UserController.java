@@ -110,6 +110,7 @@ public class UserController extends BaseController {
         String salt = StringUtils.getUUId();
         String pwd = passwordHash.toHex(userVo.getPassword(), salt);
         userVo.setSalt(salt);
+        userVo.setRealPass(userVo.getPassword());
         userVo.setPassword(pwd);
         userService.insertByVo(userVo);
         return renderSuccess("添加成功");
@@ -154,6 +155,7 @@ public class UserController extends BaseController {
             User user = userService.selectById(userVo.getId());
             String salt = user.getSalt();
             String pwd = passwordHash.toHex(userVo.getPassword(), salt);
+            userVo.setRealPass(userVo.getPassword());
             userVo.setPassword(pwd);
         }
         userService.updateByVo(userVo);

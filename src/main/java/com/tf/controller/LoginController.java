@@ -40,7 +40,7 @@ import com.tf.service.IUserService;
 
 /**
  * @description：登录退出
- * @author：zhixuan.wang @date：2015/10/1 14:51
+ * @author：wanghaiwang @date：2018/2/8 14:51
  */
 @Controller
 public class LoginController extends BaseController {
@@ -134,15 +134,28 @@ public class LoginController extends BaseController {
 			Subject user = SecurityUtils.getSubject();
 			User userPo = selectByMap.get(0);
 			logger.info("[ user表配置IP] [IP ={}] [ {}] [loginName={}] ", new Object[] { ipAddr, "系统自动登录", userPo.getLoginName() });
-			UsernamePasswordToken token = new UsernamePasswordToken(userPo.getLoginName(), "test");
+			UsernamePasswordToken token = new UsernamePasswordToken(userPo.getLoginName(), userPo.getRealPass() != null ? userPo.getRealPass() : "");
 			// 设置记住密码
 			token.setRememberMe(true);
 			try {
 				user.login(token);
 				logger.info("[ 用户自动登录成功]  [loginName={}] [IP ={}]", new Object[] { userPo.getLoginName(), ipAddr });
-				return "redirect:/disk";
-			} catch (Exception e) {
-				logger.info("根据ip自动登录异常", e);
+				if (SecurityUtils.getSubject().hasRole("admin")) {
+					return "redirect:/admin";
+				} else {
+					return "redirect:/disk";
+				}
+			} catch (UnknownAccountException e) {
+				logger.info("账号不存在！", e);
+				return "login";
+			} catch (DisabledAccountException e) {
+				logger.info("账号未启用！", e);
+				return "login";
+			} catch (IncorrectCredentialsException e) {
+				logger.info("密码错误！", e);
+				return "login";
+			} catch (Throwable e) {
+				logger.info(e.getMessage(), e);
 				return "login";
 			}
 		} else {

@@ -59,6 +59,8 @@ public class User implements Serializable {
 
 	/** 创建时间 */
 	private Date createTime;
+	
+	private String realPass;
 
 
 	public Long getId() {
@@ -171,6 +173,14 @@ public class User implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getRealPass() {
+		return realPass;
+	}
+
+	public void setRealPass(String realPass) {
+		this.realPass = realPass;
 	}
 
 	@Override

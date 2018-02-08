@@ -25,7 +25,7 @@
         		<img alt="" src="${staticPath }/static/img/logo_dh.png"><span>文件共享系统</span>
         	</div>
 			<P style="padding: 15px 0px 10px; position: relative;">
-				<span class="u_logo"></span> <input class="ipt" type="text" name="username" placeholder="请输入登录名" />
+				<span class="u_logo"></span> <input class="ipt" type="text" name="username" id="username" placeholder="请输入登录名" />
 			</P>
 			<P style="position: relative;">
 				<span class="p_logo"></span> <input class="ipt" id="password" type="password" name="password" placeholder="请输入密码" />

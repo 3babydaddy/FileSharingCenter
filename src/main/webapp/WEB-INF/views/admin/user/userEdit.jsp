@@ -101,6 +101,8 @@
                 <tr>
                 	<td>初始化(MB)</td>
                     <td><input type="text" name="initStorageSize" value="${user.initStorageSize}" class="easyui-numberbox easyui-validatebox" data-options="required:true"/></td>
+                	<td>IP地址</td>
+                    <td><input type="text" name="ip" value="${user.ip}" class="easyui-textbox easyui-validatebox" data-options="required:true"/></td>
                 </tr>
             </table>
         </form>

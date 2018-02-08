@@ -36,6 +36,16 @@ public class UserVo implements Serializable {
 	private Integer sex;
 
 	private Integer age;
+	
+	/**
+	 *mac地址 
+	 */
+	private String mac;
+	
+	/**
+	 * ip地址
+	 */
+	private String ip;
 
 	private Integer userType;
 
@@ -55,6 +65,8 @@ public class UserVo implements Serializable {
 
 	private Date createdateStart;
 	private Date createdateEnd;
+	
+	private String realPass;
 	
 	/**
 	 * 初始化磁盘大小
@@ -87,6 +99,22 @@ public class UserVo implements Serializable {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public void setPassword(String password) {
@@ -179,6 +207,14 @@ public class UserVo implements Serializable {
 
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
+	}
+
+	public String getRealPass() {
+		return realPass;
+	}
+
+	public void setRealPass(String realPass) {
+		this.realPass = realPass;
 	}
 
 	public Date getCreatedateStart() {

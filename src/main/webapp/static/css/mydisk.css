@@ -101,13 +101,17 @@ input {
 .total_progress {
 	background: #FFF;
 	font-size: 12px;
+	border-radius:10px;
 }
 
 .current_progress {
-	background: #F0E68C;
+	background: rgba(100, 194, 73, 1);
 	float: left;
-	color: #696969;
+	color: white;
 	font-weight: 800;
+	font-size:small;
+	/* padding:0 5 2 2; */
+	border-radius:5px;
 }
 
 .active {

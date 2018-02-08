@@ -146,7 +146,7 @@ $(function(){
 		auto : true,
 		queueSizeLimit : 3,
 		fileTypeExts : "*.*",
-		fileSizeLimit : 100 + "MB",
+		fileSizeLimit : maxUploadSize + "MB",
 		queueID : 'upload_queue',
 		onSelect : function(file) {
 			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
@@ -515,19 +515,19 @@ listFiles = function(tNode,type) {
 
 function optionHideShow(tNode){
 	//得到点击的按钮信息
-	//debugger;
+	debugger;
 	var clicksign = $(".div-active")[0];
 	if(clicksign != undefined){
-		clicksign = $(".div-active")[0].innerText.replace(/\s+/g,"");
+		clicksign = $(".div-active")[0].id;
 	}
 	var yesNoRole = $("#pass").val();
 	//debugger;
 	//根节点判断：flag表示点击按钮的根节点的类型，yesNoRole判断当前用户是否是处室管理员
-	if((clicksign == '处室共享' || $("#flag").val() == '0') && $("#flag").val() != '2' && yesNoRole == 'pass'){
+	if((clicksign == 'chg_base_info' || $("#flag").val() == '0') && $("#flag").val() != '2' && yesNoRole == 'pass'){
 		$("#upload").show();
 		$("#share").hide();
 		initPage();
-	}else if(clicksign == '个人空间' && $("#flag").val() != '2'){
+	}else if(clicksign == 'chg_portrait' && $("#flag").val() != '2'){
 		$("#mkdir").show();
 		$("#upload").show();
 		$("#share").hide();

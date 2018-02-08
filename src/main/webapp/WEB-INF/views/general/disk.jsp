@@ -36,10 +36,10 @@
 <body>
 	<div id="wrap">
 		<div id="sky">
-			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png" style="height: 30px;height: 30px"/></a>
+			<a id="logo" href="${ctxPath}/disk" title=""><img src="${staticPath }/static/img/logo_dh.png"/></a>
 			<span >文件共享系统</span>
 			<div id="cloud">
-				<span>${user.name}</span>
+				<span><shiro:principal/></span>
 				<!-- 仅处室管理员与超级管理员可见 -->
 				<shiro:hasAnyRoles name="org_admin,admin">
  					<span><a href="${ctxPath}/admin"  title="管理页面" style="color: white;"><img style="vertical-align: middle; height: 20px;" src="${staticPath }/static/img/setting.png"></a></span>
@@ -64,17 +64,24 @@
 					<input id="totalsize" type="hidden" value="${empty disk.totalsize ? 0 : disk.totalsize}" />
 					<input id="usedsize" type="hidden" value="${empty disk.usedsize ? 0 : disk.usedsize}" />
 				</div>
-				<div id="chg_base_info" class="menu_div">
-					<h3>处室共享</h3>
-					<shiro:hasRole name="org_admin"> 
-					    <input type="hidden" value="pass" id="pass" />
-					</shiro:hasRole>
-				</div>
-				<div id="chg_portrait" class="menu_div">
-					<h3>个人空间</h3>
-				</div>
+				<!-- 仅当不是admin显示 -->
+				<shiro:lacksRole  name="admin">
+					<div id="chg_base_info" class="menu_div div-active">
+						<!-- <h3>处室共享</h3> -->
+						<h3>${org.name}共享文件</h3>
+						<shiro:hasRole name="org_admin"> 
+						    <input type="hidden" value="pass" id="pass" />
+						</shiro:hasRole>
+					</div>
+					<shiro:lacksRole  name="org_admin">
+						<div id="chg_portrait" class="menu_div">
+							<!-- <h3>个人空间</h3> -->
+							<h3>${user.name }的个人空间</h3>
+						</div>
+					</shiro:lacksRole>
+				</shiro:lacksRole>
 				<div id="chg_email" class="menu_div">
-					<h3>共享空间</h3>
+					<h3>公共空间</h3>
 				</div>
 				<input type="hidden" id="fileRootId" value="${fileRootId }" />
 				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />

@@ -14,12 +14,12 @@
 
 #sky>a {
 	display: inline-block;
-	margin: 10px 0px 0px 20px;
+	margin: 0px 0px 0px 20px;
 }
 
 #sky>a>img {
-	height: 30px;
-	width: 30px;
+	height: 48px;
+	width: 48px;
 	vertical-align: middle;
 	margin-right: 10px
 }
