@@ -62,7 +62,11 @@ public class LoginController extends BaseController {
 	 */
 	@GetMapping("/")
 	public String index() {
-		return "redirect:/disk";
+		if (SecurityUtils.getSubject().hasRole("admin")) {
+			return "redirect:/admin";
+		} else {
+			return "redirect:/disk";
+		}
 	}
 
 	/**

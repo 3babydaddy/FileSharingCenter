@@ -36,7 +36,7 @@ import com.tf.service.IMyFileService;
 
 @Service
 public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> implements IMyFileService {
-	
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MyFileMapper mapper;
@@ -130,7 +130,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		List<MyFile> files = mapper.selectByMap(map);
 		long usedsize = 0;
 		long filenumber = 0;
-		for(MyFile file : files){
+		for (MyFile file : files) {
 			usedsize = usedsize + file.getSize();
 			filenumber++;
 		}
@@ -138,7 +138,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		diskInfo.setUsedsize(usedsize);
 		diskInfo.setFilenumber(filenumber);
 		shareDiskInfoMapper.updateAllColumnById(diskInfo);
-		
+
 		return usedsize + "";
 	}
 
@@ -157,11 +157,11 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		selectById.setPath(targetFile.getPath());
 		Integer updateById = mapper.updateById(selectById);
 
-		return updateById>0?true:false;
+		return updateById > 0 ? true : false;
 	}
-	
+
 	@Override
-	public void shareUserSave(ShareUser share)throws Exception{
+	public void shareUserSave(ShareUser share) throws Exception {
 		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		share.setShareUser(user.getId());
@@ -170,9 +170,9 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		share.setStatus("1");
 		shareUserMapper.insert(share);
 	}
-	
+
 	@Override
-	public void shareOrgSave(ShareOrg share)throws Exception{
+	public void shareOrgSave(ShareOrg share) throws Exception {
 		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		share.setShareUser(user.getId());
@@ -180,7 +180,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		share.setCreator(user.getName());
 		share.setStatus("1");
 		shareOrgMapper.insert(share);
-		
+
 	}
 
 	@Override
@@ -198,11 +198,11 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	@Override
 	public MyFile getInfoByName(UserVo user) {
 		MyFile fileTem = new MyFile();
-		fileTem.setName("#"+user.getId());
+		fileTem.setName("#" + user.getId());
 		MyFile file = mapper.selectOne(fileTem);
-		fileTem.setName("#"+user.getOrganizationId());
+		fileTem.setName("#" + user.getOrganizationId());
 		fileTem = mapper.selectOne(fileTem);
-		file.setOrgRootId(fileTem.getId()+"");
+		file.setOrgRootId(fileTem.getId() + "");
 		return file;
 	}
 
@@ -210,50 +210,51 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	public List<MyFile> getSpaceFileList(String flag, long id, long treeRootId) {
 		List<MyFile> files = new ArrayList<>();
 		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
-		//获取当前用户
+		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		
-		if("baseInfo".equals(flag) && id == treeRootId){
-			//处室空间
+
+		if ("baseInfo".equals(flag) && id == treeRootId) {
+			// 处室空间
 			User userInfo = userMapper.selectById(user.getId());
 			Organization orgInfo = organizationMapper.selectById(userInfo.getOrganizationId());
-			//查询出本部门中的处室管理员
+			// 查询出本部门中的处室管理员
 			List<String> userIdList = userMapper.getUserIdList(orgInfo.getId());
-			if(userIdList.size() > 0){
-				//处室管理员新建
-				if(user.getRoles().contains("org_admin")){
-					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#"+orgInfo.getId());
+			if (userIdList.size() > 0) {
+				// 处室管理员新建
+				if (user.getRoles().contains("org_admin")) {
+					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#" + orgInfo.getId());
 					fileSet.addAll(filesByCreate);
-				}else{
-					//分享处室
+				} else {
+					// 分享处室
 					TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(orgInfo.getId(), userIdList);
 					fileSet.addAll(filesByOrg);
-					//分享个人
+					// 分享个人
 					TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
 					fileSet.addAll(filesByUser);
 				}
 			}
-			logger.info("[userName={}] [userRole={}] [getSpaceFileList 查询处室文件]",new Object[]{user.getLoginName(),user.getRoles()});
-		}else if("portrait".equals(flag) && id == treeRootId){
-			//个人空间
+			logger.info("[userName={}] [userRole={}] [getSpaceFileList 查询处室文件]", new Object[] { user.getLoginName(), user.getRoles() });
+		} else if ("portrait".equals(flag) && id == treeRootId) {
+			// 个人空间
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
 			map.put("filecreatetype", '1');
 			files = mapper.selectByMap(map);
 			logger.info("查询个人空间");
 			return files;
-		}else if("email".equals(flag) && id == treeRootId){
-			//共享空间
+		} else if ("email".equals(flag) && id == treeRootId) {
+			// 共享空间
 			User userInfo = userMapper.selectById(user.getId());
-			Organization orgInfo = organizationMapper.selectById(userInfo.getOrganizationId());
-			//分享处室及上级
-			fileSet = this.getOrgFileList(orgInfo);
-			//分享个人
+			// Organization orgInfo =
+			// organizationMapper.selectById(userInfo.getOrganizationId());
+			// 分享处室及上级
+			fileSet = getOrgFileList(Long.parseLong(userInfo.getOrganizationId().toString()));
+			// 分享个人
 			TreeSet<MyFile> filesByUser = shareUserMapper.getFileInfoList(user.getId());
 			fileSet.addAll(filesByUser);
 			logger.info("查询共享空间文件");
-		}else{
-			//文件树查询
+		} else {
+			// 文件树查询
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
 			files = mapper.selectByMap(map);
@@ -261,19 +262,24 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		files.addAll(fileSet);
 		return files;
 	}
-	
-	private TreeSet<MyFile> getOrgFileList(Organization orgInfo){
+
+	/**
+	 * 递归查询所有机构及父机构的文件
+	 * 
+	 * @param orgId 机构id
+	 * @return 文件及文件夹列表
+	 */
+	private TreeSet<MyFile> getOrgFileList(Long orgId) {
 		TreeSet<MyFile> files = new TreeSet<MyFile>();
-		TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgInfo.getId());
+		TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgId);
 		files.addAll(filesByOrg);
-		
-		Organization org = new Organization();
-		org.setId(orgInfo.getPid());
-		Organization pidOrg = organizationMapper.selectOne(org);
-		if(pidOrg.getPid() != null){
-			this.getOrgFileList(pidOrg);
+
+		Organization org = organizationMapper.selectById(orgId);
+		// 当前机构是否存在父机构 
+		if (org.getPid() != null) {
+			this.getOrgFileList(org.getPid());
 		}
 		return files;
 	}
-	
+
 }
