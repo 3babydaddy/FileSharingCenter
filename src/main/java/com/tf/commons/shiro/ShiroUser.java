@@ -15,6 +15,7 @@ public class ShiroUser implements Serializable {
     private static final long serialVersionUID = -1373760761780840081L;
     
     private Long id;
+    private Integer orgId;
     private final String loginName;
     private String name;
     private Set<String> urlSet;
@@ -67,7 +68,15 @@ public class ShiroUser implements Serializable {
         return loginName;
     }
 
-    /**
+    public Integer getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Integer orgId) {
+		this.orgId = orgId;
+	}
+
+	/**
      * 本函数输出将作为默认的<shiro:principal/>输出.
      */
     @Override

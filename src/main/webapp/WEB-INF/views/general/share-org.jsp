@@ -18,17 +18,18 @@
 		var fileId = $('#fileId').val();
 		var shareType = $('#shareType').val();
 		if(orgId == null || orgId == ''){
-			alert('请选择组群');
+			//alert('请选择组群');
+			parent.$.messager.alert('提示', "请选群组", 'info');
 			return;
 		}
-		
+		debugger;
 		$.ajax({
 			url:'${path }/myFile/shareOrgSave',
 			type : 'post',
-			data:{fileId:fileId, orgId:orgId, attribute:shareRoleAtt, shareType:shareType},
+			data:{fileIds:fileId, orgId:orgId, attribute:shareRoleAtt, shareTypes:shareType},
 			async: false,
 			success:function(result){
-				alert(result);
+				parent.$.messager.alert('提示', result, 'info');
 				$('#gridPanel').datagrid('reload');
 			},
 			 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -75,7 +76,7 @@
 			type : 'post',
 			data:{shareId:shareId},
 			success:function(result){
-				alert(result);
+				parent.$.messager.alert('提示', result, 'info');
 				$('#gridPanel').datagrid('reload');
 			},
 			 error: function(XMLHttpRequest, textStatus, errorThrown) {

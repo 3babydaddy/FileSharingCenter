@@ -107,6 +107,7 @@
 					</div>
 				</div>
 				<div id="tools_bar">
+					<!-- <input type="checkbox">全选 -->
 					<span id="mkdir" style="display:none;">新建文件夹</span> 
 					<span id="upload">上　传<span id="upload_button"></span></span> 
 					<span id="share">共　享</span>

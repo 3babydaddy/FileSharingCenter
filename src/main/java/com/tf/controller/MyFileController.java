@@ -51,7 +51,7 @@ public class MyFileController {
 	private IShareUserService shareUserService;
 	@Autowired
 	private IShareDiskInfoService shareDiskInfoService;
-	
+
 	/**
 	 * 列出文件夹的内的所有子文件
 	 * 
@@ -67,7 +67,7 @@ public class MyFileController {
 		}
 		return myFiles;
 	}
-	
+
 	/**
 	 * 列出某个机构所有子文件
 	 * 
@@ -83,7 +83,7 @@ public class MyFileController {
 		}
 		return myFiles;
 	}
-	
+
 	/**
 	 * 查询处室、个人和共享的列表
 	 * 
@@ -121,7 +121,7 @@ public class MyFileController {
 	 */
 	@RequestMapping("/upload/{folderid}/{filecreatetype}")
 	@ResponseBody
-	public String upload(HttpServletRequest request, @PathVariable long folderid, @PathVariable String filecreatetype)throws Exception {
+	public String upload(HttpServletRequest request, @PathVariable long folderid, @PathVariable String filecreatetype) throws Exception {
 		UploadHelper utils = new UploadHelper();
 		MultipartFile file = utils.getFiles(request).get(0);
 
@@ -138,10 +138,10 @@ public class MyFileController {
 
 		// TODO:是否有足够的空间
 		// if (MyDiskInfoDao.isEnoughSpace(myFile)) {
-		
+
 		String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
 		try {
-			//路径是否存在
+			// 路径是否存在
 			File filePth = new File(FILEBASEPATH);
 			if (!filePth.exists()) {
 				filePth.mkdirs();
@@ -162,21 +162,21 @@ public class MyFileController {
 			myFile.setDescription("");
 
 			fileService.insert(myFile);
-			
+
 			ShareDiskInfo diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId());
-			long usedSize = (diskInfo.getUsedsize()==null ? (long)0 : diskInfo.getUsedsize()) + file.getSize();
-			long fileNumber = diskInfo.getFilenumber()!=null?diskInfo.getFilenumber():0  + 1;
-			if(Math.ceil(usedSize/1048576) > diskInfo.getTotalsize()){
+			long usedSize = (diskInfo.getUsedsize() == null ? (long) 0 : diskInfo.getUsedsize()) + file.getSize();
+			long fileNumber = diskInfo.getFilenumber() != null ? diskInfo.getFilenumber() : 0 + 1;
+			if (Math.ceil(usedSize / 1048576) > diskInfo.getTotalsize()) {
 				throw new Exception("空间不足");
 			}
 			diskInfo.setUsedsize(usedSize);
 			diskInfo.setFilenumber(fileNumber);
 			shareDiskInfoService.updateAllColumnById(diskInfo);
-			
+
 			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
 			wrapper.setEntity(myFile);
 			MyFile selectOne = fileService.selectOne(wrapper);
-			//把新的已用空间复制给selectOne
+			// 把新的已用空间复制给selectOne
 			selectOne.setUsedSize(usedSize);
 			// TODO: 同步网盘信息
 			// MyDiskInfo diskInfo = MyDiskInfoDao.load(user.getId());
@@ -229,7 +229,7 @@ public class MyFileController {
 		MyFile myFile = fileService.selectById(fileId);
 		DownloadSupport.download(response, myFile);
 	}
-	
+
 	/**
 	 * 预览文件
 	 * 
@@ -266,7 +266,7 @@ public class MyFileController {
 
 	@RequestMapping("/shareUser")
 	public String shareUser(String fileId, String shareType, Model model) {
-		
+
 		model.addAttribute("shareType", shareType);
 		model.addAttribute("fileId", fileId);
 		return "/general/share-user";
@@ -274,43 +274,57 @@ public class MyFileController {
 
 	/**
 	 * 保存共享用户信息
+	 * 
 	 * @param share
 	 * @return
 	 */
 	@RequestMapping("/shareUserSave")
 	@ResponseBody
-	public String shareUserSave(ShareUser share) {
+	public String shareUserSave(ShareUser share, String fileIds, String shareTypes) {
 		String msg = "";
-		try{
-			fileService.shareUserSave(share);
+		try {
+			String[] ids = fileIds.split(",");
+			String[] types = shareTypes.split(",");
+			for (int i = 0; i < ids.length; i++) {
+				share.setFileId(fileIds != null ? Long.parseLong(ids[i]) : 0);
+				share.setShareType(shareTypes != null ? Long.parseLong(types[i]) : 0);
+				fileService.shareUserSave(share);
+			}
 			msg = "保存成功";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "保存失败";
 		}
 		return msg;
 	}
-	
+
 	@RequestMapping("/shareOrg")
 	public String shareOrg(String fileId, String shareType, Model model) {
 		model.addAttribute("fileId", fileId);
 		model.addAttribute("shareType", shareType);
 		return "/general/share-org";
 	}
-	
+
 	/**
 	 * 保存共享单位信息
+	 * 
 	 * @param share
 	 * @return
 	 */
 	@RequestMapping("/shareOrgSave")
 	@ResponseBody
-	public String shareOrgSave(ShareOrg share) {
+	public String shareOrgSave(ShareOrg share, String fileIds, String shareTypes) {
 		String msg = "";
-		try{
-			fileService.shareOrgSave(share);
+		try {
+			String[] ids = fileIds.split(",");
+			String[] types = shareTypes.split(",");
+			for (int i = 0; i < ids.length; i++) {
+				share.setFileId(fileIds != null ? Long.parseLong(ids[i]) : 0);
+				share.setShareType(shareTypes != null ? Long.parseLong(types[i]) : 0);
+				fileService.shareOrgSave(share);
+			}
 			msg = "保存成功";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "保存失败";
 		}
@@ -319,28 +333,30 @@ public class MyFileController {
 
 	/**
 	 * 查询共享信息列表
+	 * 
 	 * @param params
 	 * @param page
 	 * @param rows
 	 * @param response
 	 */
-	@RequestMapping(value="/queryShareList",method=RequestMethod.POST)
-	@ResponseBody	
-	public Object orglist(String flag, int page, int rows, HttpServletResponse response){
+	@RequestMapping(value = "/queryShareList", method = RequestMethod.POST)
+	@ResponseBody
+	public Object orglist(String flag, int page, int rows, HttpServletResponse response) {
 		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-				
+
 		PageInfo pageInfo = new PageInfo(page, rows);
-		if("org".equals(flag)){
+		if ("org".equals(flag)) {
 			pageInfo = shareOrgService.queryShareOrgList(pageInfo, user.getId());
-		}else if("user".equals(flag)){
+		} else if ("user".equals(flag)) {
 			pageInfo = shareUserService.queryShareUserList(pageInfo, user.getId());
 		}
 		return pageInfo;
 	}
-	
+
 	/**
 	 * 删除共享单位信息
+	 * 
 	 * @param share
 	 * @return
 	 */
@@ -348,18 +364,19 @@ public class MyFileController {
 	@ResponseBody
 	public String shareOrgDel(String shareId) {
 		String msg = "";
-		try{
+		try {
 			shareOrgService.shareOrgDel(shareId);
 			msg = "删除成功";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "删除失败";
 		}
 		return msg;
 	}
-	
+
 	/**
 	 * 删除共享人员信息
+	 * 
 	 * @param share
 	 * @return
 	 */
@@ -367,10 +384,10 @@ public class MyFileController {
 	@ResponseBody
 	public String shareUserDel(String shareId) {
 		String msg = "";
-		try{
+		try {
 			shareUserService.shareUserDel(shareId);
 			msg = "删除成功";
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "删除失败";
 		}

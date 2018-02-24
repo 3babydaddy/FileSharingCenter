@@ -214,6 +214,15 @@ $(function(){
 			return false;
 		}
 	});
+	
+	/*对非只读的文件夹添加点击选中效果 批量进行操作*/
+	$("#folder ul").delegate(".folder","click", function(obj) {
+		if($(obj.currentTarget).hasClass("active")){
+			$(obj.currentTarget).removeClass("active");
+		}else{
+			$(obj.currentTarget).addClass("active");
+		}
+	});
 
 	/* 点击路径列出目录的内容 */
 	$("#file_path").delegate("#children_path span", "click", function() {
@@ -471,7 +480,7 @@ createPath = function(tNode) {
 	cPath.html("");
 	while (tempNode.getParentNode() != null) {
 		cPath.prepend($("<span/>").data("file_id", tempNode.id).data("node_id",tempNode.tId).addClass("lock_" + tempNode.isLock).html(tempNode.name));
-		cPath.prepend('<img style="height: 20px;vertical-align: middle;" src="'+basePath +'/static/img/path_spilt.png ">');
+		cPath.prepend('<img style="height: 18px;vertical-align: middle;" src="'+basePath +'/static/img/path_spilt.png ">');
 		tempNode = tempNode.getParentNode();
 	}
 };
@@ -515,7 +524,6 @@ listFiles = function(tNode,type) {
 
 function optionHideShow(tNode){
 	//得到点击的按钮信息
-	debugger;
 	var clicksign = $(".div-active")[0];
 	if(clicksign != undefined){
 		clicksign = $(".div-active")[0].id;
@@ -799,16 +807,34 @@ deleteLock = function(f) {
 };
 
 shareFile = function (f){
-	var tNode = zTree.getNodeByTId(f.data("node_id"));
+	var nodeIds =[];
+	var types=[];
+	debugger;
+	//获取多选的文件夹
+	var selFolders = $("#folder>ul>li.folder.active>span.file_icon");
+	if (selFolders.length > 0) {
+		selFolders.each(function(index, obj) {
+			var tNode = zTree.getNodeByTId($(obj).data("node_id"));
+			nodeIds.push(tNode.id);
+			types.push(tNode.filecreatetype);
+		});
+	}else{
+		//默认鼠标右键的文件夹
+		var tNode = zTree.getNodeByTId(f.data("node_id"));
+		nodeIds.push(tNode.id);
+		types.push(tNode.filecreatetype);
+	}
+	nodeIds.join(",");
+	types.join(",");
 	parent.$.modalDialog({
         title : '共享设置',
         width : 750,
         height : 500,
-        href : ctxPath + '/myFile/share?id=' + tNode.id + '&shareType=' + tNode.filecreatetype,
+        href : ctxPath + '/myFile/share?id=' + nodeIds + '&shareType=' + types,
         buttons : [ {
             text : '关闭',
             handler : function() {
-               // var f = parent.$.modalDialog.handler.find('#roleGrantForm');
+            	// var f = parent.$.modalDialog.handler.find('#roleGrantForm');
                 //f.submit();
             	parent.$.modalDialog.handler.dialog('destroy');
         		parent.$.modalDialog.handler = undefined;

@@ -38,18 +38,19 @@ $("#shareUsers").combobox({
 		var fileId = $('#fileId').val();
 		var shareType = $('#shareType').val();
 		if(userId == null || userId == ''){
-			alert('请选择用户');
+			//alert('请选择用户');
+			parent.$.messager.alert('提示', "请选择用户", 'info');
 			return;
 		}
-		
+		debugger;
 		$.ajax({
 			url:'${path }/myFile/shareUserSave',
 			type : 'post',
-			data:{fileId:fileId, userId:userId, attribute:shareRoleAtt, shareType:shareType},
+			data:{fileIds:fileId, userId:userId, attribute:shareRoleAtt, shareTypes:shareType},
 			//dataType:'json',
 			async: false,
 			success:function(result){
-				alert(result);
+				parent.$.messager.alert('提示', result, 'info');
 				$('#gridPanel').datagrid('reload');
 			},
 			 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -97,7 +98,7 @@ $("#shareUsers").combobox({
 			type : 'post',
 			data:{shareId:shareId},
 			success:function(result){
-				alert(result);
+				parent.$.messager.alert('提示', result, 'info');
 				$('#gridPanel').datagrid('reload');
 			},
 			 error: function(XMLHttpRequest, textStatus, errorThrown) {
