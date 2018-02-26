@@ -131,6 +131,7 @@
 	<div id="dialogView"></div>
 	<!-- 预览pdf的div -->
 	<div id="pdfDiv"></div>
+	<div id="showPdfDiv"></div>
 	
 </body>
 </html>
