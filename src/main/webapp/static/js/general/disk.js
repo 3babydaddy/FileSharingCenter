@@ -201,8 +201,21 @@ $(function(){
 	/* 单击预览文件 */
 	$("#folder ul").delegate(".file_icon:not(.adir,.adir_readonly)", "click", function(e) {
 		if(isNeedView(e)){
-			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") }).embed("pdfDiv");
-			dialog.show(pdfView, "文件预览",600,800);
+//			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") }).embed("pdfDiv");
+			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") ,pdfOpenParams: { scrollbars: '1', toolbar: '0', statusbar: '1'}}).embed("pdfDiv");
+			debugger;
+			$("#showPdfDiv").dialog({  
+		        content: $("#pdfDiv"),  
+		        width: 900,
+                height:600,
+                maximizable:true,
+                draggable: true,
+		        //modal: true,  
+		        title: "文件预览",  
+		        onClose: function () {  
+		            $(this).dialog('close');//后面可以关闭后的事件  
+		        }  
+		    });  
 		}else{
 			return false;
 		}
