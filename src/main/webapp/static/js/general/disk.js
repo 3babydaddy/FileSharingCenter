@@ -120,24 +120,17 @@ $(function(){
 				+ "</dl></form>";
 			dialog.show(fMkdir, '新建文件夹');
 	});
-	
-	/* 进度条 */
-	var totalsize = $("#totalsize").val();
-	var usedsize = $("#usedsize").val();
-	var maxUploadSize = $("#maxUploadSize").val();
-	
+	/*进度条*/
 	$("#space_bar").progressBar({
 		width : 265,
 		height : 15,
 		unit : "MB",
-		//totalProgress : Number("1024000000" / (1024)).toFixed(0),
-		totalProgress : Number(totalsize).toFixed(0),
+		totalProgress : Number(0).toFixed(0),
 		currentProgress : 50
 	});
-	
 	var pBar = $("#space_bar").getProgressBar();
-	pBar.setProgress(Number(usedsize).toFixed(0));
 	
+	var maxUploadSize = $("#maxUploadSize").val();
 	/* 上传按钮点击事件 */
 	$("#upload_button").uploadify({
 		height : 22,
@@ -178,7 +171,7 @@ $(function(){
 				var temp = JSON.parse(data);
 				addFile(temp.file);
 				var newSize = Number(temp.file.usedSize / (1024*1024)).toFixed(0);
-				pBar.setProgress(newSize);
+				pBar.setProgress(newSize, Number(temp.file.totalSize).toFixed(0));
 			}
 		},
 		onQueueComplete : function() {
@@ -375,7 +368,9 @@ $(function(){
 		//更改新建文件夹类型
 		$("#createMkdirType").val("0");
 		$("#flag").val("0");
-		clickSpaceTree("baseInfo", fileRootId);
+		clickSpaceTree(ctxPath + '/myFile/getOfficeShareList', fileRootId);
+
+		getProgressData(ctxPath + '/myFile/getDiskSpace', 'office');
 	});
 	//个人共享
 	$("#chg_portrait").click(function() {
@@ -383,7 +378,9 @@ $(function(){
 		//更改新建文件夹类型
 		$("#createMkdirType").val("1");
 		$("#flag").val("0");
-		clickSpaceTree("portrait", fileRootId);
+		clickSpaceTree(ctxPath + '/myFile/getPersonalShareList', fileRootId);
+		
+		getProgressData(ctxPath + '/myFile/getDiskSpace', 'personal');
 	});
 	//空间共享
 	$("#chg_email").click(function() {
@@ -391,7 +388,7 @@ $(function(){
 		//更改新建文件夹类型
 		$("#createMkdirType").val("1");
 		$("#flag").val("1");
-		clickSpaceTree("email", fileRootId);
+		clickSpaceTree(ctxPath + '/myFile/getSpaceFileList', fileRootId);
 	});
 	
 	//初始化页面；对“新建文件夹”按钮进行操作
@@ -403,7 +400,7 @@ $(function(){
 		});
 		$(obj.currentTarget).addClass("div-active");
 	});
-	
+	$("#chg_base_info").click();
 });  
 	
 //========================== 页面加载事件 ========================== //
@@ -415,6 +412,21 @@ function initPage(){
 	}else{
 		$("#mkdir").hide();
 	}
+}
+//初始化进度条的数据
+function getProgressData(url, sign){
+	var data = {sign : sign};
+	$.post(url, data, function(data) {
+		var temp = JSON.parse(data);
+		if (temp.sign == "success") {
+			//更新磁盘使用量
+			var userSize = Number(temp.usersize).toFixed(0);
+			var pBar = $("#space_bar").getProgressBar();
+			pBar.setProgress(userSize, Number(temp.totalsize).toFixed(0));
+		} else if(temp.sign == "fail") {
+			alert("网络错误!");
+		}
+	});
 }
 
 /**
@@ -681,14 +693,15 @@ deleteFile = function(f) {
 	url = ctxPath + "/myFile/delete/" + $(f).data("file_id"), data = "";
 	post = function(url, data) {
 		$.post(url, data, function(data) {
-			if (!isNaN(data)) {
+			if (data.replace(",","").length > 0) {
+				var temp = data.split(',');
 				var tNode = zTree.getNodeByTId(f.data("node_id"));
 				zTree.removeNode(tNode);
 				f.parent(".file").remove();
 				//更新磁盘使用量
-				var newSize = Number(data / (1024*1024)).toFixed(0);
+				var newSize = Number(temp[0] / (1024*1024)).toFixed(0);
 				var pBar = $("#space_bar").getProgressBar();
-				pBar.setProgress(newSize);
+				pBar.setProgress(newSize, Number(temp[1]).toFixed(0));
 			} else if (data == "fail") {
 				alert("网络错误!");
 			}
@@ -1101,14 +1114,14 @@ function clickTree(orgId){
 }
 
 
-function clickSpaceTree(flag, treeRootId){
+function clickSpaceTree(url, treeRootId){
 	//debugger;
 	var setting = {
 			async : {
 				enable : true,
 				autoParam : [ "id" ],
-				otherParam: {'flag': function(){return flag}, 'treeRootId':function(){return treeRootId}}, 
-				url : ctxPath + '/myFile/getSpaceFileList',
+				otherParam: {'treeRootId':function(){return treeRootId}}, 
+				url : url,
 				dataFilter : dataFilter
 			},
 			data:{keep:{parent:true}},
@@ -1148,4 +1161,5 @@ function clickSpaceTree(flag, treeRootId){
 	//$("#root span").data("node_id", "dirTree_1").data("file_id","${treeRootId}");
 	$("#root span").data("node_id", "dirTree_1").data("file_id",1);
 	root.isClick = true;
+	
 }

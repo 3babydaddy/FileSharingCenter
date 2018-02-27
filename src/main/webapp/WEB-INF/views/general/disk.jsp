@@ -61,8 +61,6 @@
 				</div>
 				<div id="netdisk">
 					<span id="space_bar">空间概览</span>
-					<input id="totalsize" type="hidden" value="${empty disk.totalsize ? 0 : disk.totalsize}" />
-					<input id="usedsize" type="hidden" value="${empty disk.usedsize ? 0 : disk.usedsize}" />
 				</div>
 				<!-- 仅当不是admin显示 -->
 				<shiro:lacksRole  name="admin">
@@ -83,11 +81,6 @@
 				<div id="chg_email" class="menu_div">
 					<h3>公共空间</h3>
 				</div>
-				<input type="hidden" id="fileRootId" value="${fileRootId }" />
-				<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
-				<input type="hidden" id="createMkdirType" value="0" />
-				<input type="hidden" id="flag" value="0" />
-				<input id="maxUploadSize" type="hidden" value="${maxUploadSize}" />
 				<!-- 组织机构树形 -->
 				<div id="org_tree">
 					<ul id="orgTree" class="ztree"></ul>
@@ -124,6 +117,11 @@
 			<!-- <div id="footer">
 				<span>中共天津市委组织部　天津市天房科技发展股份有限公司　联合研发</span>
 			</div> -->
+			<input type="hidden" id="fileRootId" value="${fileRootId }" />
+			<input type="hidden" id="fileOrgRootId" value="${fileOrgRootId }" />
+			<input type="hidden" id="createMkdirType" value="0" />
+			<input type="hidden" id="flag" value="0" />
+			<input type="hidden" id="maxUploadSize" value="${maxUploadSize}" />
 		</div>
 	</div>
 	<div id="upload_queue"></div>

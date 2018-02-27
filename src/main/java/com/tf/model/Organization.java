@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tf.commons.utils.JsonUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -43,6 +44,12 @@ public class Organization implements Serializable {
 	/** 创建时间 */
 	private Date createTime;
 
+	/**
+	 * 初始化磁盘大小
+	 */
+	@TableField(exist = false)
+	private Long initStorageSize;
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -105,6 +112,14 @@ public class Organization implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Long getInitStorageSize() {
+		return initStorageSize;
+	}
+
+	public void setInitStorageSize(Long initStorageSize) {
+		this.initStorageSize = initStorageSize;
 	}
 
 	@Override

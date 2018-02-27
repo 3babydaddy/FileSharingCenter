@@ -21,6 +21,6 @@ public interface ShareDiskInfoMapper extends BaseMapper<ShareDiskInfo> {
 	@Select("select id as id, user_id as userId, totalsize, usedsize, "
 			+ "filenumber, crete_time as creteTime, status  from share_disk_info where user_id = #{userId}")
 	@ResultType(ShareDiskInfo.class)
-	ShareDiskInfo getUserDiskInfo(@Param("userId") Long userId);
+	ShareDiskInfo getUserDiskInfo(@Param("userId") String userId);
 	
 }

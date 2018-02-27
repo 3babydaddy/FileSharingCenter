@@ -30,12 +30,10 @@ import com.tf.commons.utils.StringUtils;
 import com.tf.commons.utils.WebUtils;
 import com.tf.model.MyFile;
 import com.tf.model.Organization;
-import com.tf.model.ShareDiskInfo;
 import com.tf.model.User;
 import com.tf.model.vo.UserVo;
 import com.tf.service.IMyFileService;
 import com.tf.service.IOrganizationService;
-import com.tf.service.IShareDiskInfoService;
 import com.tf.service.IUserService;
 
 /**
@@ -50,8 +48,6 @@ public class LoginController extends BaseController {
 	private IUserService userService;
 	@Autowired
 	private IOrganizationService organizationService;
-	@Autowired
-	private IShareDiskInfoService shareDiskInfoService;
 	@Autowired
 	private IMyFileService myFileService;
 
@@ -88,23 +84,13 @@ public class LoginController extends BaseController {
 	 */
 	@GetMapping("/disk")
 	public String disk(Model model) {
-		long usersize = 0;
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		UserVo userInfo = userService.selectVoById(user.getId());
 		if (userInfo != null) {
 			Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
-			ShareDiskInfo disk = shareDiskInfoService.getUserDiskInfo(userInfo.getId());
-			if (disk.getUsedsize() != null && disk.getUsedsize() > 0) {
-				usersize = (long) Math.ceil(disk.getUsedsize() / 1048576);
-				if (disk.getUsedsize() % 1048576 > 0) {
-					usersize += 1;
-				}
-				disk.setUsedsize(usersize);
-			}
 			MyFile file = myFileService.getInfoByName(userInfo);
 			model.addAttribute("user", userInfo);
 			model.addAttribute("org", orgInfo);
-			model.addAttribute("disk", disk);
 			model.addAttribute("fileRootId", file.getId());
 			model.addAttribute("fileOrgRootId", file.getOrgRootId());
 			model.addAttribute("maxUploadSize", FileStorage.getProperty("max_upload_size"));

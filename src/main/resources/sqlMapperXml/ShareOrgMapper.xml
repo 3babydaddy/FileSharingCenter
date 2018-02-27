@@ -30,13 +30,30 @@
         </foreach>
   		
   </select>
-  <select id="queryFilesByOrg" resultType="com.tf.model.MyFile">
+  <select id="queryFilesByOrgId" resultType="com.tf.model.MyFile">
   	select 
   		m.*, 
   		o.attribute 
   	from myfile m, share_to_org o 
 	where m.id = o.file_id 
-	and o.org_id = #{orgId}
+	and o.status = 1
+	and o.org_id in 
+		<foreach item="item" collection="orgIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
 	and o.share_user in (SELECT id FROM USER WHERE organization_id = #{shareOrgId})
+  </select>
+  <select id="queryOrgFileList" resultType="com.tf.model.MyFile">
+  	SELECT
+		m.*, o.attribute AS attribute
+	FROM
+		share_to_org o
+	LEFT JOIN myfile m ON o.file_id = m.id
+	WHERE
+		o.org_id IN 
+		<foreach item="item" collection="orgIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+	AND STATUS = 1
   </select>
 </mapper>

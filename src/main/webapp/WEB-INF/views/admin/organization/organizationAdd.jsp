@@ -50,6 +50,10 @@
                 <td>菜单图标</td>
                 <td><input name="icon" value="fi-folder"/></td>
             </tr>
+           <tr>
+            	<td>初始化(MB)</td>
+                <td><input type="text" name="initStorageSize" placeholder="请输入处室空间大小" value="${initSize}" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
             <tr>
                 <td>地址</td>
                 <td colspan="3"><input name="address" style="width: 300px;"/></td>

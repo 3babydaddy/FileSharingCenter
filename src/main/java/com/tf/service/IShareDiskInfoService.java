@@ -13,6 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IShareDiskInfoService extends IService<ShareDiskInfo> {
 	
-	ShareDiskInfo getUserDiskInfo(Long userId);
+	ShareDiskInfo getUserDiskInfo(String userId);
 	
 }

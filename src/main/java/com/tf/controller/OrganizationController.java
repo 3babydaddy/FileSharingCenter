@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tf.commons.base.BaseController;
 import com.tf.model.MyFile;
 import com.tf.model.Organization;
+import com.tf.model.ShareDiskInfo;
 import com.tf.service.IMyFileService;
 import com.tf.service.IOrganizationService;
+import com.tf.service.IShareDiskInfoService;
 
 /**
  * @description：部门管理
@@ -31,6 +33,8 @@ public class OrganizationController extends BaseController {
     private IOrganizationService organizationService;
     @Autowired
     private IMyFileService myFileService;
+    @Autowired
+    private IShareDiskInfoService shareDiskInfoService;
     /**
      * 部门管理主页
      *
@@ -93,7 +97,7 @@ public class OrganizationController extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     public Object add(@Valid Organization organization) {
-        organization.setCreateTime(new Date());
+    	organization.setCreateTime(new Date());
         organizationService.insert(organization);
         
         MyFile file = new MyFile();
@@ -107,6 +111,13 @@ public class OrganizationController extends BaseController {
         file.setIsShare(0);
         file.setShareDownload(0);
         myFileService.insert(file);
+        
+        ShareDiskInfo shareDiskInfo = new ShareDiskInfo();
+        shareDiskInfo.setUserId("O"+organization.getId());
+        shareDiskInfo.setTotalsize(organization.getInitStorageSize());
+        shareDiskInfo.setCreteTime(new Date());
+        shareDiskInfo.setStatus("0");
+        shareDiskInfoService.insert(shareDiskInfo);
         return renderSuccess("添加成功！");
     }
 
@@ -120,6 +131,10 @@ public class OrganizationController extends BaseController {
     @GetMapping("/editPage")
     public String editPage(Model model, Long id) {
         Organization organization = organizationService.selectById(id);
+        ShareDiskInfo shareDiskInfo = shareDiskInfoService.getUserDiskInfo("O"+id);
+        if(shareDiskInfo != null){
+        	organization.setInitStorageSize(shareDiskInfo.getTotalsize());
+        }
         model.addAttribute("organization", organization);
         return "admin/organization/organizationEdit";
     }
@@ -134,6 +149,19 @@ public class OrganizationController extends BaseController {
     @ResponseBody
     public Object edit(@Valid Organization organization) {
         organizationService.updateById(organization);
+        
+        ShareDiskInfo shareDiskInfo = shareDiskInfoService.getUserDiskInfo("O"+organization.getId());
+        if(shareDiskInfo == null){
+        	ShareDiskInfo info = new ShareDiskInfo();
+        	info.setUserId("O"+organization.getId());
+        	info.setTotalsize(organization.getInitStorageSize());
+        	info.setCreteTime(new Date());
+        	info.setStatus("0");
+            shareDiskInfoService.insert(info);
+        }else{
+        	shareDiskInfo.setTotalsize(organization.getInitStorageSize());
+            shareDiskInfoService.updateById(shareDiskInfo); 
+        }
         return renderSuccess("编辑成功！");
     }
 

@@ -112,6 +112,7 @@ input {
 	font-size:small;
 	/* padding:0 5 2 2; */
 	border-radius:5px;
+	min-width: 20px
 }
 
 .active {

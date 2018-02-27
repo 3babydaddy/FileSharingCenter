@@ -27,7 +27,7 @@ public class ShareDiskInfo extends Model<ShareDiskInfo> {
      * 用户id
      */
 	@TableField("user_id")
-	private Long userId;
+	private String userId;
     /**
      * 总磁盘空间
      */
@@ -59,11 +59,11 @@ public class ShareDiskInfo extends Model<ShareDiskInfo> {
 		this.id = id;
 	}
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

@@ -3,6 +3,7 @@ package com.tf.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.JsonUtils;
+import com.tf.commons.utils.MyFileComparator;
 import com.tf.mapper.MyFileMapper;
 import com.tf.mapper.OrganizationMapper;
 import com.tf.mapper.ShareDiskInfoMapper;
@@ -30,7 +32,6 @@ import com.tf.model.Organization;
 import com.tf.model.ShareDiskInfo;
 import com.tf.model.ShareOrg;
 import com.tf.model.ShareUser;
-import com.tf.model.User;
 import com.tf.model.vo.UserVo;
 import com.tf.service.IMyFileService;
 
@@ -127,6 +128,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("user_id", user.getId());
+		map.put("filecreatetype", myFile.getFilecreatetype());
 		List<MyFile> files = mapper.selectByMap(map);
 		long usedsize = 0;
 		long filenumber = 0;
@@ -134,12 +136,18 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			usedsize = usedsize + file.getSize();
 			filenumber++;
 		}
-		ShareDiskInfo diskInfo = shareDiskInfoMapper.getUserDiskInfo(user.getId());
+		
+		ShareDiskInfo diskInfo = null;
+		if("0".equals(myFile.getFilecreatetype())){
+			diskInfo = shareDiskInfoMapper.getUserDiskInfo("O"+user.getOrgId());
+		}else{
+			diskInfo = shareDiskInfoMapper.getUserDiskInfo(user.getId().toString());
+		}
 		diskInfo.setUsedsize(usedsize);
 		diskInfo.setFilenumber(filenumber);
 		shareDiskInfoMapper.updateAllColumnById(diskInfo);
 
-		return usedsize + "";
+		return usedsize + "," + diskInfo.getTotalsize();
 	}
 
 	@Override
@@ -205,28 +213,30 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		file.setOrgRootId(fileTem.getId() + "");
 		return file;
 	}
-
+	/**
+	 * 处室共享
+	 * @param flag
+	 * @param id
+	 * @param treeRootId
+	 * @return
+	 */
 	@Override
-	public List<MyFile> getSpaceFileList(String flag, long id, long treeRootId) {
+	public List<MyFile> getOfficeShareList(long id, long treeRootId) {
 		List<MyFile> files = new ArrayList<>();
 		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
 		// 获取当前用户
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-
-		if ("baseInfo".equals(flag) && id == treeRootId) {
-			// 处室空间
-			User userInfo = userMapper.selectById(user.getId());
-			Organization orgInfo = organizationMapper.selectById(userInfo.getOrganizationId());
+		if (id == treeRootId) {
 			// 查询出本部门中的处室管理员
-			List<String> userIdList = userMapper.getUserIdList(orgInfo.getId());
+			List<String> userIdList = userMapper.getUserIdList(user.getOrgId().longValue());
 			if (userIdList.size() > 0) {
 				// 处室管理员新建
 				if (user.getRoles().contains("org_admin")) {
-					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#" + orgInfo.getId());
+					TreeSet<MyFile> filesByCreate = mapper.getMyFiles("#" + user.getOrgId());
 					fileSet.addAll(filesByCreate);
 				} else {
 					// 分享处室
-					TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(orgInfo.getId(), userIdList);
+					TreeSet<MyFile> filesByOrg = shareOrgMapper.querySameOrgFiles(user.getOrgId().longValue(), userIdList);
 					fileSet.addAll(filesByOrg);
 					// 分享个人
 					TreeSet<MyFile> filesByUser = shareUserMapper.getSameUserFiles(user.getId(), userIdList);
@@ -234,21 +244,61 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 				}
 			}
 			logger.info("[userName={}] [userRole={}] [getSpaceFileList 查询处室文件]", new Object[] { user.getLoginName(), user.getRoles() });
-		} else if ("portrait".equals(flag) && id == treeRootId) {
-			// 个人空间
+		} else {
+			// 文件树查询
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			files = mapper.selectByMap(map);
+		}
+		files.addAll(fileSet);
+		Collections.sort(files, new MyFileComparator()); //外部比较器:通过实现Comparator接口
+		return files;
+	}
+	/**
+	 * 个人共享
+	 * @param flag
+	 * @param id
+	 * @param treeRootId
+	 * @return
+	 */
+	@Override
+	public List<MyFile> getPersonalShareList(long id, long treeRootId) {
+		List<MyFile> files = new ArrayList<>();
+		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		if (id == treeRootId) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
 			map.put("filecreatetype", '1');
 			files = mapper.selectByMap(map);
 			logger.info("查询个人空间");
 			return files;
-		} else if ("email".equals(flag) && id == treeRootId) {
-			// 共享空间
-			User userInfo = userMapper.selectById(user.getId());
-			// Organization orgInfo =
-			// organizationMapper.selectById(userInfo.getOrganizationId());
+		} else {
+			// 文件树查询
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			files = mapper.selectByMap(map);
+		}
+		files.addAll(fileSet);
+		return files;
+	}
+	/**
+	 * 空间共享
+	 * @param flag
+	 * @param id
+	 * @param treeRootId
+	 * @return
+	 */
+	@Override
+	public List<MyFile> getSpaceFileList(long id, long treeRootId) {
+		List<MyFile> files = new ArrayList<>();
+		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		// 获取当前用户
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		if (id == treeRootId) {
 			// 分享处室及上级
-			fileSet = getOrgFileList(Long.parseLong(userInfo.getOrganizationId().toString()));
+			List<String> shargOrgIds = this.getOrgFileList(user.getOrgId().longValue(), new ArrayList<String>());
+			TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFileList(shargOrgIds);
+			fileSet.addAll(filesByOrg);
 			// 分享个人
 			TreeSet<MyFile> filesByUser = shareUserMapper.getFileInfoList(user.getId());
 			fileSet.addAll(filesByUser);
@@ -260,24 +310,25 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			files = mapper.selectByMap(map);
 		}
 		files.addAll(fileSet);
+		Collections.sort(files, new MyFileComparator()); //外部比较器:通过实现Comparator接口
 		return files;
 	}
 
 	/**
-	 * 递归查询所有机构及父机构的文件
+	 * 递归查询所有机构及父级处室的id
 	 * 
-	 * @param orgId 机构id
-	 * @return 文件及文件夹列表
+	 * @param orgId 机构的id
+	 * @param files 空List
+	 * @return 选中机构父级处室id的集合
 	 */
-	private TreeSet<MyFile> getOrgFileList(Long orgId) {
-		TreeSet<MyFile> files = new TreeSet<MyFile>();
-		TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgId);
-		files.addAll(filesByOrg);
+	private List<String> getOrgFileList(Long orgId, List<String> files) {
+		//TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgId);
+		files.add(orgId.toString());
 
 		Organization org = organizationMapper.selectById(orgId);
 		// 当前机构是否存在父机构 
 		if (org.getPid() != null) {
-			this.getOrgFileList(org.getPid());
+			this.getOrgFileList(org.getPid(), files);
 		}
 		return files;
 	}

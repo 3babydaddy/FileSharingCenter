@@ -85,15 +85,47 @@ public class MyFileController {
 	}
 
 	/**
-	 * 查询处室、个人和共享的列表
+	 * 查询处室共享的列表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getOfficeShareList")
+	@ResponseBody
+	public Object getOfficeShareList(long id, long treeRootId) {
+		List<MyFile> myFiles = fileService.getOfficeShareList(id, treeRootId);
+		for (MyFile myFile : myFiles) {
+			myFile.setParent_id(null);
+		}
+		return myFiles;
+	}
+	
+	/**
+	 * 查询个人共享的列表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getPersonalShareList")
+	@ResponseBody
+	public Object getPersonalShareList(long id, long treeRootId) {
+		List<MyFile> myFiles = fileService.getPersonalShareList(id, treeRootId);
+		for (MyFile myFile : myFiles) {
+			myFile.setParent_id(null);
+		}
+		return myFiles;
+	}
+	
+	/**
+	 * 查询空间共享的列表
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping("/getSpaceFileList")
 	@ResponseBody
-	public Object getSpaceFileList(String flag, long id, long treeRootId) {
-		List<MyFile> myFiles = fileService.getSpaceFileList(flag, id, treeRootId);
+	public Object getSpaceFileList(long id, long treeRootId) {
+		List<MyFile> myFiles = fileService.getSpaceFileList(id, treeRootId);
 		for (MyFile myFile : myFiles) {
 			myFile.setParent_id(null);
 		}
@@ -163,7 +195,12 @@ public class MyFileController {
 
 			fileService.insert(myFile);
 
-			ShareDiskInfo diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId());
+			ShareDiskInfo diskInfo = null;
+			if("0".equals(filecreatetype)){
+				diskInfo = shareDiskInfoService.getUserDiskInfo("O"+user.getOrgId());
+			}else{
+				diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId().toString());
+			}
 			long usedSize = (diskInfo.getUsedsize() == null ? (long) 0 : diskInfo.getUsedsize()) + file.getSize();
 			long fileNumber = diskInfo.getFilenumber() != null ? diskInfo.getFilenumber() : 0 + 1;
 			if (Math.ceil(usedSize / 1048576) > diskInfo.getTotalsize()) {
@@ -178,6 +215,7 @@ public class MyFileController {
 			MyFile selectOne = fileService.selectOne(wrapper);
 			// 把新的已用空间复制给selectOne
 			selectOne.setUsedSize(usedSize);
+			selectOne.setTotalSize(diskInfo.getTotalsize());
 			// TODO: 同步网盘信息
 			// MyDiskInfo diskInfo = MyDiskInfoDao.load(user.getId());
 			// session.setAttribute("diskInfo", diskInfo);
@@ -393,4 +431,41 @@ public class MyFileController {
 		}
 		return msg;
 	}
+	
+	/**
+	 * 得到登陆人的处室或者个人的磁盘空间
+	 * 
+	 * @param share
+	 * @return
+	 */
+	@RequestMapping("/getDiskSpace")
+	@ResponseBody
+	public String getDiskSpace(String sign) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		long usersize = 0;
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		try {
+			ShareDiskInfo disk = null;
+			//处室磁盘空间
+			if("office".equals(sign)){
+				disk = shareDiskInfoService.getUserDiskInfo("O"+user.getOrgId());
+			}else if("personal".equals(sign)){
+				disk = shareDiskInfoService.getUserDiskInfo(user.getId().toString());
+			}
+			if (disk.getUsedsize() != null && disk.getUsedsize() > 0) {
+				usersize = (long) Math.ceil(disk.getUsedsize() / 1048576);
+				if (disk.getUsedsize() % 1048576 > 0) {
+					usersize += 1;
+				}
+			}
+			resultMap.put("sign", "success");
+			resultMap.put("usersize", usersize);
+			resultMap.put("totalsize", disk.getTotalsize());
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("sign", "fail");
+		}
+		return JsonUtils.toJson(resultMap);
+	}
+
 }

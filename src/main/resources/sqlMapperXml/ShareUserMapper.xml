@@ -28,6 +28,19 @@
   		 <foreach item="item" collection="userIdList" open="(" separator="," close=")">
             #{item}
         </foreach>
-  		
+  </select>
+  <select id="getFileListByOrgId" resultType="com.tf.model.MyFile">
+  	SELECT
+		m.*, 
+		o.attribute as attribute
+	FROM
+		share_to_user o
+	LEFT JOIN myfile m ON o.file_id = m.id
+	WHERE
+		o.user_id = #{userId}
+	AND STATUS = 1
+	AND (
+		SELECT organization_id FROM USER WHERE id = o.share_user
+	) = #{orgId}
   </select>
 </mapper>

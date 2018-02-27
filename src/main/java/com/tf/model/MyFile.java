@@ -38,6 +38,8 @@ public class MyFile implements Comparable<MyFile> {
 	private String orgRootId;
 	@TableField(exist = false)
 	private long usedSize;
+	@TableField(exist = false)
+	private long totalSize;
 	
 	public Long getId() {
 		return id;
@@ -199,6 +201,14 @@ public class MyFile implements Comparable<MyFile> {
 		this.usedSize = usedSize;
 	}
 
+	public long getTotalSize() {
+		return totalSize;
+	}
+
+	public void setTotalSize(long totalSize) {
+		this.totalSize = totalSize;
+	}
+
 	public MyFile() {
 		super();  
 	}
@@ -211,19 +221,11 @@ public class MyFile implements Comparable<MyFile> {
 	
 	@Override
 	public int compareTo(MyFile o) {
-		int flag = 0;
-		if(this.getId() == o.getId()){
-			if(o.getAttribute() != null && this.getAttribute() != null && (o.getAttribute().equals(this.getAttribute()))){
-				flag = 0;
-			}
-		}
-		if(this.getAttribute() == null || "02".equals(this.getAttribute()) ){
-			flag = 1;
-		}
-		if("01".equals(this.getAttribute()) ){
-			flag = -1;
-		}
-		return flag;
+	  
+        int result = this.getId().compareTo(o.getId()) > 0 ? 
+        		1 : (this.getId().equals(o.getId()) && this.getAttribute().equals(o.getAttribute()) ? 0 : -1);  
+         
+        return result;
 	}
-	
+	 
 }

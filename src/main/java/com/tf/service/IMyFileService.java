@@ -42,5 +42,9 @@ public interface IMyFileService extends IService<MyFile> {
 	
 	MyFile getInfoByName(UserVo id);
 
-	List<MyFile> getSpaceFileList(String flag, long id, long treeRootId);
+	List<MyFile> getOfficeShareList(long id, long treeRootId);
+	
+	List<MyFile> getPersonalShareList(long id, long treeRootId);
+	
+	List<MyFile> getSpaceFileList(long id, long treeRootId);
 }

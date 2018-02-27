@@ -23,7 +23,7 @@ public class ShareDiskInfoServiceImpl extends ServiceImpl<ShareDiskInfoMapper, S
 	private ShareDiskInfoMapper shareDiskInfoMapper;
 	
 	@Override
-	public ShareDiskInfo getUserDiskInfo(Long userId) {
+	public ShareDiskInfo getUserDiskInfo(String userId) {
 		return shareDiskInfoMapper.getUserDiskInfo(userId);
 	}
 	

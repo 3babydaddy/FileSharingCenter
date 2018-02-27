@@ -42,7 +42,7 @@ $("#shareUsers").combobox({
 			parent.$.messager.alert('提示', "请选择用户", 'info');
 			return;
 		}
-		debugger;
+		//debugger;
 		$.ajax({
 			url:'${path }/myFile/shareUserSave',
 			type : 'post',

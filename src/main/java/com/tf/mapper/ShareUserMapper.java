@@ -34,4 +34,6 @@ public interface ShareUserMapper extends BaseMapper<ShareUser> {
 	TreeSet<MyFile> getFileInfoList(@Param("userId") Long userId);
 	
 	TreeSet<MyFile> getSameUserFiles(@Param("userId") Long userId, @Param("userIdList") List<String> userIdList);
+	
+	TreeSet<MyFile> getFileListByOrgId(@Param("userId") Long userId, @Param("orgId") Long orgId);
 }

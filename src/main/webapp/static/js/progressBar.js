@@ -19,20 +19,22 @@ jQuery.fn.progressBar = function(options) {
 					"</span>"+
 				"</div>";
     			
-	listener = function(bar,num,pro,w){
+	listener = function(bar,num,pro,total,totalSize, w){
 		//debugger;
 		var percent = Math.round(parseFloat(parseInt(bar.css("width"))/opt.width)*100);
 		bar.html(w);
-		num.html(Number(opt.totalProgress*percent/100).toFixed(opt.precision));
+		//num.html(Number(totalSize*percent/100).toFixed(opt.precision));
+		//total.html(Number(totalSize).toFixed(opt.precision));
 		
 		if(!bar.data("finish")){
-			setTimeout(function(){listener(bar,num,pro,w);},10);
+			setTimeout(function(){listener(bar,num,pro,total,totalSize, w);},10);
 		}else{
 			if(opt.onFinish){
 				opt.onFinish();
 			}
 			bar.data("finish",false);
 			num.html(pro);
+			total.html(totalSize);
 		}
 	};
 	
@@ -42,21 +44,21 @@ jQuery.fn.progressBar = function(options) {
 	getTotal = function(){
 		return $(this).find(".total").html();
 	};
-	setProgress = function(progress){
+	setProgress = function(progress, totalSize){
 		if(opt.onOverFlow){
 			onOverFlow();
 			return;
 		}
 		var thiz = $(this);
-		var w = Math.round(parseFloat(progress/opt.totalProgress)*100)+"%";
 		
+		var w = Math.round(parseFloat(progress/totalSize)*100)+"%";
 		var bar = thiz.find(".current_progress");
 		var num = thiz.find(".current");
-		
-		bar.animate({width : w},1000,function(){
+		var total = thiz.find(".total");
+		bar.animate({width : w},100,function(){
 			$(this).data("finish",true);
 		});
-		listener(bar,num,progress, w);
+		listener(bar,num,progress,total,totalSize, w);
 	};
 	
     this.each(function(){

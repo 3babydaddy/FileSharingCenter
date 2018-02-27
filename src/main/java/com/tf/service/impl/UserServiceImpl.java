@@ -68,7 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //add share_disk_info 
         ShareDiskInfo diskInfo = new ShareDiskInfo();
         diskInfo.setCreteTime(new Date());
-        diskInfo.setUserId(user.getId());
+        diskInfo.setUserId(user.getId().toString());
         //diskInfo.setFilenumber();
         diskInfo.setTotalsize(userVo.getInitStorageSize().longValue());
         diskInfo.setStatus("0");
