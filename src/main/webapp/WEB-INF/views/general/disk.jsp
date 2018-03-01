@@ -54,9 +54,10 @@
 						<img src="${staticPath }/static/img/default.png" title="${user.name}" />
 					</div>
 					<div id="user_detail">
-						<h4 id="name">天津市委组织部</h4>
-						<h4 id="name" title="${org.name}&nbsp;&nbsp;${user.name }">${org.name}&nbsp;&nbsp;${user.name }</h4>
-						<span id="gender gender_"></span> <span>共${empty disk.filenumber ? 0 : disk.filenumber}个资源</span>
+						<span id="parentOrgName">天津市委组织部</span>
+						<%-- <span id="currentOrgName" title="${org.name}&nbsp;&nbsp;${user.name }">${org.name}&nbsp;&nbsp;${user.name }</span> --%>
+						<span id="currentOrgName" title="${user.name }">${user.name }</span>
+						<span id="fileNumber">共${empty disk.filenumber ? 0 : disk.filenumber}个资源</span>
 					</div>
 				</div>
 				<div id="netdisk">
