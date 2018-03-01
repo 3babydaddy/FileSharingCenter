@@ -60,13 +60,13 @@
 					</div>
 				</div>
 				<div id="netdisk">
-					<span id="space_bar">空间概览</span>
+					<span id="space_bar"></span>
 				</div>
 				<!-- 仅当不是admin显示 -->
 				<shiro:lacksRole  name="admin">
 					<div id="chg_base_info" class="menu_div div-active">
 						<!-- <h3>处室共享</h3> -->
-						<h3>${org.name}共享文件</h3>
+						<span>${org.name}共享文件</span>
 						<shiro:hasRole name="org_admin"> 
 						    <input type="hidden" value="pass" id="pass" />
 						</shiro:hasRole>
@@ -74,12 +74,12 @@
 					<shiro:lacksRole  name="org_admin">
 						<div id="chg_portrait" class="menu_div">
 							<!-- <h3>个人空间</h3> -->
-							<h3>${user.name }的个人空间</h3>
+							<span>${user.name }的个人空间</span>
 						</div>
 					</shiro:lacksRole>
 				</shiro:lacksRole>
 				<div id="chg_email" class="menu_div">
-					<h3>公共空间</h3>
+					<span>公共空间</span>
 				</div>
 				<!-- 组织机构树形 -->
 				<div id="org_tree">

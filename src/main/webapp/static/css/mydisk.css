@@ -7,8 +7,8 @@ body {
 }
 
 h3 {
-	font-size: 1.2em;
-	margin-top: 6%;
+	/* font-size: 1.2em; */
+	/* margin-top: 6%; */
 }
 
 .form {
@@ -93,9 +93,14 @@ input {
 }
 
 .total_progress, .bar_data {
+	font-size:smaller;
 	padding: 2px;
 	text-align: center;
 	width: 92% !important;
+}
+
+.bar_data>span{
+	font-size:smaller;
 }
 
 .total_progress {
@@ -109,8 +114,8 @@ input {
 	float: left;
 	color: white;
 	font-weight: 800;
-	font-size:small;
-	/* padding:0 5 2 2; */
+	font-size:8;
+	padding:0 1 1 1;
 	border-radius:5px;
 	min-width: 20px
 }

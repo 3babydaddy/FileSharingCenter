@@ -24,26 +24,35 @@ body {
 /* style 2 */
 #sky, #setting, #other, #netdisk, #user_info {
 	/* background-color: rgba(229, 169, 54, 1); */
+	
 }
 
 #sky {
-	background: url("../img/top.png");
+	background: url("../img/top.jpg");
 }
 
 #left {
-	background: url("../img/left.png");
+	background: url("../img/left1.png");
 	background-color: rgba(229, 245, 205, 1);
 	color: #333;
+	background-size: cover;
 }
 
 #netdisk, #user_info {
-	/* color: #7d7d7d; */
+	color: #307032;
 	font-weight: bold;
 	/* border: 1px solid rgba(205, 227, 170, 1); */
 }
 
 #chg_base_info, #chg_portrait, #chg_email {
-	color: #434343;
+	color: #307032;
+	display: flex;
+}
+
+#chg_base_info>span, #chg_portrait>span, #chg_email>span {
+	margin: auto;
+	margin-left:0px;
+	font-weight: bold; 
 }
 
 #chg_base_info:HOVER, #chg_portrait:HOVER, #chg_email:HOVER {
@@ -51,7 +60,7 @@ body {
 }
 
 .menu_div.div-active {
-	background-color: rgba(205, 227, 170, 1)!important;
+	background-color: rgba(205, 227, 170, 1) !important;
 }
 
 /* style 2 */
