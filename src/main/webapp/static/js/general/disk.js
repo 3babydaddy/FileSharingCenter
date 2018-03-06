@@ -132,55 +132,57 @@ $(function(){
 	
 	var maxUploadSize = $("#maxUploadSize").val();
 	/* 上传按钮点击事件 */
-	$("#upload_button").uploadify({
-		height : 22,
-		width : 64,
-		swf : basePath + '/static/uploadify/uploadify.swf',
-		auto : true,
-		queueSizeLimit : 3,
-		fileTypeExts : "*.*",
-		fileSizeLimit : maxUploadSize + "MB",
-		queueID : 'upload_queue',
-		onSelect : function(file) {
-			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
-				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
-				//alert("您的空间不够");
-				return false;
-			} else {
-				file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val();
-				pop.show();
-				return true;
+	setTimeout(function(){
+		$("#upload_button").uploadify({
+			height : 22,
+			width : 64,
+			swf : basePath + '/static/uploadify/uploadify.swf',
+			auto : true,
+			queueSizeLimit : 3,
+			fileTypeExts : "*.*",
+			fileSizeLimit : maxUploadSize + "MB",
+			queueID : 'upload_queue',
+			onSelect : function(file) {
+				var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
+				if (newSize > pBar.getTotal()) {
+					dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+					//alert("您的空间不够");
+					return false;
+				} else {
+					file.uploadUrl = ctxPath + "/myFile/upload/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val();
+					pop.show();
+					return true;
+				}
+			},
+			onUploadStart : function(file) {
+				var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
+				if (newSize > pBar.getTotal()) {
+					dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
+					//alert("您的空间不够");
+					return false;
+				} else {
+					return true;
+				}
+			},
+			onUploadSuccess : function(file, data, response) {
+				if (data == "fail") {
+					dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
+					//alert("您剩余的空间已经无法容下这个文件了");
+				} else {
+					var temp = JSON.parse(data);
+					addFile(temp.file);
+					var newSize = Number(temp.file.usedSize / (1024*1024)).toFixed(0);
+					pBar.setProgress(newSize, Number(temp.file.totalSize).toFixed(0));
+				}
+			},
+			onQueueComplete : function() {
+				setTimeout(function(){pop.close()},2000);
+			},
+			onUploadError : function(file, errorCode, errorMsg, errorString) {
+				console.log(errorMsg);
 			}
-		},
-		onUploadStart : function(file) {
-			var newSize = file.size / (1024*1024) + parseInt(pBar.getCurrent());
-			if (newSize > pBar.getTotal()) {
-				dialog.show("<center><h1>您的空间不够</h1></center>","出错啦！");
-				//alert("您的空间不够");
-				return false;
-			} else {
-				return true;
-			}
-		},
-		onUploadSuccess : function(file, data, response) {
-			if (data == "fail") {
-				dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
-				//alert("您剩余的空间已经无法容下这个文件了");
-			} else {
-				var temp = JSON.parse(data);
-				addFile(temp.file);
-				var newSize = Number(temp.file.usedSize / (1024*1024)).toFixed(0);
-				pBar.setProgress(newSize, Number(temp.file.totalSize).toFixed(0));
-			}
-		},
-		onQueueComplete : function() {
-			setTimeout(function(){pop.close()},2000);
-		},
-		onUploadError : function(file, errorCode, errorMsg, errorString) {
-			console.log(errorMsg);
-		}
-	});
+		});
+	},10);
 	
 	$("#folder").delegate(".file_name", "dblclick", function() {
 		rename($(this).prev(".file_icon"));

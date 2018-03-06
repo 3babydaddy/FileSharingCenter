@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         ShareDiskInfo shareDiskInfo = new ShareDiskInfo();
         shareDiskInfo.setTotalsize(userVo.getInitStorageSize().longValue());
         EntityWrapper<ShareDiskInfo> wrapper = new EntityWrapper<ShareDiskInfo>();
-        wrapper.where("user_id = {0}", userVo.getId());
+        wrapper.where("user_id = {0}", userVo.getId().toString());
         diskMapper.update(shareDiskInfo, wrapper);
 
         String[] roles = userVo.getRoleIds().split(",");
