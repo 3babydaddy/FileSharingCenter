@@ -28,7 +28,6 @@ import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.StringUtils;
 import com.tf.commons.utils.WebUtils;
-import com.tf.model.MyFile;
 import com.tf.model.Organization;
 import com.tf.model.User;
 import com.tf.model.vo.UserVo;
@@ -88,11 +87,11 @@ public class LoginController extends BaseController {
 		UserVo userInfo = userService.selectVoById(user.getId());
 		if (userInfo != null) {
 			Organization orgInfo = organizationService.getOrgInfo(userInfo.getOrganizationId().longValue());
-			MyFile file = myFileService.getInfoByName(userInfo);
+			Map<String, Object> resultMap = myFileService.getInfoByName(userInfo);
 			model.addAttribute("user", userInfo);
 			model.addAttribute("org", orgInfo);
-			model.addAttribute("fileRootId", file.getId());
-			model.addAttribute("fileOrgRootId", file.getOrgRootId());
+			model.addAttribute("fileRootId", resultMap.get("fileRootId").toString());
+			model.addAttribute("fileOrgRootId", resultMap.get("fileOrgRootId").toString());
 			model.addAttribute("maxUploadSize", FileStorage.getProperty("max_upload_size"));
 		}
 		return "/general/disk";

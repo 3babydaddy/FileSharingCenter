@@ -50,8 +50,10 @@ jQuery.fn.progressBar = function(options) {
 			return;
 		}
 		var thiz = $(this);
-		
-		var w = Math.round(parseFloat(progress/totalSize)*100)+"%";
+		var w = "0%";
+		if(progress > 0 && totalSize > 0){
+			w = Math.round(parseFloat(progress/totalSize)*100)+"%";
+		}
 		var bar = thiz.find(".current_progress");
 		var num = thiz.find(".current");
 		var total = thiz.find(".total");

@@ -22,4 +22,7 @@ public interface IOrganizationService extends IService<Organization> {
     
     Organization getOrgInfo(Long orgId);
 
+    void add(Organization organization)throws Exception;
+    
+    void edit(Organization organization)throws Exception;
 }

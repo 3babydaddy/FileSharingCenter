@@ -452,7 +452,7 @@ public class MyFileController {
 			}else if("personal".equals(sign)){
 				disk = shareDiskInfoService.getUserDiskInfo(user.getId().toString());
 			}
-			if (disk.getUsedsize() != null && disk.getUsedsize() > 0) {
+			if (disk != null && disk.getUsedsize() != null && disk.getUsedsize() > 0) {
 				usersize = (long) Math.ceil(disk.getUsedsize() / 1048576);
 				if (disk.getUsedsize() % 1048576 > 0) {
 					usersize += 1;
@@ -460,7 +460,7 @@ public class MyFileController {
 			}
 			resultMap.put("sign", "success");
 			resultMap.put("usersize", usersize);
-			resultMap.put("totalsize", disk.getTotalsize());
+			resultMap.put("totalsize", disk != null ? disk.getTotalsize() : 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("sign", "fail");

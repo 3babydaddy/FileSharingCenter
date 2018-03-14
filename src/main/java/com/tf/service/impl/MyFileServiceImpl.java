@@ -202,16 +202,28 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return shareUserMapper.queryShareUserList(user.getId());
 	}
-
+	/**
+	 * 获取当前登陆者的个人根目录id和处室的根目录id
+	 * @param flag
+	 * @param id
+	 * @param treeRootId
+	 * @return
+	 */
 	@Override
-	public MyFile getInfoByName(UserVo user) {
+	public Map<String, Object> getInfoByName(UserVo user) {
+		Map<String, Object> resultMap = new HashMap<>();
 		MyFile fileTem = new MyFile();
+		//获取当前登陆者的个人根目录id
 		fileTem.setName("#" + user.getId());
+		fileTem.setFilecreatetype("1");
 		MyFile file = mapper.selectOne(fileTem);
+		resultMap.put("fileRootId", file != null ? file.getId() : "");
+		//获取当前登陆者的处室根目录id
 		fileTem.setName("#" + user.getOrganizationId());
+		fileTem.setFilecreatetype("0");
 		fileTem = mapper.selectOne(fileTem);
-		file.setOrgRootId(fileTem.getId() + "");
-		return file;
+		resultMap.put("fileOrgRootId", fileTem != null ? fileTem.getId() : "");
+		return resultMap;
 	}
 	/**
 	 * 处室共享

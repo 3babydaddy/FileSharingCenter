@@ -1,6 +1,7 @@
 package com.tf.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.tf.model.MyFile;
@@ -40,7 +41,7 @@ public interface IMyFileService extends IService<MyFile> {
 	
 	List<ShareUser> queryShareUserList();
 	
-	MyFile getInfoByName(UserVo id);
+	Map<String, Object> getInfoByName(UserVo id);
 
 	List<MyFile> getOfficeShareList(long id, long treeRootId);
 	
