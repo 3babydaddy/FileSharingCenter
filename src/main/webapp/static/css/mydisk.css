@@ -54,6 +54,11 @@ textarea {
 	width: 94px !important;
 }
 
+#upload_button>object{
+	width: 94px;
+	height: 41px;
+}
+
 input {
 	vertical-align: text-top;
 }

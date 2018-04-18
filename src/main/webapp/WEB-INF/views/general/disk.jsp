@@ -21,6 +21,7 @@
 <script type="text/javascript" src="<c:url value='/static/js/pdfobject.js?version=${jsversion}'/>"></script>
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.exedit-3.5.min.js"></script>
+<script type="text/javascript" src="${staticPath }/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="${staticPath }/static/css/base.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/disk.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/mydisk.css"/>
@@ -31,6 +32,7 @@
 <link rel="stylesheet" href="${staticPath }/static/uploadify/uploadify.css" />
 <link rel="stylesheet" href="${staticPath }/static/dialog/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/skin.css" />
+<%-- <link rel="stylesheet" href="${staticPath }/static/bootstrap-3.3.7-dist/css/bootstrap.css" /> --%>
 
 </head>
 <body>
@@ -103,7 +105,12 @@
 				<div id="tools_bar">
 					<!-- <input type="checkbox">全选 -->
 					<span id="mkdir" style="display:none;">新建文件夹</span> 
-					<span id="upload">上　传<span id="upload_button"></span></span> 
+					<span id="upload">上　传 ▼
+						<div style="background-color: #F8F8FF;height: 40px;margin-top: 3px;">
+							<div style="height: 20px;line-height: 20px;border-bottom: 1px solid green"> <font color="#307032">文件<span id="upload_button"></span></font></div>
+							<div style="height: 20px;line-height: 20px"> <font color="#307032">文件夹</font></div>
+						</div>
+					</span> 
 					<span id="share">共　享</span>
 					<%-- <div>
 						<img id="gridViewImg" src="${staticPath }/static/img/grid-white.png" />
