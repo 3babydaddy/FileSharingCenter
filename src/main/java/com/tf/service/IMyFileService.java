@@ -3,6 +3,8 @@ package com.tf.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.baomidou.mybatisplus.service.IService;
 import com.tf.model.MyFile;
 import com.tf.model.ShareOrg;

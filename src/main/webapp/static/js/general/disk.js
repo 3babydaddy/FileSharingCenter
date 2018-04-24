@@ -131,10 +131,113 @@ $(function(){
 	var pBar = $("#space_bar").getProgressBar();
 	
 	var maxUploadSize = $("#maxUploadSize").val();
+	
+	/*显示下拉菜单*/
+	$('#upload').click(function(){
+		$('#selectId').show();
+	})
+	$('#upload').dblclick(function(){
+		$('#selectId').hide();
+	})
+	/* 文件夹上传*/
+	$('#btnFileFolder').click(function(){
+		$("#fileFolder").trigger("click");
+	})
+	//页面提示信息  
+	var msg;  
+	//文件数量限制  
+	var filesCount=2000;  
+	//文件夹大小限制 2000M  
+	var filesSize=2147483648;  
+	//实际的文件数量  
+	var actual_filesCount=0;  
+	//实际的文件夹大小  
+	var actual_filesSize=0;  
+	 
+	//change事件调用
+	function commit(){  
+	    //判断是否选中文件夹  
+		alert(123);
+	    var file=$("#fileFolder").val();  
+	    if(file==''){  
+	        $("#msg").text('请选择要上传的文件夹');  
+	        return;  
+	    }
+		
+	   //$('#fileUploadForm').attr("action",ctxPath + "/myFile/uploadFolder/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val()); 
+	   //使用ajax提交表单
+	   var formData = new FormData(document.getElementById("fileUploadForm"));//表单id
+	   $.ajax({
+	      url: ctxPath + "/myFile/uploadFolder/"+ $("#folder").data("folder_id")+"/"+$("#createMkdirType").val(),
+	      type: 'POST',
+	      data: formData,
+	      async: false,
+	      cache: false,
+	      contentType: false,
+	      processData: false,
+	      success: function (data) {
+	    	  debugger;
+	    	  if (data == "fail") {
+					dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
+					//alert("您剩余的空间已经无法容下这个文件了");
+				} else {
+					var temp = JSON.parse(data);
+					var fileList = temp.fileList;
+					$.each(fileList,function(k,v){
+				    	console.log(v.type+"="+v.location);
+				    	/*var files = new Array();
+				    	var resultPath = v.location;
+				    	files = resultPath.split("/");
+				    	url = ctxPath + "/myFile/mkdir/" + $("#folder").data("folder_id") +"/"+$("#createMkdirType").val();
+						data = files[1];
+						$.post(url,data,function(d) {
+							addFile(d);
+							dialog.updateTitle("新建文件成功").updateContent("<center><h1>新建文件成功</h1></center>");
+							setTimeout("dialog.close()",1000);
+						},"json");*/
+				    })
+					//var newSize = Number(temp.file.usedSize / (1024*1024)).toFixed(0);
+					//pBar.setProgress(newSize, Number(temp.file.totalSize).toFixed(0));
+				}
+	      }
+	   });
+	   
+	   //$("#fileUploadForm").submit();
+	} 
+	//选择文件夹之后,触发change事件
+	$('#fileFolder').change(function(e) {  
+	    //判断是否选中文件  
+	      var file=$("#fileFolder").val();  
+	      if(file!=''){  
+	    	  dialog.show("<center><h1>请选择上传内容</h1></center>","出错啦！");  
+	      }  
+	      var files = e.target.files; 
+	      //文件数量  
+	      actual_filesCount = files.length;  
+	      if(actual_filesCount > filesCount){  
+	    	  dialog.show("<center><h1>文件过多，单次最多可上传"+filesCount+"个文件</h1></center>","出错啦！");
+	         return;  
+	      }  
+	      for (var i = 0, f; f = files[i]; ++i){  
+	          actual_filesSize += f.size;  
+	          if(actual_filesSize > filesSize){ 
+	        	 dialog.show("<center><h1>单次文件夹上传不能超过"+filesSize/1024/1024+"M</h1></center>","出错啦！");
+	             return;  
+	          }  
+	      }
+	      var fileNameList = [];
+	      $.each(e.target.files,function(k,v){
+	    	  console.log(v.type+"="+v.webkitRelativePath);
+	    	  var fileName = v.webkitRelativePath;
+	    	  fileNameList.push(fileName);
+	      })
+	      $('#fileNames').val(fileNameList);
+	      commit();
+	    });  
 	/* 上传按钮点击事件 */
 	setTimeout(function(){
-		$("#upload_button").uploadify({
-			height : 22,
+		$("#upLoadFile").uploadify({
+			height : 18,
 			width : 64,
 			swf : basePath + '/static/uploadify/uploadify.swf',
 			auto : true,
@@ -548,7 +651,6 @@ listFiles = function(tNode,type) {
 	optionHideShow(tNode);
 	
 };
-
 function optionHideShow(tNode){
 	//得到点击的按钮信息
 	var clicksign = $(".div-active")[0];

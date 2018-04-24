@@ -106,11 +106,26 @@
 					<!-- <input type="checkbox">全选 -->
 					<span id="mkdir" style="display:none;">新建文件夹</span> 
 					<span id="upload">上　传 ▼
-						<div style="background-color: #F8F8FF;height: 40px;margin-top: 3px;">
-							<div style="height: 20px;line-height: 20px;border-bottom: 1px solid green"> <font color="#307032">文件<span id="upload_button"></span></font></div>
-							<div style="height: 20px;line-height: 20px"> <font color="#307032">文件夹</font></div>
+						<div id = "selectId" style="background-color: #F8F8FF;height: 40px;margin-top: 3px;">
+							<div id = "upLoadFile"  style="height: 20px;border-bottom: 1px solid green">
+									<font color="#307032">文件
+										<span id="upload_button">
+										</span>
+									</font>
+							</div>
+							<div style="height: 20px;line-height: 20px">
+								<!-- <input type="file" name="" id="" webkitdirectory style="display:none;"> -->
+    						     <!-- <input style="height:20px;width:auto;background-color:#F8F8FF;"class="btn" type="button" value="文件夹" > -->    
+								<font id="btnFileFolder" color="#307032">文件夹
+								</font>
+									<form id="fileUploadForm" action="${ctxPath}/myFile/uploadFolder" name="fileUploadForm" method="post" enctype="multipart/form-data">  
+										<input type="file" name="fileFolder" id="fileFolder" style="display:none"  webkitdirectory>
+										<input type=text name="fileNames" id="fileNames" style="display:none">
+									</form>
+							</div>
 						</div>
-					</span> 
+					</span>
+					<!-- 文件文件夹上传 -->
 					<span id="share">共　享</span>
 					<%-- <div>
 						<img id="gridViewImg" src="${staticPath }/static/img/grid-white.png" />

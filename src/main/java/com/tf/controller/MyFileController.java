@@ -3,15 +3,19 @@ package com.tf.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.shiro.SecurityUtils;
+import org.aspectj.weaver.JoinPointSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.tf.commons.result.PageInfo;
@@ -151,7 +157,7 @@ public class MyFileController {
 	 * @param folderid
 	 * @return
 	 */
-	@RequestMapping("/upload/{folderid}/{filecreatetype}")
+	@RequestMapping(value="/upload/{folderid}/{filecreatetype}",method = RequestMethod.POST)
 	@ResponseBody
 	public String upload(HttpServletRequest request, @PathVariable long folderid, @PathVariable String filecreatetype) throws Exception {
 		UploadHelper utils = new UploadHelper();
@@ -229,7 +235,103 @@ public class MyFileController {
 		// }
 		return result;
 	}
-
+	 
+	
+	@RequestMapping(value="/uploadFolder/{folderid}/{filecreatetype}",method=RequestMethod.POST)  
+    @ResponseBody  
+    public String uploadFileFolder(HttpServletRequest request,String[] fileNames, @PathVariable long folderid, @PathVariable String filecreatetype) throws Exception {  
+		UploadHelper utils = new UploadHelper();
+        MultipartHttpServletRequest params=((MultipartHttpServletRequest) request);   
+        List<MultipartFile> files = params.getFiles("fileFolder");
+        
+        String result = "fail";
+        // 获取当前用户
+ 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        //定义变量,记录上传文件的size
+ 		long uploadFileSize = 0l;
+ 		for (MultipartFile multipartFile : files) {
+ 			uploadFileSize = uploadFileSize + multipartFile.getSize();
+		}
+ 		//比较共享存储空间大小,是否超出最大范围
+ 		ShareDiskInfo diskInfo = null;
+		if("0".equals(filecreatetype)){
+			diskInfo = shareDiskInfoService.getUserDiskInfo("O"+user.getOrgId());
+		}else{
+			diskInfo = shareDiskInfoService.getUserDiskInfo(user.getId().toString());
+		}
+		long usedSize = (diskInfo.getUsedsize() == null ? uploadFileSize : (diskInfo.getUsedsize()) + uploadFileSize);
+		long fileNumber = diskInfo.getFilenumber() == null ? files.size() : (diskInfo.getFilenumber()  + files.size());
+		if (Math.ceil(usedSize / 1048576) > diskInfo.getTotalsize()) {
+			throw new Exception("空间不足");
+		}
+		diskInfo.setUsedsize(usedSize);
+		diskInfo.setFilenumber(fileNumber);
+		shareDiskInfoService.updateAllColumnById(diskInfo);
+ 		List<MyFile> resultList = new ArrayList<>();
+		//遍历集合和数组,进行文件上传
+		for (int i = 0; i < fileNames.length; i++) {
+ 			MyFile myFile = new MyFile();
+ 			//获得前台上传的每一个文件
+        	MultipartFile multipartFile = files.get(i);
+        	//每一个文件对应的位置
+        	String filePosition = fileNames[i];
+        	String fileFolder = filePosition.substring(0,filePosition.lastIndexOf("/")+1);
+        	//获取文件名
+        	String originalFilename = multipartFile.getOriginalFilename();
+        	//截取文件后缀名
+        	String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        	//拼接上传的路径
+        	String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
+        	//判断文件夹是否存在
+        	File filePth = new File(FILEBASEPATH+fileFolder);
+			if (!filePth.exists()) {
+				filePth.mkdirs();
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			MyFile folder = fileService.queryFile(folderid);
+			//判断当前用户的可用空间是否满足
+			long usedSizeNow = folder.getUsedSize();
+			long totalSizeNow = folder.getTotalSize();
+			if (Math.ceil((usedSizeNow+uploadFileSize) / 1048576) > totalSizeNow) {
+				throw new Exception("当前用户磁盘空间不足");
+			}
+			myFile.setUser_id(user.getId());
+			myFile.setSize(multipartFile.getSize());
+			myFile.setCreateDate(sdf.format(new Date()));
+			myFile.setName(originalFilename);
+			myFile.setFilecreatetype(filecreatetype);
+			myFile.setParent_id(folderid);
+			myFile.setType(suffix.toLowerCase());
+			myFile.setPath(folder.getPath() + folderid + "/");
+			myFile.setLocation(filePath);
+			myFile.setIsShare(0);
+			myFile.setDescription("");
+			myFile.setUsedSize(usedSizeNow+uploadFileSize);
+			//复制文件
+			utils.upload(multipartFile, filePath);// 文件没有成功保存返回失败信息
+			//插入
+			fileService.insert(myFile);
+			//处理结果
+			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
+			wrapper.setEntity(myFile);
+			MyFile selectOne = fileService.selectOne(wrapper);
+			// 把新的已用空间复制给selectOne
+			selectOne.setUsedSize(usedSizeNow+uploadFileSize);
+			selectOne.setTotalSize(totalSizeNow);
+			//保存到集合
+			resultList.add(selectOne);
+ 		}
+		// TODO: 同步网盘信息
+		// MyDiskInfo diskInfo = MyDiskInfoDao.load(user.getId());
+		// session.setAttribute("diskInfo", diskInfo);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("fileList", resultList);
+		data.put("usedSize", diskInfo.getUsedsize());
+		result = JsonUtils.toJson(data);
+        return  result ;  
+    }  
+	
 	/**
 	 * 重命名
 	 * 
@@ -467,5 +569,4 @@ public class MyFileController {
 		}
 		return JsonUtils.toJson(resultMap);
 	}
-
 }
