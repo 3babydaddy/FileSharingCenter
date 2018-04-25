@@ -6,16 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.shiro.SecurityUtils;
-import org.aspectj.weaver.JoinPointSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.tf.commons.result.PageInfo;
@@ -262,13 +258,16 @@ public class MyFileController {
 		long usedSize = (diskInfo.getUsedsize() == null ? uploadFileSize : (diskInfo.getUsedsize()) + uploadFileSize);
 		long fileNumber = diskInfo.getFilenumber() == null ? files.size() : (diskInfo.getFilenumber()  + files.size());
 		if (Math.ceil(usedSize / 1048576) > diskInfo.getTotalsize()) {
-			throw new Exception("空间不足");
+			throw new Exception("当前用户磁盘空间不足");
 		}
 		diskInfo.setUsedsize(usedSize);
 		diskInfo.setFilenumber(fileNumber);
 		shareDiskInfoService.updateAllColumnById(diskInfo);
- 		List<MyFile> resultList = new ArrayList<>();
-		//遍历集合和数组,进行文件上传
+ 		//存储父节点的name,用于判断是否存在
+ 		List<String> parentNameList = new ArrayList<>();
+ 		//存储父节点的id,用于子节点寻找父节点的id
+		List<Long> parentIdList = new ArrayList<>();
+ 		//遍历集合和数组,进行文件上传
 		for (int i = 0; i < fileNames.length; i++) {
  			MyFile myFile = new MyFile();
  			//获得前台上传的每一个文件
@@ -290,46 +289,51 @@ public class MyFileController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			MyFile folder = fileService.queryFile(folderid);
-			//判断当前用户的可用空间是否满足
-			long usedSizeNow = folder.getUsedSize();
-			long totalSizeNow = folder.getTotalSize();
-			if (Math.ceil((usedSizeNow+uploadFileSize) / 1048576) > totalSizeNow) {
-				throw new Exception("当前用户磁盘空间不足");
+			
+			//新增上传文件夹的根目录
+			String[] fileArray = filePosition.split("/");
+			for(int j = 0; j < fileArray.length; j++){
+				String name = fileArray[j];
+				boolean flag = name.contains(".");
+				if(!parentNameList.contains(name+j) || flag){
+					myFile.setUser_id(user.getId());
+					myFile.setCreateDate(sdf.format(new Date()));
+					myFile.setName(name);
+					myFile.setFilecreatetype(filecreatetype);
+					if(j == 0){
+						myFile.setParent_id(folderid);
+					}else{
+						int index = parentNameList.indexOf(fileArray[j-1]+(j-1));
+						Long parentid = parentIdList.get(index);
+						myFile.setParent_id(parentid);
+					}
+					
+					if(!flag){
+						myFile.setType("adir");
+						myFile.setSize(0);
+					}else{
+						myFile.setType(suffix.toLowerCase());
+						myFile.setSize(multipartFile.getSize());
+					}
+					myFile.setPath(folder.getPath() + folderid + "/");
+					myFile.setLocation(filePath);
+					myFile.setIsShare(0);
+					myFile.setDescription("");
+					//插入
+					fileService.insert(myFile);
+					
+					parentNameList.add(name+j);
+					parentIdList.add(myFile.getId());
+				}
 			}
-			myFile.setUser_id(user.getId());
-			myFile.setSize(multipartFile.getSize());
-			myFile.setCreateDate(sdf.format(new Date()));
-			myFile.setName(originalFilename);
-			myFile.setFilecreatetype(filecreatetype);
-			myFile.setParent_id(folderid);
-			myFile.setType(suffix.toLowerCase());
-			myFile.setPath(folder.getPath() + folderid + "/");
-			myFile.setLocation(filePath);
-			myFile.setIsShare(0);
-			myFile.setDescription("");
-			myFile.setUsedSize(usedSizeNow+uploadFileSize);
 			//复制文件
 			utils.upload(multipartFile, filePath);// 文件没有成功保存返回失败信息
-			//插入
-			fileService.insert(myFile);
-			//处理结果
-			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
-			wrapper.setEntity(myFile);
-			MyFile selectOne = fileService.selectOne(wrapper);
-			// 把新的已用空间复制给selectOne
-			selectOne.setUsedSize(usedSizeNow+uploadFileSize);
-			selectOne.setTotalSize(totalSizeNow);
-			//保存到集合
-			resultList.add(selectOne);
  		}
-		// TODO: 同步网盘信息
-		// MyDiskInfo diskInfo = MyDiskInfoDao.load(user.getId());
-		// session.setAttribute("diskInfo", diskInfo);
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("fileList", resultList);
-		data.put("usedSize", diskInfo.getUsedsize());
-		result = JsonUtils.toJson(data);
-        return  result ;  
+		MyFile selectOne = fileService.selectById(parentIdList.get(0));
+		selectOne.setUsedSize(usedSize);
+		selectOne.setTotalSize(diskInfo.getTotalsize());
+		result = JsonUtils.toJson(selectOne);
+        return result;  
     }  
 	
 	/**

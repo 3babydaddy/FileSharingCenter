@@ -73,6 +73,8 @@ $(function () {
             }
         }
     });
+    
+    closeWindow();
 });
 function submitForm(){
     $('#loginform').submit();
@@ -87,4 +89,19 @@ function enterlogin(){
         event.cancel = true;
         $('#loginform').submit();
     }
+}
+//是否关闭当前浏览器
+function closeWindow(){
+	if(!isChrome() && !isAccordIE()){
+		if(!isChrome() && !isAccordIE()){
+			alert(tipMsg);
+			if(isFirefox){
+				window.location.href = 'about:blank ';
+			}else{
+				window.opener = null;
+			    window.open('', '_self', '');
+			    window.close();
+			}
+		}
+	}
 }

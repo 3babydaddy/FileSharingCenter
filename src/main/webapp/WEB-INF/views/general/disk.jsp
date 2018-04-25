@@ -33,7 +33,21 @@
 <link rel="stylesheet" href="${staticPath }/static/dialog/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/skin.css" />
 <%-- <link rel="stylesheet" href="${staticPath }/static/bootstrap-3.3.7-dist/css/bootstrap.css" /> --%>
-
+<script type="text/javascript" src="${staticPath }/static/js/isChromeBrowser.js?v=20170115" charset="utf-8"></script>
+<script type="text/javascript">
+	$(function () {
+		if(!isChrome() && !isAccordIE()){
+			alert(tipMsg);
+			if(isFirefox){
+				window.location.href = 'about:blank ';
+			}else{
+				window.opener = null;
+			    window.open('', '_self', '');
+			    window.close();
+			}
+		}
+	})
+</script>
 </head>
 <body>
 	<div id="wrap">
@@ -119,8 +133,8 @@
 								<font id="btnFileFolder" color="#307032">文件夹
 								</font>
 									<form id="fileUploadForm" action="${ctxPath}/myFile/uploadFolder" name="fileUploadForm" method="post" enctype="multipart/form-data">  
-										<input type="file" name="fileFolder" id="fileFolder" style="display:none"  webkitdirectory>
-										<input type=text name="fileNames" id="fileNames" style="display:none">
+										<input type="file" name="fileFolder" id="fileFolder" style="display:none"  webkitdirectory />
+										<input type=text name="fileNames" id="fileNames" value="tem" style="display:none" />
 									</form>
 							</div>
 						</div>
