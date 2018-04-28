@@ -4,26 +4,30 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
 	   
-	    <script type="text/javascript" src="../../static/linkpage/modernizr.js?v=20170115" charset="utf-8"></script> 
-	    <script type="text/javascript" src="../../static/js/isChromeBrowser.js?v=20170115" charset="utf-8"></script>
-	    <script type="text/javascript" src="../../static/easyui/jquery.min.js" charset="utf-8"></script>
+	    <script type="text/javascript" src="modernizr.js?v=20170115" charset="utf-8"></script> 
+	    <script type="text/javascript" src="isChromeBrowser.js?v=20170115" charset="utf-8"></script>
+	    <script type="text/javascript" src="jquery.min.js" charset="utf-8"></script>
+	    <script type="text/javascript" src="properties.js?v=20170115" charset="utf-8"></script>
 	    <meta content="initial-scale=1, minimum-scale=1, width=device-width" name="viewport">
 	    <meta content="Google Chrome 是一款快速、安全且免费的网络浏览器，能很好地满足新型网站对浏览器的要求。现在就在桌面设备上试试吧！" name="description">
 	    <title>浏览器链接</title>
 	    
 		<script type="text/javascript">
 			$(function () {
+				$("#imglink").attr("src", modual.imagelink);
 				if(isIE){
-					document.getElementById('copylink').style.display="none";
-					document.getElementById('downfile').style.display="";
+					$("#copylink").hide();
+					$("#downfile").show();
+					$("#downA").attr("href", modual.downlink);
 				}else{
-					document.getElementById('copylink').style.display="";
-					document.getElementById('downfile').style.display="none";
+					$("#copylink").show();
+					$("#downfile").hide(); 
+					$("#copyA").attr("href", modual.copylink);
 				}
 			})
 		</script>
 	    <style type="text/css">
-	    	@import url("../../static/linkpage/chrome.min.css");
+	    	@import url("chrome.min.css");
 			#footer ul{
 				text-align: center;
 			}
@@ -45,22 +49,22 @@
 		        	<h1 id="main-title" tabindex="-1">文件共享系统</h1>
 		            <p class="browser-promo">不适用IE11以下的浏览器</p>
 		            <div id="copylink">
-		            	<a class="button eula-download-button download-button desktop-only hide-cros" data-g-event="cta" href="#">复制链接</a>
+		            	<p id="copyA" class="browser-promo"></p>
 		            	<div class="desktop-only">
 				          	<p class="content-win64">
 				            	<span class="alt-platform">适用于 Windows 10/8.1/8/7 64-bit</span>
 				            </p>
 			            </div>
 		            </div>
-		            <div id="downfile">
-		            	<a class="button eula-download-button download-button desktop-only hide-cros" data-g-event="cta" href="#">下载 Chrome</a>
+		            <div id="downfile" style="display:none;">
+		            	<a id="downA" class="button eula-download-button download-button desktop-only hide-cros"  href="#">下载 Chrome包</a>
 		            	<div class="desktop-only">
 				          	<p class="content-win64">
 				            	<span class="alt-platform">适用于 Windows 10/8.1/8/7 64-bit</span>
 				            </p>
 			            </div>
 		            </div>
-				    <img alt="" class="hi-dpi empty-area section-hero" src="../../static/linkpage/benefits-4.jpg">
+				    <img id="imglink" class="hi-dpi empty-area section-hero" src="">
 		        </section>
 	        </div>
 	        <div id="footer">
