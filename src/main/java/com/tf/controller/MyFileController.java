@@ -173,10 +173,11 @@ public class MyFileController {
 		// TODO:是否有足够的空间
 		// if (MyDiskInfoDao.isEnoughSpace(myFile)) {
 
-		String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
+		String filePath = "C:/home/" + new Date().getTime() + "." + suffix;
+		//String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
 		try {
 			// 路径是否存在
-			File filePth = new File(FILEBASEPATH);
+			File filePth = new File("C:/home/");
 			if (!filePth.exists()) {
 				filePth.mkdirs();
 			}
@@ -280,9 +281,9 @@ public class MyFileController {
         	//截取文件后缀名
         	String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         	//拼接上传的路径
-        	String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
+        	String filePath = "C:/home/" +fileFolder+ new Date().getTime() + "." + suffix;
         	//判断文件夹是否存在
-        	File filePth = new File(FILEBASEPATH+fileFolder);
+        	File filePth = new File("C:/home/"+fileFolder);
 			if (!filePth.exists()) {
 				filePth.mkdirs();
 			}

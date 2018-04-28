@@ -7,7 +7,8 @@ var file_template = "<li class='file'>"
 	+ "<span class='file_name' title='双击重命名'></span>" 
 	+ "</li>";
 var zTree;
-
+//登陆用户的剩余空间大小
+var unuseSpace; 
 
 //========================== 页面加载事件 ========================== //
 $(function(){ 
@@ -132,27 +133,18 @@ $(function(){
 	
 	var maxUploadSize = $("#maxUploadSize").val();
 	
-	/*显示下拉菜单*/
-	$('#upload').click(function(){
-		$('#selectId').show();
-	})
-	$('#upload').dblclick(function(){
-		$('#selectId').hide();
-	})
 	/* 文件夹上传*/
 	$('#btnFileFolder').click(function(){
 		$("#fileFolder").trigger("click");
 	})
-	//页面提示信息  
-	var msg;  
 	//文件数量限制  
-	var filesCount=2000;  
+	var filesCount = modual.filesCount;  
 	//文件夹大小限制 2000M  
-	var filesSize=2147483648;  
+	var filesSize = modual.filesSize;  
 	//实际的文件数量  
-	var actual_filesCount=0;  
+	var actual_filesCount = modual.actual_filesCount; 
 	//实际的文件夹大小  
-	var actual_filesSize=0;  
+	var actual_filesSize = modual.actual_filesSize;  
 	 
 	//change事件调用
 	function commit(){  
@@ -168,13 +160,14 @@ $(function(){
 	      contentType: false,
 	      processData: false,
 	      success: function (data) {
+	    	  progressClose();
 	    	  if (data == "fail") {
-					dialog.show("<center><h1>您剩余的空间已经无法容下这个文件了</h1></center>","出错啦！");
+					dialog.show("<center><span>您剩余的空间已经无法容下这个文件了</span></center>","出错啦！");
 					//alert("您剩余的空间已经无法容下这个文件了");
 				} else {
 					var temp = JSON.parse(data);
 					addFile(temp);
-					dialog.show("<center><h1>上传文件夹成功</h1></center>","系统提示");  
+					dialog.show("<center><span>上传文件夹成功</span></center>","系统提示");  
 					var newSize = Number(temp.usedSize / (1024*1024)).toFixed(0);
 					pBar.setProgress(newSize, Number(temp.totalSize).toFixed(0));
 				}
@@ -183,40 +176,52 @@ $(function(){
 	} 
 	
 	//选择文件夹之后,触发change事件
-	$('#fileFolder').change(function(e) { 
-	     //判断是否选中文件  
-	      var file = $("#fileFolder").val();  
-	      if(file == ''){  
-	    	  dialog.show("<center><h1>请选择上传内容</h1></center>","出错啦！");  
-	      }  
-	      var files = e.target.files; 
-	      //文件数量  
-	      actual_filesCount = files.length;  
-	      if(actual_filesCount > filesCount){  
-	    	  dialog.show("<center><h1>文件过多，单次最多可上传"+filesCount+"个文件</h1></center>","出错啦！");
-	         return;  
-	      }  
-	      for (var i = 0, f; f = files[i]; ++i){  
-	          actual_filesSize += f.size;  
-	          if(actual_filesSize > filesSize){ 
-	        	 dialog.show("<center><h1>单次文件夹上传不能超过"+filesSize/1024/1024+"M</h1></center>","出错啦！");
-	             return;  
-	          }  
-	      }
-	      var fileNameList = [];
-	      $.each(e.target.files,function(k,v){
-	    	  //console.log(v.type+"="+v.webkitRelativePath);
-	    	  var fileName = v.webkitRelativePath;
-	    	  fileNameList.push(fileName);
-	      })
-	      $('#fileNames').val(fileNameList);
-	      commit();
+	$('#fileFolder').change(function(e) {
+		progressLoad();
+		setTimeout(function(){
+	    	 //判断是否选中文件  
+		      var file = $("#fileFolder").val();  
+		      if(file == ''){  
+		    	  dialog.show("<center><span>请选择上传内容</span></center>","出错啦！");  
+		      }  
+		      var files = e.target.files; 
+		      //文件数量  
+		      actual_filesCount = files.length;  
+		      if(actual_filesCount > filesCount){  
+		    	  dialog.show("<center><span>文件过多，单次最多可上传"+filesCount+"个文件</span></center>","出错啦！");
+		         return;  
+		      }  
+		      //是否超过限制大小
+		      for (var i = 0, f; f = files[i]; ++i){  
+		          actual_filesSize += f.size;  
+		          if(actual_filesSize > filesSize){ 
+		        	  dialog.show("<center><span>单次文件夹上传不能超过"+filesSize/1024/1024+"M</span></center>","出错啦！");
+		             return;  
+		          }  
+		      }
+		      //是否超过登陆用户的剩余空间大小
+		      if(unuseSpace*1024*1024 < actual_filesSize){
+		    	  var space = (actual_filesSize-unuseSpace*1024*1024)/1024/1024;
+		    	  dialog.show("<center><span>该文件夹已超过剩余空间"+(space == 0 ? 1 : space)+"M</span></center>","出错啦！");
+		          return;
+		      }
+		      //文件路径
+		      var fileNameList = [];
+		      $.each(e.target.files,function(k,v){
+		    	  //console.log(v.type+"="+v.webkitRelativePath);
+		    	  var fileName = v.webkitRelativePath;
+		    	  fileNameList.push(fileName);
+		      })
+		      $('#fileNames').val(fileNameList);
+		      commit();
+	     }, 200)
 	    });  
 	/* 上传按钮点击事件 */
 	setTimeout(function(){
 		$("#upLoadFile").uploadify({
-			height : 18,
-			width : 64,
+			height : 26,
+			width : 92,
+			cancelImg : basePath + '/static/uploadify/option.gif',
 			swf : basePath + '/static/uploadify/uploadify.swf',
 			auto : true,
 			queueSizeLimit : 3,
@@ -286,7 +291,7 @@ $(function(){
 		if(isNeedView(e)){
 //			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") }).embed("pdfDiv");
 			var pdfView = new PDFObject({ url: ctxPath +"/myFile/showView/" + $(e.target).data("file_id") ,pdfOpenParams: { scrollbars: '1', toolbar: '0', statusbar: '1'}}).embed("pdfDiv");
-			debugger;
+			//debugger;
 			$("#showPdfDiv").dialog({  
 		        content: $("#pdfDiv"),  
 		        width: 900,
@@ -465,7 +470,7 @@ $(function(){
 		$("#createMkdirType").val("0");
 		$("#flag").val("0");
 		clickSpaceTree(ctxPath + '/myFile/getOfficeShareList', fileRootId);
-
+		//更新进度条
 		getProgressData(ctxPath + '/myFile/getDiskSpace', 'office');
 	});
 	//个人共享
@@ -475,7 +480,7 @@ $(function(){
 		$("#createMkdirType").val("1");
 		$("#flag").val("0");
 		clickSpaceTree(ctxPath + '/myFile/getPersonalShareList', fileRootId);
-		
+		//更新进度条
 		getProgressData(ctxPath + '/myFile/getDiskSpace', 'personal');
 	});
 	//空间共享
@@ -519,6 +524,7 @@ function getProgressData(url, sign){
 			var userSize = Number(temp.usersize).toFixed(0);
 			var pBar = $("#space_bar").getProgressBar();
 			pBar.setProgress(userSize, Number(temp.totalsize).toFixed(0));
+			unuseSpace = temp.totalsize - temp.usersize;
 		} else if(temp.sign == "fail") {
 			alert("网络错误!");
 		}
@@ -917,7 +923,7 @@ deleteLock = function(f) {
 shareFile = function (f){
 	var nodeIds =[];
 	var types=[];
-	debugger;
+	//debugger;
 	//获取多选的文件夹
 	var selFolders = $("#folder>ul>li.folder.active>span.file_icon");
 	if (selFolders.length > 0) {

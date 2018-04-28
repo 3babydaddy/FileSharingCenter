@@ -14,7 +14,7 @@ public interface MyFileMapper extends BaseMapper<MyFile> {
 
 	List<MyFile> listAllFiles(long id);
 
-	int moveDir(String sourcePath, String targetPath, String parentPath);
+	int moveDir(@Param("sourcePath") String sourcePath,@Param("targetPath") String targetPath,@Param("parentPath") String parentPath);
 	
 	@Select("select *, '02' as attribute from myfile where parent_id = (select id from myfile where name = #{orgId} and filecreatetype = '0')")
     @ResultType(MyFile.class)

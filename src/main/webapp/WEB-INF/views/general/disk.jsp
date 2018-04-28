@@ -22,6 +22,7 @@
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="${staticPath }/static/ztree/js/jquery.ztree.exedit-3.5.min.js"></script>
 <script type="text/javascript" src="${staticPath }/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${staticPath }/static/js/properties.js"></script>
 <link rel="stylesheet" href="${staticPath }/static/css/base.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/disk.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/mydisk.css"/>
@@ -32,22 +33,52 @@
 <link rel="stylesheet" href="${staticPath }/static/uploadify/uploadify.css" />
 <link rel="stylesheet" href="${staticPath }/static/dialog/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/skin.css" />
-<%-- <link rel="stylesheet" href="${staticPath }/static/bootstrap-3.3.7-dist/css/bootstrap.css" /> --%>
-<script type="text/javascript" src="${staticPath }/static/js/isChromeBrowser.js?v=20170115" charset="utf-8"></script>
-<script type="text/javascript">
-	$(function () {
-		if(!isChrome() && !isAccordIE()){
-			alert(tipMsg);
-			if(isFirefox){
-				window.location.href = 'about:blank ';
-			}else{
-				window.opener = null;
-			    window.open('', '_self', '');
-			    window.close();
-			}
-		}
-	})
-</script>
+<link rel="stylesheet" href="${staticPath }/static/bootstrap-3.3.7-dist/css/bootstrap.css" /> 
+<style type="text/css">
+	.navbar {
+	    min-height: 50px;
+	    margin-bottom: -15px !important;
+	    height: 65px !important;
+	    margin-top: 15px !important;
+	    background: white !important;
+	    border: 0 !important;
+	}
+	.files{
+		height:26px;
+	}
+	.navbar-nav > li > a{
+	    padding-bottom: 0px; 
+	    padding-top: 12px;
+	    background-color: rgba(140, 194, 73, 1);
+    	color: white !important;
+    	width: 102px;
+    	height: 42px;
+    	margin: 2px 2px 2px 2px;
+	}
+	.navbar-default .navbar-nav > .open > a{
+		background-color: rgba(140, 194, 73, 1) !important;
+	}
+	.dropdown-menu{
+	    background-color: rgba(140, 194, 73, 1);
+    	color: white !important;
+	}
+	.divider{
+		margin:0px !important;
+	}
+	.uploadify {
+	    position: absolute;
+	    top: 0px;
+	}
+	.tiny_prompt_box_head{
+		height: 28px;
+	}
+	.menu_div {
+		width: 100% !important;
+	}
+	.li-color{
+		background-color: rgb(111, 191, 11) !important;
+	}
+</style>
 </head>
 <body>
 	<div id="wrap">
@@ -116,36 +147,34 @@
 						<div id="children_path"></div>
 					</div>
 				</div>
-				<div id="tools_bar">
-					<!-- <input type="checkbox">全选 -->
-					<span id="mkdir" style="display:none;">新建文件夹</span> 
-					<span id="upload">上　传 ▼
-						<div id = "selectId" style="background-color: #F8F8FF;height: 40px;margin-top: 3px;">
-							<div id = "upLoadFile"  style="height: 20px;border-bottom: 1px solid green">
-									<font color="#307032">文件
-										<span id="upload_button">
-										</span>
-									</font>
-							</div>
-							<div style="height: 20px;line-height: 20px">
-								<!-- <input type="file" name="" id="" webkitdirectory style="display:none;"> -->
-    						     <!-- <input style="height:20px;width:auto;background-color:#F8F8FF;"class="btn" type="button" value="文件夹" > -->    
-								<font id="btnFileFolder" color="#307032">文件夹
-								</font>
-									<form id="fileUploadForm" action="${ctxPath}/myFile/uploadFolder" name="fileUploadForm" method="post" enctype="multipart/form-data">  
-										<input type="file" name="fileFolder" id="fileFolder" style="display:none"  webkitdirectory />
-										<input type=text name="fileNames" id="fileNames" value="tem" style="display:none" />
-									</form>
-							</div>
-						</div>
-					</span>
-					<!-- 文件文件夹上传 -->
-					<span id="share">共　享</span>
-					<%-- <div>
-						<img id="gridViewImg" src="${staticPath }/static/img/grid-white.png" />
-						<img id="listVidwImg" src="${staticPath }/static/img/list.png"/>
-					</div> --%>
-				</div>
+				<nav class="navbar navbar-default" role="navigation">
+				    <div class="container-fluid"> 
+				    <div>
+				        <ul class="nav navbar-nav">
+				       		<li id="mkdir" style="display:none;" onmouseover="$(this).addClass('li-color');" onmouseout="$(this).removeClass('li-color');"><a href="#">新建文件夹</a></li>
+				            <li class="dropdown" id="upload" onmouseover="$(this).addClass('li-color');" onmouseout="$(this).removeClass('li-color');">
+				                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				                 	  上&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传  ▼
+				                </a>
+				                <ul class="dropdown-menu" style="min-width:102px !important;width:102px;">
+				                    <li class="files" onmouseover="$(this).addClass('li-color');" onmouseout="$(this).removeClass('li-color');"><font style="margin-left:20px;">文件</font>
+					                    	<div id="upLoadFile" >
+											</div>
+				                    	</a>
+				                    </li>
+				                    <li class="divider"></li>
+				                    <li><a href="#" onmouseover="$(this).addClass('li-color');" onmouseout="$(this).removeClass('li-color');"><font id="btnFileFolder" style="color:white;">文件夹</font></a></li>
+				                </ul>
+				            </li>
+				            <li id="share" onmouseover="$(this).addClass('li-color');" onmouseout="$(this).removeClass('li-color');"><a href="#">共&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;享</a></li>
+				        </ul>
+				    </div>
+				    </div>
+				</nav>
+				<form id="fileUploadForm" action="${ctxPath}/myFile/uploadFolder" name="fileUploadForm" method="post" enctype="multipart/form-data">  
+					<input type="file" name="fileFolder" id="fileFolder" style="display:none"  webkitdirectory />
+					<input type=text name="fileNames" id="fileNames" value="tem" style="display:none" />
+				</form>
 				<div id="folder">
 					<ul>
 					</ul>
