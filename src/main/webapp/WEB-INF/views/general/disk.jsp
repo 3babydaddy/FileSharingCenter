@@ -78,6 +78,9 @@
 	.li-color{
 		background-color: rgb(111, 191, 11) !important;
 	}
+	.total_progress, .bar_data {
+		padding: 0px;
+	}
 </style>
 </head>
 <body>
