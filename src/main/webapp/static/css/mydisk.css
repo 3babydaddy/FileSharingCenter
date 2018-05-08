@@ -198,7 +198,12 @@ form dt, form dd {
 	background: url("../img/update_u.png") no-repeat;
 }
 
-#chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk {
+#delete_restore {
+	background: url("../img/sharespace.png") no-repeat;
+	background-position: 5%;
+}
+
+#chg_base_info, #chg_portrait, #chg_email, #chg_pwd, #back_to_disk,#delete_restore {
 	margin-bottom: 4px;
 	float: left;
 	width: 80%;

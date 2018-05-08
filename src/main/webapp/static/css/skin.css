@@ -51,18 +51,18 @@ body {
 	width: 100%
 }
 
-#chg_base_info, #chg_portrait, #chg_email {
+#chg_base_info, #chg_portrait, #chg_email,#delete_restore {
 	color: #307032;
 	display: flex;
 }
 
-#chg_base_info>span, #chg_portrait>span, #chg_email>span {
+#chg_base_info>span, #chg_portrait>span, #chg_email>span, #delete_restore>span {
 	margin: auto;
 	margin-left:0px;
 	font-weight: bold; 
 }
 
-#chg_base_info:HOVER, #chg_portrait:HOVER, #chg_email:HOVER {
+#chg_base_info:HOVER, #chg_portrait:HOVER, #chg_email:HOVER, #delete_restore:HOVER {
 	background-color: #E0EEEE;
 }
 

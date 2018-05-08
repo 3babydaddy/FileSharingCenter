@@ -224,7 +224,7 @@ $(function(){
 			cancelImg : basePath + '/static/uploadify/option.gif',
 			swf : basePath + '/static/uploadify/uploadify.swf',
 			auto : true,
-			queueSizeLimit : 3,
+			queueSizeLimit : modual.queueSizeLimit,
 			fileTypeExts : "*.*",
 			fileSizeLimit : maxUploadSize + "MB",
 			queueID : 'upload_queue',
@@ -492,6 +492,12 @@ $(function(){
 		clickSpaceTree(ctxPath + '/myFile/getSpaceFileList', fileRootId);
 	});
 	
+	//删除文件恢复
+	$("#delete_restore").click(function() {
+		var fileRootId = $("#fileRootId").val();
+		clickSpaceTree(ctxPath + '/myFile/getDeleteFileList', fileRootId);
+	});
+	
 	//初始化页面；对“新建文件夹”按钮进行操作
 	initPage();
 	
@@ -620,6 +626,10 @@ listFiles = function(tNode,type) {
 		}
 		if(files[i].attribute == '01' && files[i].type == 'adir'){
 			files[i].type = 'adir_readonly';
+		}
+		//判断该文件是否被删除
+		if(files[i].delFlag == '1'){
+			files[i].attribute = tNode.attribute + ' delFlag';
 		}
 		file.find(".file_icon").
 			addClass(files[i].type + " lock_" + files[i].isLock + " share_" + files[i].isShare + " role_" + files[i].attribute).
@@ -820,6 +830,37 @@ deleteFile = function(f) {
 	}
 };
 
+/* 还原删除的文件 */
+restoreFile = function(f) {
+	url = ctxPath + "/myFile/restore/" + $(f).data("file_id"), data = "";
+	post = function(url, data) {
+		$.post(url, data, function(data) {
+			if (data.replace(",","").length > 0) {
+				var temp = data.split(',');
+				var tNode = zTree.getNodeByTId(f.data("node_id"));
+				zTree.removeNode(tNode);
+				f.parent(".file").remove();
+				//更新磁盘使用量
+				var newSize = Number(temp[0] / (1024*1024)).toFixed(0);
+				var pBar = $("#space_bar").getProgressBar();
+				pBar.setProgress(newSize, Number(temp[1]).toFixed(0));
+			} else if (data == "fail") {
+				alert("网络错误!");
+			}
+		});
+	};
+
+	if (f.hasClass("lock_1") || f.hasClass("lock_2")) {
+		var input = inputPwd(f);
+		input.find("#unlock").click(function() {
+			post(url, "pwd=" + $("#unlock_pwd").val());
+			input.close();
+		});
+	} else {
+		post(url, "pwd=");
+	}
+};
+
 /* 文件解密、删除文件、重命名、删除文件密码时弹出输入框 */
 inputPwd = function(f) {
 	$("#input_pwd").slideUp(300, function() {
@@ -960,42 +1001,42 @@ shareFile = function (f){
 
 // 文件右键
 var fileItems = [ {
-	text : "下载",
-	icon : basePath + "/static/img/download.png",
-	action : function(tar) {
-		window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
-	}
-}, {
-//	text : "分享",
-//	icon : basePath + "/static/img/share.png",
-//	action : function(tar) {
-//		share($(tar));
-//	}
-}, {}, {
-	text : "重命名",
-	icon : basePath + "/static/img/edit.png",
-	action : function(tar) {
-		rename($(tar));
-	}
-}, {
-	text : "删除",
-	icon : basePath + "/static/img/delete.png",
-	action : function(tar) {
-		$.messager.confirm('提示','删除的文件不能恢复，您确认是否删除该文件?',function(r){
-	        if (r){
-	        	deleteFile($(tar));
-	        }
-	    });
-	}
-} ];
+		text : "下载",
+		icon : basePath + "/static/img/download.png",
+		action : function(tar) {
+			window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
+		}
+	}, {
+	//	text : "分享",
+	//	icon : basePath + "/static/img/share.png",
+	//	action : function(tar) {
+	//		share($(tar));
+	//	}
+	}, {}, {
+		text : "重命名",
+		icon : basePath + "/static/img/edit.png",
+		action : function(tar) {
+			rename($(tar));
+		}
+	}, {
+		text : "删除",
+		icon : basePath + "/static/img/delete.png",
+		action : function(tar) {
+			$.messager.confirm('提示','删除的文件不能恢复，您确认是否删除该文件?',function(r){
+		        if (r){
+		        	deleteFile($(tar));
+		        }
+		    });
+		}
+	} ];
 
 var fileItemsReadOnly = [ {
-	text : "下载",
-	icon : basePath + "/static/img/download.png",
-	action : function(tar) {
-		window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
-	}
-} ];
+		text : "下载",
+		icon : basePath + "/static/img/download.png",
+		action : function(tar) {
+			window.location.href = ctxPath +"/myFile/download/" + $(tar).data("file_id");
+		}
+	} ];
 
 var folderItems = [ {
 		text : "打开",
@@ -1014,6 +1055,20 @@ var folderItems = [ {
 		icon : basePath + "/static/img/share.png",
 		action : function(tar) {
 			shareFile($(tar));
+		}
+	}, {
+		text : "下载",
+		icon : basePath + "/static/img/download.png",
+		action : function(tar) {
+			var url = ctxPath +"/myFile/downloadFile";
+			var data = "fileId=" + $(tar).data("file_id");
+			$.post(url, data, function(data) {
+				if (data == "success") {
+					dialog.show("<center><span>下载文件夹成功</span></center>","系统提示");  
+				} else if (data == "fail") {
+					dialog.show("<center><span>下载文件夹失败</span></center>","系统提示");  
+				}
+			});
 		}
 	}, {
 		type : "aplit"
@@ -1037,13 +1092,21 @@ var folderItemReadOnly = [ {
 	}
 } ];
 
+var restoreDeleteFile = [ {
+	text : "还原",
+	icon : basePath + "/static/img/delete.png",
+	action : function(tar) {
+		restoreFile($(tar));
+	}
+} ];
+
 
 /* 文件的右键菜单 */
-$(".share_0.role_02:not(.adir,.adir_readonly )").contextmenu({
+$(".share_0.role_02:not(.adir,.adir_readonly,.delFlag )").contextmenu({
 	items : fileItems
 });
 
-$(".share_0.role_01:not(.adir,.adir_readonly )").contextmenu({
+$(".share_0.role_01:not(.adir,.adir_readonly,.delFlag )").contextmenu({
 	items : fileItemsReadOnly
 });
 
@@ -1068,12 +1131,17 @@ $(".share_1").contextmenu({
 });
 
 /* 文件夹右键菜单 */
-$(".adir.role_02:not(.lock_1,.lock_2)").contextmenu({
+$(".adir.role_02:not(.lock_1,.lock_2,.delFlag)").contextmenu({
 	items : folderItems
 });
 
-$(".adir_readonly.role_01:not(.lock_1,.lock_2)").contextmenu({
+$(".adir_readonly.role_01:not(.lock_1,.lock_2,.delFlag)").contextmenu({
 	items : folderItemReadOnly
+});
+
+/* 文件夹右键菜单 */
+$(".delFlag").contextmenu({
+	items : restoreDeleteFile
 });
 
 $(".adir:not(.lock_0)").contextmenu({

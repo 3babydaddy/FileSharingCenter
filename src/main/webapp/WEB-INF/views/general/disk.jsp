@@ -129,6 +129,12 @@
 						</div>
 					</shiro:lacksRole>
 				</shiro:lacksRole>
+				<!-- <h3>删除文件恢复</h3> -->
+				<shiro:hasRole name="admin"> 
+					<div id="delete_restore" class="menu_div">
+						<span>删除文件恢复</span>
+					</div>
+				</shiro:hasRole>
 				<div id="chg_email" class="menu_div">
 					<span>公共空间</span>
 				</div>

@@ -1,6 +1,5 @@
 package com.tf.service.impl;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.JsonUtils;
@@ -102,33 +100,90 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	@Override
 	public String deleteFileOrFolder(long id) {
 		MyFile myFile = mapper.selectById(id);
-		// 如果要删除的事文件。直接从数据库删除该文件并更新相应的磁盘空间
+		// 如果要删除的是文件。直接从数据库删除该文件并更新相应的磁盘空间
 		if (!myFile.getType().equals("adir")) {
-			EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
-			wrapper.setEntity(myFile);
-			mapper.delete(wrapper);
+			//EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
+			//wrapper.setEntity(myFile);
+			mapper.updateStatusById(id, "1");
+			//mapper.delete(wrapper);
 			// 删除磁盘上的文件
-			new File(myFile.getLocation()).delete();
+			//new File(myFile.getLocation()).delete();
 
 		} else {
 			// 如果删除的是文件夹，则删除该文件夹及所有的子文件夹及文件
 			// 列出文件夹、所有子文件夹下的全部文件
-			List<MyFile> listAllFiles = mapper.listAllFiles(id);
-			Map<String, Object> colms = new HashMap<String, Object>();
-			colms.put("id", myFile.getId());
-			colms.put("user_id", myFile.getUser_id());
-			// 删除文件夹级联删除
-			mapper.deleteByMap(colms);
-			for (MyFile deleteFile : listAllFiles) {
-				// 删除磁盘上的文件
-				new File(deleteFile.getLocation()).delete();
-			}
+			this.updateStatusByParentId(id, "1");
+//			List<MyFile> listAllFiles = mapper.listAllFiles(id);
+//			Map<String, Object> colms = new HashMap<String, Object>();
+//			colms.put("id", myFile.getId());
+//			colms.put("user_id", myFile.getUser_id());
+//			// 删除文件夹级联删除
+//			mapper.deleteByMap(colms);
+//			for (MyFile deleteFile : listAllFiles) {
+//				// 删除磁盘上的文件
+//				new File(deleteFile.getLocation()).delete();
+//			}
 		}
 		// TODO：更新磁盘信息mydiskinfo
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("user_id", user.getId());
 		map.put("filecreatetype", myFile.getFilecreatetype());
+		map.put("del_flag", '0');
+		List<MyFile> files = mapper.selectByMap(map);
+		long usedsize = 0;
+		long filenumber = 0;
+		for (MyFile file : files) {
+			usedsize = usedsize + file.getSize();
+			filenumber++;
+		}
+		
+		ShareDiskInfo diskInfo = null;
+		if("0".equals(myFile.getFilecreatetype())){
+			diskInfo = shareDiskInfoMapper.getUserDiskInfo("O"+user.getOrgId());
+		}else{
+			diskInfo = shareDiskInfoMapper.getUserDiskInfo(user.getId().toString());
+		}
+		diskInfo.setUsedsize(usedsize);
+		diskInfo.setFilenumber(filenumber);
+		shareDiskInfoMapper.updateAllColumnById(diskInfo);
+
+		return usedsize + "," + diskInfo.getTotalsize();
+	}
+	
+	@Override
+	public String restoreFileOrFolder(long id) {
+		MyFile myFile = mapper.selectById(id);
+		// 如果要删除的是文件。直接从数据库删除该文件并更新相应的磁盘空间
+		if (!myFile.getType().equals("adir")) {
+			//EntityWrapper<MyFile> wrapper = new EntityWrapper<MyFile>();
+			//wrapper.setEntity(myFile);
+			mapper.updateStatusById(id, "0");
+			//mapper.delete(wrapper);
+			// 删除磁盘上的文件
+			//new File(myFile.getLocation()).delete();
+
+		} else {
+			// 如果删除的是文件夹，则删除该文件夹及所有的子文件夹及文件
+			// 列出文件夹、所有子文件夹下的全部文件
+			this.updateStatusByParentId(id, "0");
+//			List<MyFile> listAllFiles = mapper.listAllFiles(id);
+//			Map<String, Object> colms = new HashMap<String, Object>();
+//			colms.put("id", myFile.getId());
+//			colms.put("user_id", myFile.getUser_id());
+//			// 删除文件夹级联删除
+//			mapper.deleteByMap(colms);
+//			for (MyFile deleteFile : listAllFiles) {
+//				// 删除磁盘上的文件
+//				new File(deleteFile.getLocation()).delete();
+//			}
+		}
+		// TODO：更新磁盘信息mydiskinfo
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user.getId());
+		map.put("filecreatetype", myFile.getFilecreatetype());
+		map.put("del_flag", '0');
 		List<MyFile> files = mapper.selectByMap(map);
 		long usedsize = 0;
 		long filenumber = 0;
@@ -216,6 +271,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		//获取当前登陆者的个人根目录id
 		fileTem.setName("#" + user.getId());
 		fileTem.setFilecreatetype("1");
+		fileTem.setDelFlag("0");
 		MyFile file = mapper.selectOne(fileTem);
 		resultMap.put("fileRootId", file != null ? file.getId() : "");
 		//获取当前登陆者的处室根目录id
@@ -260,6 +316,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			// 文件树查询
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
+			map.put("del_flag", "0");
 			files = mapper.selectByMap(map);
 		}
 		files.addAll(fileSet);
@@ -281,6 +338,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
 			map.put("filecreatetype", '1');
+			map.put("del_flag", "0");
 			files = mapper.selectByMap(map);
 			logger.info("查询个人空间");
 			return files;
@@ -288,6 +346,7 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			// 文件树查询
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
+			map.put("del_flag", "0");
 			files = mapper.selectByMap(map);
 		}
 		files.addAll(fileSet);
@@ -319,6 +378,35 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 			// 文件树查询
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("parent_id", id);
+			map.put("del_flag", "0");
+			files = mapper.selectByMap(map);
+		}
+		files.addAll(fileSet);
+		Collections.sort(files, new MyFileComparator()); //外部比较器:通过实现Comparator接口
+		return files;
+	}
+	
+	/**
+	 * 查询删除文件
+	 * @param flag
+	 * @param id
+	 * @param treeRootId
+	 * @return
+	 */
+	@Override
+	public List<MyFile> getDeleteFileList(long id, long treeRootId) {
+		List<MyFile> files = new ArrayList<>();
+		TreeSet<MyFile> fileSet = new TreeSet<MyFile>();
+		// 获取当前用户
+		//ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		if (id == treeRootId) {
+			files = mapper.getDeleteFile();
+			logger.info("查询删除文件");
+		} else {
+			// 文件树查询
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("parent_id", id);
+			map.put("del_flag", "1");
 			files = mapper.selectByMap(map);
 		}
 		files.addAll(fileSet);
@@ -336,7 +424,6 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 	private List<String> getOrgFileList(Long orgId, List<String> files) {
 		//TreeSet<MyFile> filesByOrg = shareOrgMapper.queryOrgFiles(orgId);
 		files.add(orgId.toString());
-
 		Organization org = organizationMapper.selectById(orgId);
 		// 当前机构是否存在父机构 
 		if (org.getPid() != null) {
@@ -344,4 +431,16 @@ public class MyFileServiceImpl extends ServiceImpl<MyFileMapper, MyFile> impleme
 		}
 		return files;
 	}
+	
+	private void updateStatusByParentId(Long id, String delFlag){
+		mapper.updateStatusById(id, delFlag);
+		//查询该文件的删除或者还原的子文件,0为del_flag字段：正常，1：已删除
+		List<MyFile> fileList = mapper.queryFileByParentId(id, "0".equals(delFlag) ? "1" : "0");
+		if(fileList.size() > 0){
+			for(MyFile info : fileList){
+				this.updateStatusByParentId(info.getId(), delFlag);
+			}
+		}
+	}
+	
 }

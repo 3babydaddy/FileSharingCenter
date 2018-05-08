@@ -29,7 +29,7 @@ public interface ShareUserMapper extends BaseMapper<ShareUser> {
 	int shareUserDel(@Param("shareId") String shareId);
 	
 	@Select("select m.*, o.attribute as attribute from share_to_user o LEFT JOIN myfile m on o.file_id = m.id "
-			+ "where o.user_id = #{userId} and status = 1")
+			+ "where o.user_id = #{userId} and status = 1 and m.del_flag = 0")
 	@ResultType(MyFile.class)
 	TreeSet<MyFile> getFileInfoList(@Param("userId") Long userId);
 	

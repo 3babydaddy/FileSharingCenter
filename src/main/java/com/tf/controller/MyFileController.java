@@ -1,6 +1,7 @@
 package com.tf.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.filechooser.FileSystemView;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import com.tf.commons.utils.DownloadSupport;
 import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.JsonUtils;
 import com.tf.commons.utils.UploadHelper;
+import com.tf.commons.utils.ZipUtils;
 import com.tf.model.MyFile;
 import com.tf.model.ShareDiskInfo;
 import com.tf.model.ShareOrg;
@@ -128,6 +131,22 @@ public class MyFileController {
 	@ResponseBody
 	public Object getSpaceFileList(long id, long treeRootId) {
 		List<MyFile> myFiles = fileService.getSpaceFileList(id, treeRootId);
+		for (MyFile myFile : myFiles) {
+			myFile.setParent_id(null);
+		}
+		return myFiles;
+	}
+	
+	/**
+	 * 查询删除文件的列表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getDeleteFileList")
+	@ResponseBody
+	public Object getDeleteFileList(long id, long treeRootId) {
+		List<MyFile> myFiles = fileService.getDeleteFileList(id, treeRootId);
 		for (MyFile myFile : myFiles) {
 			myFile.setParent_id(null);
 		}
@@ -281,7 +300,9 @@ public class MyFileController {
         	//截取文件后缀名
         	String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         	//拼接上传的路径
-        	String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
+        	//String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
+        	String filePath = FILEBASEPATH +fileFolder+ originalFilename;
+        	//String filePath = "C:/home/" +fileFolder+ originalFilename;
         	//判断文件夹是否存在
         	File filePth = new File(FILEBASEPATH+fileFolder);
 			if (!filePth.exists()) {
@@ -295,6 +316,7 @@ public class MyFileController {
 			String[] fileArray = filePosition.split("/");
 			for(int j = 0; j < fileArray.length; j++){
 				String name = fileArray[j];
+				//判断文件名中是否包含“.”以确定是否为文件或者是文件夹
 				boolean flag = name.contains(".");
 				if(!parentNameList.contains(name+j) || flag){
 					myFile.setUser_id(user.getId());
@@ -303,21 +325,27 @@ public class MyFileController {
 					myFile.setFilecreatetype(filecreatetype);
 					if(j == 0){
 						myFile.setParent_id(folderid);
+						myFile.setPath(folder.getPath() + folderid + "/");
 					}else{
 						int index = parentNameList.indexOf(fileArray[j-1]+(j-1));
 						Long parentid = parentIdList.get(index);
 						myFile.setParent_id(parentid);
+						//上传文件夹的子文件或者子文件夹的path
+						MyFile file = fileService.selectById(parentid);
+						myFile.setPath(file.getPath() + parentid + "/");
 					}
 					
 					if(!flag){
 						myFile.setType("adir");
 						myFile.setSize(0);
+						//记录保存为文件夹时，需要手动获取其保存路径
+						String pathTem = filePath.substring(0, filePath.indexOf(name)+name.length());
+						myFile.setLocation(pathTem);
 					}else{
 						myFile.setType(suffix.toLowerCase());
 						myFile.setSize(multipartFile.getSize());
+						myFile.setLocation(filePath);
 					}
-					myFile.setPath(folder.getPath() + folderid + "/");
-					myFile.setLocation(filePath);
 					myFile.setIsShare(0);
 					myFile.setDescription("");
 					//插入
@@ -362,6 +390,18 @@ public class MyFileController {
 	public String delete(@PathVariable long fileId, String pwd) {
 		return fileService.deleteFileOrFolder(fileId);
 	}
+	
+	/**
+	 * 还原删除文件（或文件夹），返回还原删除文件后的网盘容量
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	@RequestMapping("/restore/{fileId}")
+	@ResponseBody
+	public String restore(@PathVariable long fileId, String pwd) {
+		return fileService.restoreFileOrFolder(fileId);
+	}
 
 	/**
 	 * 下载文件
@@ -373,6 +413,28 @@ public class MyFileController {
 	public void download(@PathVariable long fileId, HttpServletResponse response) {
 		MyFile myFile = fileService.selectById(fileId);
 		DownloadSupport.download(response, myFile);
+	}
+	
+	/**
+	 * 下载文件夹
+	 * 
+	 * @param fileId
+	 * @param response
+	 */
+	@RequestMapping("/downloadFile")
+	@ResponseBody
+	public String downloadFile(long fileId, HttpServletResponse response){
+		try{
+			//获取桌面路径
+			String path = FileSystemView.getFileSystemView().getHomeDirectory().getPath();
+			MyFile myFile = fileService.selectById(fileId);
+			FileOutputStream out = new FileOutputStream(new File(path + "/" + myFile.getName() + ".zip"));
+			ZipUtils.toZip(myFile.getLocation(), out, true);
+			return "success";
+		}catch(Exception e){
+			e.printStackTrace();
+			return "fail";
+		}
 	}
 
 	/**

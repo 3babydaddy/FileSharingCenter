@@ -16,7 +16,13 @@ public interface MyFileMapper extends BaseMapper<MyFile> {
 
 	int moveDir(@Param("sourcePath") String sourcePath,@Param("targetPath") String targetPath,@Param("parentPath") String parentPath);
 	
-	@Select("select *, '02' as attribute from myfile where parent_id = (select id from myfile where name = #{orgId} and filecreatetype = '0')")
+	@Select("select *, '02' as attribute from myfile where parent_id = (select id from myfile where name = #{orgId} and filecreatetype = '0') and del_flag = 0")
     @ResultType(MyFile.class)
 	TreeSet<MyFile> getMyFiles(@Param("orgId") String orgId);
+	
+	int updateStatusById(@Param("fileId") long id, @Param("delFlag") String delFlag);
+	
+	List<MyFile> queryFileByParentId(@Param("fileId") long id, @Param("delFlag") String delFlag);
+	
+	List<MyFile> getDeleteFile();
 }

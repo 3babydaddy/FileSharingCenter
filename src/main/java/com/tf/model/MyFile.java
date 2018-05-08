@@ -31,6 +31,8 @@ public class MyFile implements Comparable<MyFile> {
 	@TableField(value = "createdate")
 	private String createDate;
 	private String filecreatetype;
+	@TableField(value = "del_flag")
+	private String delFlag;
 	
 	@TableField(exist = false)
 	private String attribute;
@@ -207,6 +209,14 @@ public class MyFile implements Comparable<MyFile> {
 
 	public void setTotalSize(long totalSize) {
 		this.totalSize = totalSize;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
 	}
 
 	public MyFile() {

@@ -22,8 +22,9 @@
   	 from share_to_user o 
   	 	  LEFT JOIN myfile m on o.file_id = m.id 
   		where o.user_id = #{userId} 
-  		and status = 1
-  		and share_type = '0' 
+  		and o.status = 1
+  		and o.share_type = '0' 
+  		and m.del_flag = '0'
   		and o.share_user in 
   		 <foreach item="item" collection="userIdList" open="(" separator="," close=")">
             #{item}
@@ -38,6 +39,7 @@
 	LEFT JOIN myfile m ON o.file_id = m.id
 	WHERE
 		o.user_id = #{userId}
+	and m.del_flag = '0'
 	AND STATUS = 1
 	AND (
 		SELECT organization_id FROM USER WHERE id = o.share_user

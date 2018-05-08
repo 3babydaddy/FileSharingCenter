@@ -28,4 +28,21 @@
 				path LIKE #{parentPath}
     </update>
 
+	<update id="updateStatusById">
+		UPDATE myfile SET del_flag = #{delFlag} WHERE id = #{fileId}
+	</update>
+	
+	<select id="queryFileByParentId" resultType="MyFile">
+		select * from myfile where parent_id = #{fileId} and del_flag = #{delFlag}
+	</select>
+	
+	<select id="getDeleteFile" resultType="MyFile">
+		select 
+			m.*,
+			m.del_flag as delFlag
+		from 
+			myfile m
+		where m.del_flag = '1'
+		  and (select count(id) from myfile where id = m.parent_id and del_flag = '1') = 0
+	</select>
 </mapper>

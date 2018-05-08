@@ -3,8 +3,6 @@ package com.tf.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.baomidou.mybatisplus.service.IService;
 import com.tf.model.MyFile;
 import com.tf.model.ShareOrg;
@@ -33,6 +31,8 @@ public interface IMyFileService extends IService<MyFile> {
 	 */
 	String deleteFileOrFolder(long id);
 	
+	String restoreFileOrFolder(long id);
+	
 	boolean moveFile(long sourceId, long targetId);
 	
 	void shareUserSave(ShareUser share)throws Exception;
@@ -50,4 +50,6 @@ public interface IMyFileService extends IService<MyFile> {
 	List<MyFile> getPersonalShareList(long id, long treeRootId);
 	
 	List<MyFile> getSpaceFileList(long id, long treeRootId);
+	
+	List<MyFile> getDeleteFileList(long id, long treeRootId);
 }
