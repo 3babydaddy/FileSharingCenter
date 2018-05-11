@@ -1,7 +1,6 @@
 package com.tf.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +11,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.filechooser.FileSystemView;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,11 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.tf.commons.base.BaseController;
 import com.tf.commons.result.PageInfo;
 import com.tf.commons.shiro.ShiroUser;
 import com.tf.commons.utils.DownloadSupport;
 import com.tf.commons.utils.FileStorage;
 import com.tf.commons.utils.JsonUtils;
+import com.tf.commons.utils.StringUtils;
 import com.tf.commons.utils.UploadHelper;
 import com.tf.commons.utils.ZipUtils;
 import com.tf.model.MyFile;
@@ -44,7 +45,7 @@ import com.tf.service.IShareUserService;
 
 @Controller
 @RequestMapping("/myFile")
-public class MyFileController {
+public class MyFileController extends BaseController{
 
 	private static final String FILEBASEPATH = FileStorage.getFilePath();
 
@@ -137,6 +138,17 @@ public class MyFileController {
 		return myFiles;
 	}
 	
+	
+	/**
+     * 跳转删除文件的列表
+     *
+     * @return
+     */
+    @GetMapping("/delFileList")
+    public String delFileList() {
+        return "admin/delfilelist";
+    }
+	
 	/**
 	 * 查询删除文件的列表
 	 * 
@@ -145,12 +157,15 @@ public class MyFileController {
 	 */
 	@RequestMapping("/getDeleteFileList")
 	@ResponseBody
-	public Object getDeleteFileList(long id, long treeRootId) {
-		List<MyFile> myFiles = fileService.getDeleteFileList(id, treeRootId);
-		for (MyFile myFile : myFiles) {
-			myFile.setParent_id(null);
-		}
-		return myFiles;
+	public Object getDeleteFileList(MyFile myfile, Integer page, Integer rows, String sort, String order) {
+		PageInfo pageInfo = new PageInfo(page, rows, sort, order);
+        Map<String, Object> condition = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(myfile.getName())) {
+            condition.put("name", myfile.getName());
+        }
+        pageInfo.setCondition(condition);
+        fileService.selectDataGrid(pageInfo);
+        return pageInfo;
 	}
 
 	/**
@@ -191,9 +206,10 @@ public class MyFileController {
 
 		// TODO:是否有足够的空间
 		// if (MyDiskInfoDao.isEnoughSpace(myFile)) {
-
+		MyFile folder = fileService.queryFile(folderid);
 		//String filePath = "C:/home/" + new Date().getTime() + "." + suffix;
 		String filePath = FILEBASEPATH + new Date().getTime() + "." + suffix;
+		
 		try {
 			// 路径是否存在
 			File filePth = new File(FILEBASEPATH);
@@ -203,7 +219,6 @@ public class MyFileController {
 			utils.upload(file, filePath);// 文件没有成功保存返回失败信息
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			MyFile folder = fileService.queryFile(folderid);
 
 			myFile.setCreateDate(sdf.format(new Date()));
 			myFile.setName(fileName);
@@ -300,17 +315,17 @@ public class MyFileController {
         	//截取文件后缀名
         	String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         	//拼接上传的路径
-        	//String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
-        	String filePath = FILEBASEPATH +fileFolder+ originalFilename;
-        	//String filePath = "C:/home/" +fileFolder+ originalFilename;
+        	MyFile folder = fileService.queryFile(folderid);
+        	String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
+        	//String filePath = FILEBASEPATH +fileFolder+ originalFilename;
+        	//String filePath = "C:/home/" +fileFolder+ new Date().getTime() + "." + suffix;
         	//判断文件夹是否存在
-        	File filePth = new File(FILEBASEPATH+fileFolder);
+        	File filePth = new File(FILEBASEPATH);
 			if (!filePth.exists()) {
 				filePth.mkdirs();
 			}
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			MyFile folder = fileService.queryFile(folderid);
 			
 			//新增上传文件夹的根目录
 			String[] fileArray = filePosition.split("/");
@@ -339,7 +354,7 @@ public class MyFileController {
 						myFile.setType("adir");
 						myFile.setSize(0);
 						//记录保存为文件夹时，需要手动获取其保存路径
-						String pathTem = filePath.substring(0, filePath.indexOf(name)+name.length());
+						String pathTem = filePath.substring(0, filePath.lastIndexOf(name+"/")+name.length());
 						myFile.setLocation(pathTem);
 					}else{
 						myFile.setType(suffix.toLowerCase());
@@ -397,10 +412,11 @@ public class MyFileController {
 	 * @param fileId
 	 * @return
 	 */
-	@RequestMapping("/restore/{fileId}")
+	@RequestMapping("/restore")
 	@ResponseBody
-	public String restore(@PathVariable long fileId, String pwd) {
-		return fileService.restoreFileOrFolder(fileId);
+	public Object restore(String fileId) {
+		 fileService.restoreFileOrFolder(Long.parseLong(fileId));
+		 return renderSuccess("还原成功！");
 	}
 
 	/**
@@ -421,20 +437,11 @@ public class MyFileController {
 	 * @param fileId
 	 * @param response
 	 */
-	@RequestMapping("/downloadFile")
-	@ResponseBody
-	public String downloadFile(long fileId, HttpServletResponse response){
-		try{
-			//获取桌面路径
-			String path = FileSystemView.getFileSystemView().getHomeDirectory().getPath();
-			MyFile myFile = fileService.selectById(fileId);
-			FileOutputStream out = new FileOutputStream(new File(path + "/" + myFile.getName() + ".zip"));
-			ZipUtils.toZip(myFile.getLocation(), out, true);
-			return "success";
-		}catch(Exception e){
-			e.printStackTrace();
-			return "fail";
-		}
+	@RequestMapping("/downloadFile/{fileId}")
+	public void downloadFile(@PathVariable long fileId, HttpServletResponse response){
+		MyFile myFile = fileService.selectById(fileId);
+		ZipUtils zipUtils = new ZipUtils();
+		zipUtils.downloadZip(myFile, response, FILEBASEPATH);
 	}
 
 	/**

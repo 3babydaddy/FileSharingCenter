@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.tf.commons.result.PageInfo;
 import com.tf.model.MyFile;
 import com.tf.model.ShareOrg;
 import com.tf.model.ShareUser;
@@ -31,7 +32,7 @@ public interface IMyFileService extends IService<MyFile> {
 	 */
 	String deleteFileOrFolder(long id);
 	
-	String restoreFileOrFolder(long id);
+	void restoreFileOrFolder(long id);
 	
 	boolean moveFile(long sourceId, long targetId);
 	
@@ -51,5 +52,5 @@ public interface IMyFileService extends IService<MyFile> {
 	
 	List<MyFile> getSpaceFileList(long id, long treeRootId);
 	
-	List<MyFile> getDeleteFileList(long id, long treeRootId);
+	void selectDataGrid(PageInfo pageInfo);
 }

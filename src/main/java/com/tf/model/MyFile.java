@@ -33,6 +33,8 @@ public class MyFile implements Comparable<MyFile> {
 	private String filecreatetype;
 	@TableField(value = "del_flag")
 	private String delFlag;
+	@TableField(value = "del_date")
+	private String delDate;
 	
 	@TableField(exist = false)
 	private String attribute;
@@ -217,6 +219,14 @@ public class MyFile implements Comparable<MyFile> {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	public String getDelDate() {
+		return delDate;
+	}
+
+	public void setDelDate(String delDate) {
+		this.delDate = delDate;
 	}
 
 	public MyFile() {

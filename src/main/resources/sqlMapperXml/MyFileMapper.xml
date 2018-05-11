@@ -36,13 +36,19 @@
 		select * from myfile where parent_id = #{fileId} and del_flag = #{delFlag}
 	</select>
 	
-	<select id="getDeleteFile" resultType="MyFile">
+	<select id="getDelFilePage" resultType="Map">
 		select 
-			m.*,
-			m.del_flag as delFlag
+			m.id, m.name, m.size, m.type,
+			m.filecreatetype,
+			m.del_flag as delFlag,
+			m.del_date as delDate
 		from 
 			myfile m
-		where m.del_flag = '1'
-		  and (select count(id) from myfile where id = m.parent_id and del_flag = '1') = 0
+		<where> m.del_flag = '1'
+            <if test=" name != null and name != '' ">
+                and m.name like concat('%', #{name}, '%') 
+            </if>
+        </where>
+        order by m.del_date desc
 	</select>
 </mapper>

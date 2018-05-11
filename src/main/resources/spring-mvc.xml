@@ -97,5 +97,6 @@
           depends-on="lifecycleBeanPostProcessor">
           <property name="proxyTargetClass" value="true"/>
     </bean>
-		
+	
+	<bean id="ZipUtils" class="com.tf.commons.utils.ZipUtils" init-method="init" ></bean>
 </beans>

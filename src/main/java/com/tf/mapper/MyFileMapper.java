@@ -1,6 +1,7 @@
 package com.tf.mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.ibatis.annotations.Param;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.tf.model.MyFile;
 
 public interface MyFileMapper extends BaseMapper<MyFile> {
@@ -24,5 +26,5 @@ public interface MyFileMapper extends BaseMapper<MyFile> {
 	
 	List<MyFile> queryFileByParentId(@Param("fileId") long id, @Param("delFlag") String delFlag);
 	
-	List<MyFile> getDeleteFile();
+	List<Map<String, Object>> getDelFilePage(Pagination page, Map<String, Object> params);
 }

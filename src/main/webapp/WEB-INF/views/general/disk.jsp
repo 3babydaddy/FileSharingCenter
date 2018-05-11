@@ -34,6 +34,25 @@
 <link rel="stylesheet" href="${staticPath }/static/dialog/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/css/skin.css" />
 <link rel="stylesheet" href="${staticPath }/static/bootstrap-3.3.7-dist/css/bootstrap.css" /> 
+<script type="text/javascript">
+	function editUserPwd() {
+		var w = $(document.body).width();
+		var h = $(document.body).height();
+	    parent.$.modalDialog({
+	        title : '修改密码',
+	        width : (w/3),
+	        height : (h/3),
+	        href : '${path }/user/editPwdPage',
+	        buttons : [ {
+	            text : '确定',
+	            handler : function() {
+	                var f = parent.$.modalDialog.handler.find('#editUserPwdForm');
+	                f.submit();
+	            }
+	        } ]
+	    });
+	}
+</script>
 <style type="text/css">
 	.navbar {
 	    min-height: 50px;
@@ -81,6 +100,9 @@
 	.total_progress, .bar_data {
 		padding: 0px;
 	}
+	.pwd-color{
+		background-color: rgba(140, 194, 73, 1) !important;
+	}
 </style>
 </head>
 <body>
@@ -94,6 +116,7 @@
 				<shiro:hasAnyRoles name="org_admin,admin">
  					<span><a href="${ctxPath}/admin"  title="管理页面" style="color: white;"><img style="vertical-align: middle; height: 20px;" src="${staticPath }/static/img/setting.png"></a></span>
 				</shiro:hasAnyRoles>
+				<a href="javascript:void(0)" onclick="editUserPwd()" class="easyui-linkbutton" plain="true" icon="fi-unlock" style="color: white;" onmouseover="$(this).addClass('pwd-color');" onmouseout="$(this).removeClass('pwd-color');" >修改密码</a>
 				<span><a href="javascript:void(0)" onclick="logout()" title="退出" style="color: white;"><img style="vertical-align: middle;" src="${staticPath }/static/img/quit.png"></a></span>
 			</div>
 		</div>
@@ -130,11 +153,6 @@
 					</shiro:lacksRole>
 				</shiro:lacksRole>
 				<!-- <h3>删除文件恢复</h3> -->
-				<shiro:hasRole name="admin"> 
-					<div id="delete_restore" class="menu_div">
-						<span>删除文件恢复</span>
-					</div>
-				</shiro:hasRole>
 				<div id="chg_email" class="menu_div">
 					<span>公共空间</span>
 				</div>

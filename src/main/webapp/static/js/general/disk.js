@@ -492,12 +492,6 @@ $(function(){
 		clickSpaceTree(ctxPath + '/myFile/getSpaceFileList', fileRootId);
 	});
 	
-	//删除文件恢复
-	$("#delete_restore").click(function() {
-		var fileRootId = $("#fileRootId").val();
-		clickSpaceTree(ctxPath + '/myFile/getDeleteFileList', fileRootId);
-	});
-	
 	//初始化页面；对“新建文件夹”按钮进行操作
 	initPage();
 	
@@ -627,10 +621,7 @@ listFiles = function(tNode,type) {
 		if(files[i].attribute == '01' && files[i].type == 'adir'){
 			files[i].type = 'adir_readonly';
 		}
-		//判断该文件是否被删除
-		if(files[i].delFlag == '1'){
-			files[i].attribute = tNode.attribute + ' delFlag';
-		}
+		
 		file.find(".file_icon").
 			addClass(files[i].type + " lock_" + files[i].isLock + " share_" + files[i].isShare + " role_" + files[i].attribute).
 			data("file_id",files[i].id).
@@ -802,37 +793,6 @@ rename = function(f) {
 /* 删除文件 */
 deleteFile = function(f) {
 	url = ctxPath + "/myFile/delete/" + $(f).data("file_id"), data = "";
-	post = function(url, data) {
-		$.post(url, data, function(data) {
-			if (data.replace(",","").length > 0) {
-				var temp = data.split(',');
-				var tNode = zTree.getNodeByTId(f.data("node_id"));
-				zTree.removeNode(tNode);
-				f.parent(".file").remove();
-				//更新磁盘使用量
-				var newSize = Number(temp[0] / (1024*1024)).toFixed(0);
-				var pBar = $("#space_bar").getProgressBar();
-				pBar.setProgress(newSize, Number(temp[1]).toFixed(0));
-			} else if (data == "fail") {
-				alert("网络错误!");
-			}
-		});
-	};
-
-	if (f.hasClass("lock_1") || f.hasClass("lock_2")) {
-		var input = inputPwd(f);
-		input.find("#unlock").click(function() {
-			post(url, "pwd=" + $("#unlock_pwd").val());
-			input.close();
-		});
-	} else {
-		post(url, "pwd=");
-	}
-};
-
-/* 还原删除的文件 */
-restoreFile = function(f) {
-	url = ctxPath + "/myFile/restore/" + $(f).data("file_id"), data = "";
 	post = function(url, data) {
 		$.post(url, data, function(data) {
 			if (data.replace(",","").length > 0) {
@@ -1060,15 +1020,7 @@ var folderItems = [ {
 		text : "下载",
 		icon : basePath + "/static/img/download.png",
 		action : function(tar) {
-			var url = ctxPath +"/myFile/downloadFile";
-			var data = "fileId=" + $(tar).data("file_id");
-			$.post(url, data, function(data) {
-				if (data == "success") {
-					dialog.show("<center><span>下载文件夹成功</span></center>","系统提示");  
-				} else if (data == "fail") {
-					dialog.show("<center><span>下载文件夹失败</span></center>","系统提示");  
-				}
-			});
+			window.location.href = ctxPath +"/myFile/downloadFile/" + $(tar).data("file_id");
 		}
 	}, {
 		type : "aplit"
@@ -1092,21 +1044,12 @@ var folderItemReadOnly = [ {
 	}
 } ];
 
-var restoreDeleteFile = [ {
-	text : "还原",
-	icon : basePath + "/static/img/delete.png",
-	action : function(tar) {
-		restoreFile($(tar));
-	}
-} ];
-
-
 /* 文件的右键菜单 */
-$(".share_0.role_02:not(.adir,.adir_readonly,.delFlag )").contextmenu({
+$(".share_0.role_02:not(.adir,.adir_readonly )").contextmenu({
 	items : fileItems
 });
 
-$(".share_0.role_01:not(.adir,.adir_readonly,.delFlag )").contextmenu({
+$(".share_0.role_01:not(.adir,.adir_readonly )").contextmenu({
 	items : fileItemsReadOnly
 });
 
@@ -1131,17 +1074,12 @@ $(".share_1").contextmenu({
 });
 
 /* 文件夹右键菜单 */
-$(".adir.role_02:not(.lock_1,.lock_2,.delFlag)").contextmenu({
+$(".adir.role_02:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItems
 });
 
-$(".adir_readonly.role_01:not(.lock_1,.lock_2,.delFlag)").contextmenu({
+$(".adir_readonly.role_01:not(.lock_1,.lock_2)").contextmenu({
 	items : folderItemReadOnly
-});
-
-/* 文件夹右键菜单 */
-$(".delFlag").contextmenu({
-	items : restoreDeleteFile
 });
 
 $(".adir:not(.lock_0)").contextmenu({

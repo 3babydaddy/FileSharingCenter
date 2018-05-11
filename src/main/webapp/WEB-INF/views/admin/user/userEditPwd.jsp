@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/commons/global.jsp" %>
+<link rel="stylesheet" type="text/css" href="${staticPath }/static/easyui/themes/gray/easyui.css" />
+<script type="text/javascript" src="${staticPath }/static/easyui/jquery.easyui.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="${staticPath }/static/easyui/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
 <script type="text/javascript">
     $(function() {
         $('#editUserPwdForm').form({
@@ -25,8 +28,9 @@
         });
     });
 </script>
+
 <div class="easyui-layout" data-options="fit:true,border:false">
-    <div data-options="region:'center',border:false" title="" style="overflow: hidden;">
+    <div data-options="region:'center',border:false" title="" style="overflow: hidden;margin:10% 0 0 15%;">
             <form id="editUserPwdForm" method="post">
                 <table>
                     <tr>
