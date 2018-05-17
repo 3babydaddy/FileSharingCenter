@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 192.168.44.114
 Source Server Version : 50528
-Source Host           : localhost:3306
+Source Host           : 192.168.44.114:3306
 Source Database       : file_sharing
 
 Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2018-04-18 09:16:59
+Date: 2018-05-17 10:10:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,75 +37,92 @@ CREATE TABLE `myfile` (
   `shareurl` varchar(100) DEFAULT NULL,
   `md5` char(32) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
+  `del_flag` varchar(1) DEFAULT '0' COMMENT '删除标志',
+  `del_date` char(30) DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `myfile_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `myfile` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=391 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=713 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of myfile
 -- ----------------------------
-INSERT INTO `myfile` VALUES ('1', '1', null, '#1', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('149', '25', null, '#25', '1', '0', 'adir', '/', '', null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('150', '18', null, '#18', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('151', '26', null, '#26', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('152', '27', null, '#27', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('153', '28', null, '#28', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('154', '26', '150', '处室文件1', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('155', '26', '150', '处室文件2', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('156', '26', '150', '处室文件3', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('157', '26', '150', '处室文件4', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('167', '26', '151', 'xinxichu', '1', '0', 'adir', '/151/', '2018-01-31', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('224', '29', null, '#29', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('226', '19', null, '#19', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('227', '20', null, '#20', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('228', '21', null, '#21', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('229', '30', null, '#30', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('230', '31', null, '#31', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('231', '32', null, '#32', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('232', '33', null, '#33', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('233', '34', null, '#34', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('234', '35', null, '#35', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('235', '22', null, '#22', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('236', '23', null, '#23', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('237', '24', null, '#24', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('238', '27', '152', '刘军文件夹\n', '1', '0', 'adir', '/152/', '2018-02-23', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('239', '27', '238', '111.jpg', '1', '0', 'jpg', '/152/', '2018-02-23', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519368957796.jpg', null, null, '');
-INSERT INTO `myfile` VALUES ('241', '27', '238', 'test1', '1', '0', 'adir', '/152/238/', '2018-02-23', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('242', '27', '152', '刘军文件夹2', '1', '0', 'adir', '/152/', '2018-02-23', null, '0', '0', '0', null, null, null, '');
-INSERT INTO `myfile` VALUES ('244', '36', null, '#36', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('356', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519634692711.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('357', '26', '154', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/154/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635080038.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('359', '37', null, '#37', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('360', '26', '150', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635623549.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('361', '26', '150', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635633228.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('362', '26', '150', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635642233.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('363', '26', '150', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635660968.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('364', '26', '150', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635668622.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('367', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519636547566.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('368', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637403859.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('369', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637467116.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('370', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637471786.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('371', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637485108.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('372', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637488845.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('373', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637496895.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('374', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637501650.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('375', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637505806.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('376', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637509218.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('377', '36', '244', 'Shiro教程.pdf', '1', '4363706', 'pdf', '/244/', '2018-03-01', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519889180937.pdf', null, null, '');
-INSERT INTO `myfile` VALUES ('378', '36', '244', 'apache-tomcat-7.0.63-x64.zip', '1', '16252370', 'zip', '/244/', '2018-03-01', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519889275153.zip', null, null, '');
-INSERT INTO `myfile` VALUES ('379', '27', '242', '测试.docx', '1', '11568', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520297540290.docx', null, null, '');
-INSERT INTO `myfile` VALUES ('380', '38', null, '#38', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('381', '26', '150', '待办1.txt', '0', '51', 'txt', '/150/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520323799831.txt', null, null, '');
-INSERT INTO `myfile` VALUES ('382', '27', '152', '测试.docx', '1', '11568', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520324397177.docx', null, null, '');
-INSERT INTO `myfile` VALUES ('383', '27', '152', '测试1411 \n.docx', '1', '0', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520324423763.docx', null, null, '');
-INSERT INTO `myfile` VALUES ('385', '27', '242', '《新区“两新”组织信息管理系统》-需求说明书.doc', '1', '644608', 'doc', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520328410243.doc', null, null, '');
-INSERT INTO `myfile` VALUES ('386', '25', null, '#25', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('387', '39', null, '#39', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('388', '40', null, '#40', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('389', '26', null, '#26', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
-INSERT INTO `myfile` VALUES ('390', '1', null, '#1', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null);
+INSERT INTO `myfile` VALUES ('1', '1', null, '#1', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('149', '25', null, '#25', '1', '0', 'adir', '/', '', null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('150', '18', null, '#18', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('151', '26', null, '#26', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('152', '27', null, '#27', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('153', '28', null, '#28', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('154', '26', '150', '处室文件1', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('155', '26', '150', '处室文件2', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('156', '26', '150', '处室文件3', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('157', '26', '150', '处室文件4', '0', '0', 'adir', '/150/', '2018-01-31', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('167', '26', '151', 'xinxichu', '1', '0', 'adir', '/151/', '2018-01-31', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('224', '29', null, '#29', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('226', '19', null, '#19', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('227', '20', null, '#20', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('228', '21', null, '#21', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('229', '30', null, '#30', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('230', '31', null, '#31', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('231', '32', null, '#32', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('232', '33', null, '#33', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('233', '34', null, '#34', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('234', '35', null, '#35', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('235', '22', null, '#22', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('236', '23', null, '#23', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('237', '24', null, '#24', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('238', '27', '152', '刘军文件夹\n', '1', '0', 'adir', '/152/', '2018-02-23', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('239', '27', '238', '111.jpg', '1', '0', 'jpg', '/152/', '2018-02-23', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519368957796.jpg', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('241', '27', '238', 'test1', '1', '0', 'adir', '/152/238/', '2018-02-23', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('242', '27', '152', '刘军文件夹2', '1', '0', 'adir', '/152/', '2018-02-23', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('244', '36', null, '#36', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('356', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519634692711.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('357', '26', '154', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/154/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635080038.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('359', '37', null, '#37', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('360', '26', '157', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635623549.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('361', '26', '157', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635633228.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('362', '26', '157', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519635642233.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('367', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519636547566.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('368', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637403859.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('369', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637467116.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('370', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637471786.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('371', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637485108.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('372', '27', '156', 'apache-tomcat-7.0.82-windows-x86.zip', '0', '10304238', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637488845.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('373', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637496895.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('374', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637501650.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('375', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637505806.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('376', '27', '156', 'apache-tomcat-7.0.63.zip', '0', '16252370', 'zip', '/150/156/', '2018-02-26', null, '0', '0', '0', 'C:/filesharing/1519637509218.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('377', '36', '244', 'Shiro教程.pdf', '1', '4363706', 'pdf', '/244/', '2018-03-01', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519889180937.pdf', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('378', '36', '244', 'apache-tomcat-7.0.63-x64.zip', '1', '16252370', 'zip', '/244/', '2018-03-01', null, '0', '0', '0', 'd:/home/FileSharingCenter/1519889275153.zip', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('379', '27', '242', '测试.docx', '1', '11568', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520297540290.docx', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('380', '38', null, '#38', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('381', '26', '150', '待办1.txt', '0', '51', 'txt', '/150/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520323799831.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('382', '27', '152', '测试.docx', '1', '11568', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520324397177.docx', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('383', '27', '152', '测试1411 \n.docx', '1', '0', 'docx', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520324423763.docx', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('385', '27', '242', '《新区“两新”组织信息管理系统》-需求说明书.doc', '1', '644608', 'doc', '/152/', '2018-03-06', null, '0', '0', '0', 'd:/home/FileSharingCenter/1520328410243.doc', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('386', '25', null, '#25', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('387', '39', null, '#39', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('388', '40', null, '#40', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('389', '26', null, '#26', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('390', '1', null, '#1', '0', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
+INSERT INTO `myfile` VALUES ('395', '27', '152', 'erwrwe', '1', '0', 'adir', '/152/', '2018-04-18', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('427', '27', '395', '111', '1', '0', 'adir', '/152/395/', '2018-04-24', null, '0', '0', '0', null, null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('442', '27', '395', '111.txt', '1', '4609', 'txt', '/152/395/', '2018-04-24', null, '0', '0', '0', 'e:/abd/FileSharingCenter/1524553256071.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('443', '27', '395', '新建.txt', '1', '4609', 'txt', '/152/395/', '2018-04-24', null, '0', '0', '0', 'e:/abd/FileSharingCenter/sss/1524553256164.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('616', '27', '152', 'Desert.jpg', '1', '845941', 'jpg', '/152/', '2018-04-25', null, '0', '0', '0', 'e:/abd/1524633396246.jpg', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('617', '27', '152', 'Desert.jpg', '1', '845941', 'jpg', '/152/', '2018-04-25', null, '0', '0', '0', 'e:/abd/1524633667881.jpg', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('650', '27', '1', 'Penguins.jpg', '1', '777835', 'jpg', '/', '2018-04-25', null, '0', '0', '0', 'e:/abd/1524637602192.jpg', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('686', '26', '1', '22', '0', '0', 'adir', '/', '2018-04-26', null, '0', '0', '0', 'C:/home/11/22/1524724563912.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('687', '26', '686', '档案系统修改意见.txt', '0', '321', 'txt', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/11/22/1524724563912.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('688', '26', '686', '新建文件夹', '0', '0', 'adir', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/11/22/新建文件夹/新建文件夹/1524724564039.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('689', '26', '688', '新建文件夹', '0', '0', 'adir', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/11/22/新建文件夹/新建文件夹/1524724564039.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('690', '26', '689', '新建文本文档.txt', '0', '0', 'txt', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/11/22/新建文件夹/新建文件夹/1524724564039.txt', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('691', '26', '157', 'eclipse.ini', '0', '712', 'ini', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/1524725159635.ini', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('692', '26', '157', 'AlertDemo.html', '0', '5402', 'html', '/150/157/', '2018-04-26', null, '0', '0', '0', 'C:/home/1524725291606.html', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('706', '26', '150', 'PermissionCenter.war', '0', '21126833', 'war', '/150/', '2018-04-26', null, '0', '0', '0', 'C:/home/1524735919430.war', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('707', '27', '150', 'permission_center.sql', '0', '22516917', 'sql', '/150/', '2018-04-27', null, '0', '0', '0', 'C:/home/1524793632371.sql', null, null, '', '0', null);
+INSERT INTO `myfile` VALUES ('712', '41', null, '#41', '1', '0', 'adir', '/', null, null, '0', '0', '0', null, null, null, null, '0', null);
 
 -- ----------------------------
 -- Table structure for `notice`
@@ -191,7 +208,7 @@ CREATE TABLE `resource` (
   `resource_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '资源类别',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8 COMMENT='资源';
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8 COMMENT='资源';
 
 -- ----------------------------
 -- Records of resource
@@ -223,6 +240,7 @@ INSERT INTO `resource` VALUES ('226', '修改密码', '/user/editPwdPage', 'ajax
 INSERT INTO `resource` VALUES ('227', '登录日志', '/sysLog/manager', 'ajax', null, 'fi-info', '221', '0', '0', '1', '0', '2016-09-30 22:10:53');
 INSERT INTO `resource` VALUES ('228', 'Druid监控', '/druid', 'iframe', null, 'fi-monitor', '221', '0', '0', '1', '0', '2016-09-30 22:12:50');
 INSERT INTO `resource` VALUES ('229', '系统图标', '/icons.html', 'ajax', null, 'fi-photo', '221', '0', '0', '1', '0', '2016-12-24 15:53:47');
+INSERT INTO `resource` VALUES ('230', '回收站', '/myFile/delFileList', 'ajax', null, 'fi-trash', '221', '0', '0', '1', '0', '2018-05-10 08:54:32');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -304,14 +322,14 @@ CREATE TABLE `share_disk_info` (
   `status` varchar(2) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   KEY `Index_userid` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='共享空间磁盘信息';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='共享空间磁盘信息';
 
 -- ----------------------------
 -- Records of share_disk_info
 -- ----------------------------
-INSERT INTO `share_disk_info` VALUES ('1', '1', '300', null, null, '2018-01-23 12:07:19', '0');
+INSERT INTO `share_disk_info` VALUES ('1', '1', '300', '0', '1', '2018-01-23 12:07:19', '0');
 INSERT INTO `share_disk_info` VALUES ('14', '26', '5120', '0', '6', '2018-01-31 17:20:37', '0');
-INSERT INTO `share_disk_info` VALUES ('15', '27', '1024', '667744', '9', '2018-01-31 17:20:57', '0');
+INSERT INTO `share_disk_info` VALUES ('15', '27', '1024', '3146679', '16', '2018-01-31 17:20:57', '0');
 INSERT INTO `share_disk_info` VALUES ('16', '28', '1024', '0', '1', '2018-01-31 17:21:17', '0');
 INSERT INTO `share_disk_info` VALUES ('17', '29', '300', null, null, '2018-02-08 16:40:31', '0');
 INSERT INTO `share_disk_info` VALUES ('18', '30', '1024', null, null, '2018-02-08 17:23:30', '0');
@@ -321,7 +339,7 @@ INSERT INTO `share_disk_info` VALUES ('21', '33', '1024', null, null, '2018-02-0
 INSERT INTO `share_disk_info` VALUES ('22', '34', '1024', null, null, '2018-02-08 17:56:05', '0');
 INSERT INTO `share_disk_info` VALUES ('23', '35', '1024', null, null, '2018-02-08 17:57:25', '0');
 INSERT INTO `share_disk_info` VALUES ('24', '36', '300', '20616076', '1', '2018-02-23 17:39:32', '0');
-INSERT INTO `share_disk_info` VALUES ('25', 'O18', '200', '202148677', '1', '2018-02-26 11:39:42', '0');
+INSERT INTO `share_disk_info` VALUES ('25', 'O18', '200', '102711584', '17', '2018-02-26 11:39:42', '0');
 INSERT INTO `share_disk_info` VALUES ('26', 'O19', '5001', null, null, '2018-02-26 11:40:12', '0');
 INSERT INTO `share_disk_info` VALUES ('27', 'O20', '1024', null, null, '2018-02-26 16:53:23', '0');
 INSERT INTO `share_disk_info` VALUES ('28', '37', '300', null, null, '2018-02-26 16:55:22', '0');
@@ -332,6 +350,7 @@ INSERT INTO `share_disk_info` VALUES ('32', '39', '300', null, null, '2018-03-13
 INSERT INTO `share_disk_info` VALUES ('33', '40', '300', null, null, '2018-03-13 17:05:49', '0');
 INSERT INTO `share_disk_info` VALUES ('34', 'O1', '2048', null, null, '2018-03-14 09:13:04', '0');
 INSERT INTO `share_disk_info` VALUES ('35', 'O26', '5024', null, null, '2018-03-14 09:57:47', '0');
+INSERT INTO `share_disk_info` VALUES ('36', '41', '300', null, null, '2018-05-07 14:50:58', '0');
 
 -- ----------------------------
 -- Table structure for `share_to_org`
@@ -350,7 +369,7 @@ CREATE TABLE `share_to_org` (
   PRIMARY KEY (`id`),
   KEY `Index_orgid` (`org_id`),
   KEY `Index_fileid` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COMMENT='共享给群组\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COMMENT='共享给群组\r\n';
 
 -- ----------------------------
 -- Records of share_to_org
@@ -375,6 +394,7 @@ INSERT INTO `share_to_org` VALUES ('43', '156', '19', '26', '0', '01', '2018-02-
 INSERT INTO `share_to_org` VALUES ('44', '157', '19', '26', '0', '01', '2018-02-23 17:35:12', '信息处', '0');
 INSERT INTO `share_to_org` VALUES ('45', '154', '1', '26', '0', '01', '2018-02-23 17:38:04', '信息处', '1');
 INSERT INTO `share_to_org` VALUES ('46', '157', '18', '26', '0', '01', '2018-02-24 11:02:57', '信息处', '0');
+INSERT INTO `share_to_org` VALUES ('47', '156', '24', '27', '0', '01', '2018-04-27 14:01:42', '刘军', '0');
 
 -- ----------------------------
 -- Table structure for `share_to_user`
@@ -393,7 +413,7 @@ CREATE TABLE `share_to_user` (
   PRIMARY KEY (`id`),
   KEY `Index_userid` (`user_id`),
   KEY `Index_fileid` (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='共享给用户';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='共享给用户';
 
 -- ----------------------------
 -- Records of share_to_user
@@ -408,6 +428,7 @@ INSERT INTO `share_to_user` VALUES ('15', '156', '30', '27', '0', '02', '2018-02
 INSERT INTO `share_to_user` VALUES ('16', '157', '30', '27', '0', '02', '2018-02-23 17:14:00', '刘军', '0');
 INSERT INTO `share_to_user` VALUES ('17', '238', '36', '27', '1', '01', '2018-02-24 10:52:22', '刘军', '1');
 INSERT INTO `share_to_user` VALUES ('18', '238', '36', '27', '1', '02', '2018-02-24 10:53:52', '刘军', '1');
+INSERT INTO `share_to_user` VALUES ('19', '242', '27', '27', '1', '01', '2018-04-27 15:04:21', '刘军', '0');
 
 -- ----------------------------
 -- Table structure for `sys_log`
@@ -421,7 +442,7 @@ CREATE TABLE `sys_log` (
   `client_ip` varchar(255) DEFAULT NULL COMMENT '客户端ip',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1640 DEFAULT CHARSET=utf8 COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1971 DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
@@ -1122,6 +1143,337 @@ INSERT INTO `sys_log` VALUES ('1636', 'liujun', 'liujun', '[类名]:com.tf.contr
 INSERT INTO `sys_log` VALUES ('1637', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:login,[参数]:null', '0:0:0:0:0:0:0:1', '2018-03-14 11:03:28');
 INSERT INTO `sys_log` VALUES ('1638', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:login,[参数]:null', '0:0:0:0:0:0:0:1', '2018-03-14 11:23:43');
 INSERT INTO `sys_log` VALUES ('1639', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-03-14 11:46:12');
+INSERT INTO `sys_log` VALUES ('1640', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-18 09:23:33');
+INSERT INTO `sys_log` VALUES ('1641', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-18 11:05:01');
+INSERT INTO `sys_log` VALUES ('1642', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-18 11:05:03');
+INSERT INTO `sys_log` VALUES ('1643', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-18 11:05:05');
+INSERT INTO `sys_log` VALUES ('1644', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 09:56:20');
+INSERT INTO `sys_log` VALUES ('1645', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 13:51:18');
+INSERT INTO `sys_log` VALUES ('1646', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 13:51:20');
+INSERT INTO `sys_log` VALUES ('1647', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 14:41:30');
+INSERT INTO `sys_log` VALUES ('1648', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 14:41:50');
+INSERT INTO `sys_log` VALUES ('1649', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 14:41:52');
+INSERT INTO `sys_log` VALUES ('1650', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 14:41:55');
+INSERT INTO `sys_log` VALUES ('1651', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 14:41:57');
+INSERT INTO `sys_log` VALUES ('1652', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 16:55:49');
+INSERT INTO `sys_log` VALUES ('1653', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 16:55:52');
+INSERT INTO `sys_log` VALUES ('1654', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 17:00:20');
+INSERT INTO `sys_log` VALUES ('1655', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 17:23:47');
+INSERT INTO `sys_log` VALUES ('1656', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 17:23:50');
+INSERT INTO `sys_log` VALUES ('1657', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-23 17:30:03');
+INSERT INTO `sys_log` VALUES ('1658', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 11:51:26');
+INSERT INTO `sys_log` VALUES ('1659', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 11:51:28');
+INSERT INTO `sys_log` VALUES ('1660', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 11:51:30');
+INSERT INTO `sys_log` VALUES ('1661', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:40:13');
+INSERT INTO `sys_log` VALUES ('1662', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:40:15');
+INSERT INTO `sys_log` VALUES ('1663', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:43:58');
+INSERT INTO `sys_log` VALUES ('1664', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:44:00');
+INSERT INTO `sys_log` VALUES ('1665', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:44:04');
+INSERT INTO `sys_log` VALUES ('1666', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:44:07');
+INSERT INTO `sys_log` VALUES ('1667', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:44:26');
+INSERT INTO `sys_log` VALUES ('1668', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 13:44:29');
+INSERT INTO `sys_log` VALUES ('1669', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:05:24');
+INSERT INTO `sys_log` VALUES ('1670', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:05:27');
+INSERT INTO `sys_log` VALUES ('1671', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:05:29');
+INSERT INTO `sys_log` VALUES ('1672', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:05:32');
+INSERT INTO `sys_log` VALUES ('1673', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:41:31');
+INSERT INTO `sys_log` VALUES ('1674', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:41:33');
+INSERT INTO `sys_log` VALUES ('1675', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:41:36');
+INSERT INTO `sys_log` VALUES ('1676', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:41:38');
+INSERT INTO `sys_log` VALUES ('1677', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:44:02');
+INSERT INTO `sys_log` VALUES ('1678', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:44:04');
+INSERT INTO `sys_log` VALUES ('1679', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:44:48');
+INSERT INTO `sys_log` VALUES ('1680', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:44:50');
+INSERT INTO `sys_log` VALUES ('1681', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:49:05');
+INSERT INTO `sys_log` VALUES ('1682', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:49:08');
+INSERT INTO `sys_log` VALUES ('1683', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:51:39');
+INSERT INTO `sys_log` VALUES ('1684', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:51:41');
+INSERT INTO `sys_log` VALUES ('1685', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:55:29');
+INSERT INTO `sys_log` VALUES ('1686', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:55:31');
+INSERT INTO `sys_log` VALUES ('1687', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:55:33');
+INSERT INTO `sys_log` VALUES ('1688', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 14:55:35');
+INSERT INTO `sys_log` VALUES ('1689', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-24 18:02:37');
+INSERT INTO `sys_log` VALUES ('1690', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 08:41:16');
+INSERT INTO `sys_log` VALUES ('1691', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 08:51:41');
+INSERT INTO `sys_log` VALUES ('1692', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 08:53:35');
+INSERT INTO `sys_log` VALUES ('1693', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 08:57:21');
+INSERT INTO `sys_log` VALUES ('1694', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:03:14');
+INSERT INTO `sys_log` VALUES ('1695', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:03:16');
+INSERT INTO `sys_log` VALUES ('1696', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:03:19');
+INSERT INTO `sys_log` VALUES ('1697', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:03:22');
+INSERT INTO `sys_log` VALUES ('1698', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:03:25');
+INSERT INTO `sys_log` VALUES ('1699', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:04:33');
+INSERT INTO `sys_log` VALUES ('1700', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:14:22');
+INSERT INTO `sys_log` VALUES ('1701', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:14:24');
+INSERT INTO `sys_log` VALUES ('1702', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:16:34');
+INSERT INTO `sys_log` VALUES ('1703', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:16:37');
+INSERT INTO `sys_log` VALUES ('1704', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:02');
+INSERT INTO `sys_log` VALUES ('1705', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:04');
+INSERT INTO `sys_log` VALUES ('1706', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:06');
+INSERT INTO `sys_log` VALUES ('1707', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:08');
+INSERT INTO `sys_log` VALUES ('1708', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:12');
+INSERT INTO `sys_log` VALUES ('1709', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:27:15');
+INSERT INTO `sys_log` VALUES ('1710', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:15');
+INSERT INTO `sys_log` VALUES ('1711', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:18');
+INSERT INTO `sys_log` VALUES ('1712', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:22');
+INSERT INTO `sys_log` VALUES ('1713', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:24');
+INSERT INTO `sys_log` VALUES ('1714', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:28');
+INSERT INTO `sys_log` VALUES ('1715', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:32:32');
+INSERT INTO `sys_log` VALUES ('1716', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:45:51');
+INSERT INTO `sys_log` VALUES ('1717', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:45:54');
+INSERT INTO `sys_log` VALUES ('1718', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:45:56');
+INSERT INTO `sys_log` VALUES ('1719', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:45:58');
+INSERT INTO `sys_log` VALUES ('1720', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 09:51:56');
+INSERT INTO `sys_log` VALUES ('1721', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:22');
+INSERT INTO `sys_log` VALUES ('1722', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:24');
+INSERT INTO `sys_log` VALUES ('1723', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:26');
+INSERT INTO `sys_log` VALUES ('1724', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:28');
+INSERT INTO `sys_log` VALUES ('1725', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:30');
+INSERT INTO `sys_log` VALUES ('1726', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 10:11:32');
+INSERT INTO `sys_log` VALUES ('1727', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:12');
+INSERT INTO `sys_log` VALUES ('1728', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:14');
+INSERT INTO `sys_log` VALUES ('1729', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:16');
+INSERT INTO `sys_log` VALUES ('1730', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:19');
+INSERT INTO `sys_log` VALUES ('1731', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:21');
+INSERT INTO `sys_log` VALUES ('1732', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 11:04:23');
+INSERT INTO `sys_log` VALUES ('1733', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 13:44:55');
+INSERT INTO `sys_log` VALUES ('1734', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 13:44:59');
+INSERT INTO `sys_log` VALUES ('1735', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:23:19');
+INSERT INTO `sys_log` VALUES ('1736', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:23:21');
+INSERT INTO `sys_log` VALUES ('1737', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:23:23');
+INSERT INTO `sys_log` VALUES ('1738', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:27:12');
+INSERT INTO `sys_log` VALUES ('1739', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:28:59');
+INSERT INTO `sys_log` VALUES ('1740', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:29:01');
+INSERT INTO `sys_log` VALUES ('1741', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:30:54');
+INSERT INTO `sys_log` VALUES ('1742', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:30:57');
+INSERT INTO `sys_log` VALUES ('1743', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-25 14:31:00');
+INSERT INTO `sys_log` VALUES ('1744', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-25 15:34:20');
+INSERT INTO `sys_log` VALUES ('1745', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-26 09:08:17');
+INSERT INTO `sys_log` VALUES ('1746', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 15:01:22');
+INSERT INTO `sys_log` VALUES ('1747', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 15:01:33');
+INSERT INTO `sys_log` VALUES ('1748', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 16:04:20');
+INSERT INTO `sys_log` VALUES ('1749', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-26 16:04:22');
+INSERT INTO `sys_log` VALUES ('1750', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-26 16:05:19');
+INSERT INTO `sys_log` VALUES ('1751', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 16:19:53');
+INSERT INTO `sys_log` VALUES ('1752', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 16:19:55');
+INSERT INTO `sys_log` VALUES ('1753', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-26 16:21:26');
+INSERT INTO `sys_log` VALUES ('1754', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-27 09:11:41');
+INSERT INTO `sys_log` VALUES ('1755', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:22:27');
+INSERT INTO `sys_log` VALUES ('1756', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:23:05');
+INSERT INTO `sys_log` VALUES ('1757', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:23:13');
+INSERT INTO `sys_log` VALUES ('1758', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:23:41');
+INSERT INTO `sys_log` VALUES ('1759', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:33:34');
+INSERT INTO `sys_log` VALUES ('1760', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 11:33:46');
+INSERT INTO `sys_log` VALUES ('1761', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-27 11:38:11');
+INSERT INTO `sys_log` VALUES ('1762', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-27 11:38:32');
+INSERT INTO `sys_log` VALUES ('1763', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-27 15:15:21');
+INSERT INTO `sys_log` VALUES ('1764', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 15:28:54');
+INSERT INTO `sys_log` VALUES ('1765', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-04-27 15:28:59');
+INSERT INTO `sys_log` VALUES ('1766', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-04-28 08:44:44');
+INSERT INTO `sys_log` VALUES ('1767', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-07 14:37:01');
+INSERT INTO `sys_log` VALUES ('1768', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-07 14:44:52');
+INSERT INTO `sys_log` VALUES ('1769', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:login,[参数]:null', '0:0:0:0:0:0:0:1', '2018-05-07 14:45:59');
+INSERT INTO `sys_log` VALUES ('1770', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 14:46:53');
+INSERT INTO `sys_log` VALUES ('1771', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:grantPage,[参数]:id=3&_=1525675626761&', '0:0:0:0:0:0:0:1', '2018-05-07 14:47:25');
+INSERT INTO `sys_log` VALUES ('1772', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=25&_=1525675626763&', '0:0:0:0:0:0:0:1', '2018-05-07 14:47:38');
+INSERT INTO `sys_log` VALUES ('1773', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=26&_=1525675626764&', '0:0:0:0:0:0:0:1', '2018-05-07 14:47:52');
+INSERT INTO `sys_log` VALUES ('1774', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:addPage,[参数]:', null, '2018-05-07 14:49:03');
+INSERT INTO `sys_log` VALUES ('1775', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:add,[参数]:name=文件管理员&seq=0&status=0&description=&', '0:0:0:0:0:0:0:1', '2018-05-07 14:49:20');
+INSERT INTO `sys_log` VALUES ('1776', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:editPage,[参数]:id=4&_=1525675626766&', '0:0:0:0:0:0:0:1', '2018-05-07 14:49:24');
+INSERT INTO `sys_log` VALUES ('1777', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:edit,[参数]:id=4&name=file_admin&seq=0&status=0&description=文件管理员&', '0:0:0:0:0:0:0:1', '2018-05-07 14:49:41');
+INSERT INTO `sys_log` VALUES ('1778', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:addPage,[参数]:_=1525675626767&', '0:0:0:0:0:0:0:1', '2018-05-07 14:49:46');
+INSERT INTO `sys_log` VALUES ('1779', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:add,[参数]:loginName=tian&name=tian&password=123456&sex=0&age=&userType=1&organizationId=19&roleIds=4&phone=&status=0&initStorageSize=300&ip=127.0.0.1&', '0:0:0:0:0:0:0:1', '2018-05-07 14:50:58');
+INSERT INTO `sys_log` VALUES ('1780', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=25&_=1525675626768&', '0:0:0:0:0:0:0:1', '2018-05-07 14:51:23');
+INSERT INTO `sys_log` VALUES ('1781', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 14:51:27');
+INSERT INTO `sys_log` VALUES ('1782', 'tian', 'tian', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 14:56:27');
+INSERT INTO `sys_log` VALUES ('1783', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 14:56:49');
+INSERT INTO `sys_log` VALUES ('1784', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 14:59:58');
+INSERT INTO `sys_log` VALUES ('1785', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:delete,[参数]:id=41&', '0:0:0:0:0:0:0:1', '2018-05-07 15:00:37');
+INSERT INTO `sys_log` VALUES ('1786', 'admin', 'admin', '[类名]:com.tf.controller.RoleController,[方法]:delete,[参数]:id=4&', '0:0:0:0:0:0:0:1', '2018-05-07 15:00:46');
+INSERT INTO `sys_log` VALUES ('1787', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:35:28');
+INSERT INTO `sys_log` VALUES ('1788', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:49:56');
+INSERT INTO `sys_log` VALUES ('1789', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:50:17');
+INSERT INTO `sys_log` VALUES ('1790', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:55:18');
+INSERT INTO `sys_log` VALUES ('1791', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-07 16:55:31');
+INSERT INTO `sys_log` VALUES ('1792', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:55:39');
+INSERT INTO `sys_log` VALUES ('1793', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:55:58');
+INSERT INTO `sys_log` VALUES ('1794', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:56:35');
+INSERT INTO `sys_log` VALUES ('1795', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-07 16:56:51');
+INSERT INTO `sys_log` VALUES ('1796', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-08 10:38:38');
+INSERT INTO `sys_log` VALUES ('1797', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-08 10:38:41');
+INSERT INTO `sys_log` VALUES ('1798', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:38:43');
+INSERT INTO `sys_log` VALUES ('1799', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:39:06');
+INSERT INTO `sys_log` VALUES ('1800', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-08 10:39:39');
+INSERT INTO `sys_log` VALUES ('1801', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:39:47');
+INSERT INTO `sys_log` VALUES ('1802', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:40:07');
+INSERT INTO `sys_log` VALUES ('1803', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:40:19');
+INSERT INTO `sys_log` VALUES ('1804', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 10:40:35');
+INSERT INTO `sys_log` VALUES ('1805', 'bangongshi', 'bangongshi', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 13:44:25');
+INSERT INTO `sys_log` VALUES ('1806', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:06:12');
+INSERT INTO `sys_log` VALUES ('1807', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:06:46');
+INSERT INTO `sys_log` VALUES ('1808', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-08 17:13:05');
+INSERT INTO `sys_log` VALUES ('1809', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:13:11');
+INSERT INTO `sys_log` VALUES ('1810', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:13:38');
+INSERT INTO `sys_log` VALUES ('1811', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-08 17:16:25');
+INSERT INTO `sys_log` VALUES ('1812', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:16:28');
+INSERT INTO `sys_log` VALUES ('1813', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-08 17:16:55');
+INSERT INTO `sys_log` VALUES ('1814', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-09 17:16:54');
+INSERT INTO `sys_log` VALUES ('1815', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:16:58');
+INSERT INTO `sys_log` VALUES ('1816', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:18:21');
+INSERT INTO `sys_log` VALUES ('1817', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:18:52');
+INSERT INTO `sys_log` VALUES ('1818', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:19:07');
+INSERT INTO `sys_log` VALUES ('1819', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-09 17:33:00');
+INSERT INTO `sys_log` VALUES ('1820', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:33:02');
+INSERT INTO `sys_log` VALUES ('1821', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:35:11');
+INSERT INTO `sys_log` VALUES ('1822', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:47:44');
+INSERT INTO `sys_log` VALUES ('1823', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-09 17:48:03');
+INSERT INTO `sys_log` VALUES ('1824', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-09 17:48:18');
+INSERT INTO `sys_log` VALUES ('1825', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-09 17:48:25');
+INSERT INTO `sys_log` VALUES ('1826', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 08:51:43');
+INSERT INTO `sys_log` VALUES ('1827', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:addPage,[参数]:', null, '2018-05-10 08:52:50');
+INSERT INTO `sys_log` VALUES ('1828', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:add,[参数]:name=删除文件列表&resourceType=0&url=/myFile/getDeleteFileList/&openMode=ajax&icon=&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-10 08:54:32');
+INSERT INTO `sys_log` VALUES ('1829', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1525913508223&', '0:0:0:0:0:0:0:1', '2018-05-10 08:56:47');
+INSERT INTO `sys_log` VALUES ('1830', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:edit,[参数]:id=230&name=删除文件列表&resourceType=0&url=/myFile/getDeleteFileList/&openMode=ajax&icon=fi-file&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-10 08:57:02');
+INSERT INTO `sys_log` VALUES ('1831', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1525913508224&', '0:0:0:0:0:0:0:1', '2018-05-10 08:57:07');
+INSERT INTO `sys_log` VALUES ('1832', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:edit,[参数]:id=230&name=删除文件列表&resourceType=0&url=/myFile/getDeleteFileList/&openMode=ajax&icon=fi-list&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-10 08:57:15');
+INSERT INTO `sys_log` VALUES ('1833', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1525915841132&', '0:0:0:0:0:0:0:1', '2018-05-10 09:30:52');
+INSERT INTO `sys_log` VALUES ('1834', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:edit,[参数]:id=230&name=删除文件列表&resourceType=0&url=/myFile/delFileList&openMode=ajax&icon=fi-list&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-10 09:31:20');
+INSERT INTO `sys_log` VALUES ('1835', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 09:52:55');
+INSERT INTO `sys_log` VALUES ('1836', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-10 09:53:07');
+INSERT INTO `sys_log` VALUES ('1837', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-10 09:53:10');
+INSERT INTO `sys_log` VALUES ('1838', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 09:53:28');
+INSERT INTO `sys_log` VALUES ('1839', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1525917745874&', '0:0:0:0:0:0:0:1', '2018-05-10 10:04:01');
+INSERT INTO `sys_log` VALUES ('1840', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:edit,[参数]:id=230&name=删除文件列表&resourceType=0&url=/myFile/delFileList&openMode=ajax&icon=fi-trash&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-10 10:04:07');
+INSERT INTO `sys_log` VALUES ('1841', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:24:38');
+INSERT INTO `sys_log` VALUES ('1842', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:24:56');
+INSERT INTO `sys_log` VALUES ('1843', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:27:45');
+INSERT INTO `sys_log` VALUES ('1844', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:33:59');
+INSERT INTO `sys_log` VALUES ('1845', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:35:23');
+INSERT INTO `sys_log` VALUES ('1846', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:35:38');
+INSERT INTO `sys_log` VALUES ('1847', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:35:43');
+INSERT INTO `sys_log` VALUES ('1848', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:37:19');
+INSERT INTO `sys_log` VALUES ('1849', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:38:09');
+INSERT INTO `sys_log` VALUES ('1850', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-10 10:38:25');
+INSERT INTO `sys_log` VALUES ('1851', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:38:28');
+INSERT INTO `sys_log` VALUES ('1852', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:39:38');
+INSERT INTO `sys_log` VALUES ('1853', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:40:51');
+INSERT INTO `sys_log` VALUES ('1854', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:40:57');
+INSERT INTO `sys_log` VALUES ('1855', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=sdfd&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-10 10:41:07');
+INSERT INTO `sys_log` VALUES ('1856', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:41:26');
+INSERT INTO `sys_log` VALUES ('1857', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:41:34');
+INSERT INTO `sys_log` VALUES ('1858', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:42:27');
+INSERT INTO `sys_log` VALUES ('1859', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=sdfsdfsd&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-10 10:42:45');
+INSERT INTO `sys_log` VALUES ('1860', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:43:13');
+INSERT INTO `sys_log` VALUES ('1861', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:43:19');
+INSERT INTO `sys_log` VALUES ('1862', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:43:34');
+INSERT INTO `sys_log` VALUES ('1863', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:43:42');
+INSERT INTO `sys_log` VALUES ('1864', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:45:27');
+INSERT INTO `sys_log` VALUES ('1865', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:46:15');
+INSERT INTO `sys_log` VALUES ('1866', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:48:53');
+INSERT INTO `sys_log` VALUES ('1867', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:49:58');
+INSERT INTO `sys_log` VALUES ('1868', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:50:19');
+INSERT INTO `sys_log` VALUES ('1869', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:51:44');
+INSERT INTO `sys_log` VALUES ('1870', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:52:40');
+INSERT INTO `sys_log` VALUES ('1871', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-10 10:53:30');
+INSERT INTO `sys_log` VALUES ('1872', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:57:24');
+INSERT INTO `sys_log` VALUES ('1873', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=sdfsdf&rePwd=werwesf&', '0:0:0:0:0:0:0:1', '2018-05-10 10:57:35');
+INSERT INTO `sys_log` VALUES ('1874', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 10:57:54');
+INSERT INTO `sys_log` VALUES ('1875', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=sdf&rePwd=eresdf&', '0:0:0:0:0:0:0:1', '2018-05-10 10:58:03');
+INSERT INTO `sys_log` VALUES ('1876', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:58:43');
+INSERT INTO `sys_log` VALUES ('1877', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:59:19');
+INSERT INTO `sys_log` VALUES ('1878', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 10:59:49');
+INSERT INTO `sys_log` VALUES ('1879', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=27&_=1525921195957&', '0:0:0:0:0:0:0:1', '2018-05-10 11:00:02');
+INSERT INTO `sys_log` VALUES ('1880', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=27&loginName=liujun&name=刘军&password=123456&sex=0&age=0&userType=1&organizationId=18&roleIds=3&phone=&status=0&initStorageSize=1024&ip=127.0.0.1&', '0:0:0:0:0:0:0:1', '2018-05-10 11:00:17');
+INSERT INTO `sys_log` VALUES ('1881', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:00:29');
+INSERT INTO `sys_log` VALUES ('1882', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=27&_=1525921279701&', '0:0:0:0:0:0:0:1', '2018-05-10 11:01:26');
+INSERT INTO `sys_log` VALUES ('1883', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:edit,[参数]:id=27&loginName=liujun&name=刘军&password=&sex=0&age=0&userType=1&organizationId=18&roleIds=3&phone=&status=0&initStorageSize=1024&ip=127.0.0.1&', '0:0:0:0:0:0:0:1', '2018-05-10 11:01:39');
+INSERT INTO `sys_log` VALUES ('1884', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPage,[参数]:id=26&_=1525921279702&', '0:0:0:0:0:0:0:1', '2018-05-10 11:01:45');
+INSERT INTO `sys_log` VALUES ('1885', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:02:51');
+INSERT INTO `sys_log` VALUES ('1886', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:03:55');
+INSERT INTO `sys_log` VALUES ('1887', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=123456&rePwd=563241&', '0:0:0:0:0:0:0:1', '2018-05-10 11:04:17');
+INSERT INTO `sys_log` VALUES ('1888', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:04:38');
+INSERT INTO `sys_log` VALUES ('1889', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=123456&rePwd=sdfsdfd&', '0:0:0:0:0:0:0:1', '2018-05-10 11:05:07');
+INSERT INTO `sys_log` VALUES ('1890', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:05:39');
+INSERT INTO `sys_log` VALUES ('1891', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:06:28');
+INSERT INTO `sys_log` VALUES ('1892', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-10 11:07:21');
+INSERT INTO `sys_log` VALUES ('1893', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:07:24');
+INSERT INTO `sys_log` VALUES ('1894', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:07:49');
+INSERT INTO `sys_log` VALUES ('1895', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:08:10');
+INSERT INTO `sys_log` VALUES ('1896', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:08:19');
+INSERT INTO `sys_log` VALUES ('1897', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:11:10');
+INSERT INTO `sys_log` VALUES ('1898', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:11:16');
+INSERT INTO `sys_log` VALUES ('1899', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:11:32');
+INSERT INTO `sys_log` VALUES ('1900', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:11:41');
+INSERT INTO `sys_log` VALUES ('1901', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:12:43');
+INSERT INTO `sys_log` VALUES ('1902', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:13:30');
+INSERT INTO `sys_log` VALUES ('1903', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:14:00');
+INSERT INTO `sys_log` VALUES ('1904', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:22:07');
+INSERT INTO `sys_log` VALUES ('1905', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:22:18');
+INSERT INTO `sys_log` VALUES ('1906', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:22:25');
+INSERT INTO `sys_log` VALUES ('1907', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:24:09');
+INSERT INTO `sys_log` VALUES ('1908', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:24:16');
+INSERT INTO `sys_log` VALUES ('1909', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:24:34');
+INSERT INTO `sys_log` VALUES ('1910', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:25:18');
+INSERT INTO `sys_log` VALUES ('1911', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:25:33');
+INSERT INTO `sys_log` VALUES ('1912', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:25:44');
+INSERT INTO `sys_log` VALUES ('1913', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:25:50');
+INSERT INTO `sys_log` VALUES ('1914', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:25:56');
+INSERT INTO `sys_log` VALUES ('1915', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:26:32');
+INSERT INTO `sys_log` VALUES ('1916', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:27:17');
+INSERT INTO `sys_log` VALUES ('1917', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:27:24');
+INSERT INTO `sys_log` VALUES ('1918', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:27:35');
+INSERT INTO `sys_log` VALUES ('1919', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:27:51');
+INSERT INTO `sys_log` VALUES ('1920', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:28:15');
+INSERT INTO `sys_log` VALUES ('1921', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:28:28');
+INSERT INTO `sys_log` VALUES ('1922', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:28:34');
+INSERT INTO `sys_log` VALUES ('1923', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:29:41');
+INSERT INTO `sys_log` VALUES ('1924', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:29:51');
+INSERT INTO `sys_log` VALUES ('1925', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:30:02');
+INSERT INTO `sys_log` VALUES ('1926', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:30:50');
+INSERT INTO `sys_log` VALUES ('1927', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:35:13');
+INSERT INTO `sys_log` VALUES ('1928', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:35:19');
+INSERT INTO `sys_log` VALUES ('1929', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:36:47');
+INSERT INTO `sys_log` VALUES ('1930', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:36:54');
+INSERT INTO `sys_log` VALUES ('1931', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:38:21');
+INSERT INTO `sys_log` VALUES ('1932', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:40:16');
+INSERT INTO `sys_log` VALUES ('1933', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:40:49');
+INSERT INTO `sys_log` VALUES ('1934', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:41:02');
+INSERT INTO `sys_log` VALUES ('1935', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:41:09');
+INSERT INTO `sys_log` VALUES ('1936', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:42:06');
+INSERT INTO `sys_log` VALUES ('1937', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:42:34');
+INSERT INTO `sys_log` VALUES ('1938', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:42:39');
+INSERT INTO `sys_log` VALUES ('1939', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-10 11:42:46');
+INSERT INTO `sys_log` VALUES ('1940', 'xinxichu', 'xinxichu', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-10 11:43:05');
+INSERT INTO `sys_log` VALUES ('1941', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-11 10:13:01');
+INSERT INTO `sys_log` VALUES ('1942', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=123456&pwd=liujun&rePwd=liujun&', '0:0:0:0:0:0:0:1', '2018-05-11 10:13:14');
+INSERT INTO `sys_log` VALUES ('1943', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:13:19');
+INSERT INTO `sys_log` VALUES ('1944', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:13:23');
+INSERT INTO `sys_log` VALUES ('1945', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:13:25');
+INSERT INTO `sys_log` VALUES ('1946', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:13:28');
+INSERT INTO `sys_log` VALUES ('1947', 'admin', 'admin', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-11 10:13:40');
+INSERT INTO `sys_log` VALUES ('1948', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:20:10');
+INSERT INTO `sys_log` VALUES ('1949', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editPwdPage,[参数]:', null, '2018-05-11 10:20:20');
+INSERT INTO `sys_log` VALUES ('1950', 'liujun', 'liujun', '[类名]:com.tf.controller.UserController,[方法]:editUserPwd,[参数]:oldPwd=liujun&pwd=123456&rePwd=123456&', '0:0:0:0:0:0:0:1', '2018-05-11 10:20:29');
+INSERT INTO `sys_log` VALUES ('1951', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:20:36');
+INSERT INTO `sys_log` VALUES ('1952', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:20:38');
+INSERT INTO `sys_log` VALUES ('1953', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:20:41');
+INSERT INTO `sys_log` VALUES ('1954', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1526005299495&', '0:0:0:0:0:0:0:1', '2018-05-11 10:22:56');
+INSERT INTO `sys_log` VALUES ('1955', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:edit,[参数]:id=230&name=回收站&resourceType=0&url=/myFile/delFileList&openMode=ajax&icon=fi-trash&seq=0&status=0&opened=1&pid=221&', '0:0:0:0:0:0:0:1', '2018-05-11 10:23:14');
+INSERT INTO `sys_log` VALUES ('1956', 'admin', 'admin', '[类名]:com.tf.controller.ResourceController,[方法]:editPage,[参数]:id=230&_=1526005299497&', '0:0:0:0:0:0:0:1', '2018-05-11 10:23:40');
+INSERT INTO `sys_log` VALUES ('1957', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:25:14');
+INSERT INTO `sys_log` VALUES ('1958', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:26:42');
+INSERT INTO `sys_log` VALUES ('1959', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:26:45');
+INSERT INTO `sys_log` VALUES ('1960', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:27:07');
+INSERT INTO `sys_log` VALUES ('1961', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:30:18');
+INSERT INTO `sys_log` VALUES ('1962', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:30:29');
+INSERT INTO `sys_log` VALUES ('1963', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:42:15');
+INSERT INTO `sys_log` VALUES ('1964', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:42:55');
+INSERT INTO `sys_log` VALUES ('1965', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:42:59');
+INSERT INTO `sys_log` VALUES ('1966', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:43:18');
+INSERT INTO `sys_log` VALUES ('1967', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 10:43:43');
+INSERT INTO `sys_log` VALUES ('1968', 'liujun', 'liujun', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:43:48');
+INSERT INTO `sys_log` VALUES ('1969', 'admin', 'admin', '[类名]:com.tf.controller.LoginController,[方法]:logout,[参数]:', null, '2018-05-11 10:44:00');
+INSERT INTO `sys_log` VALUES ('1970', 'liujun', 'liujun', '[类名]:com.tf.controller.MyFileController,[方法]:delete,[参数]:pwd=&', '0:0:0:0:0:0:0:1', '2018-05-11 11:37:35');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -1153,14 +1505,14 @@ CREATE TABLE `user` (
 INSERT INTO `user` VALUES ('1', 'admin', '管理员', '47ec2dd791e31e2ef2076caf64ed9b3d', 'test', '0', '25', '18707173376', null, '', '0', '0', '1', '2015-12-06 13:14:05', '123456');
 INSERT INTO `user` VALUES ('25', 'shen', '申', 'c890e705554e1d02ef95a1da7028a356', '023cda5b-c018-45e9-b809-dd38e927ebeb', '0', '0', '', null, '', '1', '0', '25', '2018-03-13 16:08:54', '123456');
 INSERT INTO `user` VALUES ('26', 'xinxichu', '信息处', '81da4fda24675429bcadde7df7a43be7', '51912d35-899b-49ef-9bb0-c241c8596968', '0', '0', '', null, '', '1', '0', '18', '2018-01-31 17:20:37', '123456');
-INSERT INTO `user` VALUES ('27', 'liujun', '刘军', 'da1c92a3bab219f9facb7ad16f8bf74c', '7581c08d-9b14-4f12-bfcb-6bd8fb349c9f', '0', '0', '', null, '0:0:0:0:0:0:0:1', '1', '0', '18', '2018-01-31 17:20:57', '123456');
+INSERT INTO `user` VALUES ('27', 'liujun', '刘军', '47ec2dd791e31e2ef2076caf64ed9b3d', 'test', '0', '0', '', null, '0:0:0:0:0:0:0:1', '1', '0', '18', '2018-01-31 17:20:57', '123456');
 INSERT INTO `user` VALUES ('28', 'langliang', '郎亮', '4df65f1971ab8c5530e4131c5c54d250', '04b75cd3-b8c9-4230-a5b6-0f24992d04e3', '0', '0', '', null, '', '1', '0', '18', '2018-01-31 17:21:17', '123456');
 INSERT INTO `user` VALUES ('30', 'luojiaqi', '罗加奇', 'de82aa761a453ce66fbe27b35677584e', '2cffe6a5-07a5-430c-be91-e3f5a607847d', '1', '0', '', null, '', '1', '0', '18', '2018-02-08 17:23:30', '123456');
 INSERT INTO `user` VALUES ('31', 'diguanqiang', '狄冠强', '95da532120f34d2c0736d6281e4c1b31', 'c5723ba9-f068-440a-b4a8-8da62b01cb50', '0', '0', '', null, '10.12.18.46', '1', '0', '18', '2018-02-08 17:24:08', '123456');
 INSERT INTO `user` VALUES ('32', 'zhangaiyu', '张艾宇', '67495ab374d18c24a621f442d72e52fd', 'b5ed390e-7d88-4706-9c00-1fc5a7f3986b', '0', '0', '', null, '10.12.18.74', '1', '0', '18', '2018-02-08 17:25:46', '123456');
 INSERT INTO `user` VALUES ('33', 'zhengfei', '郑飞', '5621b72507da3315bfe93e2e606c42b6', 'c8a5b58d-f984-4da8-bb81-e19124fd1645', '0', '0', '13888888888', null, '10.12.18.185', '1', '0', '18', '2018-02-08 17:26:49', '123456');
 INSERT INTO `user` VALUES ('35', 'lixiang', '李翔', 'fd9fd06fa6db05df15a5e0499da41cc7', 'fcb13906-d02a-4931-93a1-8ac05a3f0ec3', '0', '0', '', null, '10.12.18.150', '1', '0', '18', '2018-02-08 17:57:25', '123456');
-INSERT INTO `user` VALUES ('36', 'bangongshi', '科员', '2fa9d67e0a9d45b5c823d991aae05c98', 'b96b8311-3dd2-48d1-8b25-d5e53bc28a71', '0', '0', '', null, '192.168.43.29', '1', '0', '19', '2018-02-23 17:39:32', '123456');
+INSERT INTO `user` VALUES ('36', 'bangongshi', '科员', '2fa9d67e0a9d45b5c823d991aae05c98', 'b96b8311-3dd2-48d1-8b25-d5e53bc28a71', '0', '0', '', null, '', '1', '0', '19', '2018-02-23 17:39:32', '123456');
 INSERT INTO `user` VALUES ('37', 'zuzhiyichu', '组织1', '96f2024805c3b339bf03dbec00ec7643', '0c783665-7126-4e73-bed0-893f17499a1e', '0', '0', '', null, '', '1', '0', '22', '2018-02-26 16:55:22', '123456');
 INSERT INTO `user` VALUES ('38', 'zhangsan', '张三', '0f6bf7c2668cb29108480471ff572996', '4531c92b-dd7e-4fc4-bc0f-40b385696ec9', '0', '0', '', null, '12.202.0.2', '1', '0', '19', '2018-03-06 09:59:05', '123456');
 INSERT INTO `user` VALUES ('40', 'yanjiushi', '研究室管理员', '4c09f613473e9d7df267d998320035be', 'd4e86445-656a-4faa-941e-3dc5efceca24', '0', '0', '', null, '12.202.0.15', '1', '0', '25', '2018-03-13 17:05:49', '123456');
@@ -1175,14 +1527,14 @@ CREATE TABLE `user_role` (
   `role_id` bigint(19) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`),
   KEY `idx_user_role_ids` (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
 INSERT INTO `user_role` VALUES ('124', '1', '1');
 INSERT INTO `user_role` VALUES ('152', '26', '2');
-INSERT INTO `user_role` VALUES ('131', '27', '3');
+INSERT INTO `user_role` VALUES ('158', '27', '3');
 INSERT INTO `user_role` VALUES ('132', '28', '3');
 INSERT INTO `user_role` VALUES ('138', '30', '3');
 INSERT INTO `user_role` VALUES ('134', '31', '3');
