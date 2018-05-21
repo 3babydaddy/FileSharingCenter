@@ -317,10 +317,10 @@ public class MyFileController extends BaseController{
         	//拼接上传的路径
         	MyFile folder = fileService.queryFile(folderid);
         	String filePath = FILEBASEPATH +fileFolder+ new Date().getTime() + "." + suffix;
-        	//String filePath = FILEBASEPATH +fileFolder+ originalFilename;
+        	////String filePath = FILEBASEPATH +fileFolder+ originalFilename;
         	//String filePath = "C:/home/" +fileFolder+ new Date().getTime() + "." + suffix;
         	//判断文件夹是否存在
-        	File filePth = new File(FILEBASEPATH);
+        	File filePth = new File(FILEBASEPATH + fileFolder);
 			if (!filePth.exists()) {
 				filePth.mkdirs();
 			}
